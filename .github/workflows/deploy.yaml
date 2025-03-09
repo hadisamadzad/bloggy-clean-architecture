@@ -49,7 +49,7 @@ jobs:
             sed -i 's/{Env}/${{ vars.ENV_NAME }}/g' deploy.sh
 
             ENV_NAME_LOWER=$(echo "${{ vars.ENV_NAME }}" | tr '[:upper:]' '[:lower:]')
-
+            echo "${{ vars.ENV_NAME }}" | tr '[:upper:]' '[:lower:]'
             # Loop through each directory under ./src/
             for dir in ./src/*/; do
               # Check if it's a directory
