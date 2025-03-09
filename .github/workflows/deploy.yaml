@@ -9,6 +9,7 @@ jobs:
   build-and-deploy:
     name: 🚀 Deploy to Server
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
@@ -22,17 +23,3 @@ jobs:
           script: |
             echo "TesttseT"
             ls
-            # Pull both latest and versioned image
-            docker pull ${{ secrets.DOCKER_USERNAME }}/bloggy:${{ github.run_number }}
-            docker pull ${{ secrets.DOCKER_USERNAME }}/bloggy:latest
-
-            # Stop and remove existing container
-            docker stop bloggy || true
-            docker rm bloggy || true
-
-            # Run with specific version (more stable than latest)
-            docker run -d \
-              --name bloggy \
-              --restart unless-stopped \
-              -p 80:8080 \
-              ${{ secrets.DOCKER_USERNAME }}/bloggy:${{ github.run_number }}
