@@ -33,5 +33,5 @@ jobs:
           script: |
             cd /home/${{ secrets.SERVER_USER }}/bloggy/api
             ls
-            #chmod +x deploy.sh
+            chmod +x deploy.sh
             ./deploy.sh
