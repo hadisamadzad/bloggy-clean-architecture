@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
-    name: 🚀 Deploy to Server
+    name: 🚀 Deploy to Server - Run ${{ github.run_number }}
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -31,5 +32,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/${{ secrets.SERVER_USER }}/bloggy/api
-            echo "TesttseT"
             ls
+            #chmod +x deploy.sh
+            ./deploy.sh
