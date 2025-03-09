@@ -59,6 +59,11 @@ jobs:
 
                   sed -i "s/{env}/$ENV_NAME_LOWER/g" "$dir/appsettings.json"
 
+                  sed -i "s/{auth_jwt_issuer}/${{ vars.AUTH_JWT_ISSUER }}/g" "$dir/appsettings.json"
+                  sed -i "s/{auth_jwt_audience}/${{ vars.AUTH_JWT_AUDIENCE }}/g" "$dir/appsettings.json"
+                  sed -i "s/{auth_jwt_access_token_secret_key}/${{ vars.AUTH_JWT_ACCESS_SECRET }}/g" "$dir/appsettings.json"
+                  sed -i "s/{allowed_origins}/${{ vars.ALLOWED_ORIGINS }}/g" "$dir/appsettings.json"
+
                 else
                   echo "appsettings.json not found in $dir"
                 fi
