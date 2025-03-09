@@ -44,6 +44,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/${{ secrets.SERVER_USER }}/bloggy/api
-            ls
+
+            # Replace the environment variables
+            env_var_lower=$(echo "${{ secrets.ENV_NAME }}" | tr '[:upper:]' '[:lower:]')
+            sed -i 's/{Env}/$GITHUB_ENV/g' deploy.sh
+            #sed -i 's/{env}/$env_var_lower/g' deploy.sh
+
             chmod +x deploy.sh
             sudo ./deploy.sh
