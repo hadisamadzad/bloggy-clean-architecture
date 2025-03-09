@@ -46,10 +46,31 @@ jobs:
             cd /home/${{ secrets.SERVER_USER }}/bloggy/api
 
             # Replace the environment variables
-            ENV_NAME= ${{ vars.ENV_NAME }}
-            ENV_NAME_LOWER=$(echo "$ENV_NAME" | tr '[:upper:]' '[:lower:]')
-
             sed -i 's/{Env}/${{ vars.ENV_NAME }}/g' deploy.sh
+
+            ENV_NAME_LOWER=$(echo "${{ vars.ENV_NAME }}" | tr '[:upper:]' '[:lower:]')
+
+            # Loop through each directory under ./src/
+            for dir in ./src/*/; do
+              # Check if it's a directory
+              if [ -d "$dir" ]; then
+                echo "Processing directory: $dir"
+
+                # Check if appsettings.json exists in the directory
+                if [ -f "$dir/appsettings.json" ]; then
+                  echo "Updating appsettings.json in $dir"
+
+                  # Use sed to replace values in the appsettings.json
+                  # Example: Replacing {Env} with the actual environment value
+                  sed -i 's/{Env}/$ENV_NAME_LOWER/g' "$dir/appsettings.json"
+                else
+                  echo "appsettings.json not found in $dir"
+                fi
+              fi
+            done
+
+            # Replace {Env} in all appsettings.json files
+            #find /home/${{ secrets.SERVER_USER }}/bloggy/ -type f -name 'appsettings.json' -exec sed -i "s/{Env}/$ENV_NAME/g" {} \;
             #sed -i 's/{env}/$ENV_NAME_LOWER/g' deploy.sh
 
             chmod +x deploy.sh
