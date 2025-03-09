@@ -47,7 +47,6 @@ jobs:
 
             # Replace the environment variables
             echo "${{ github.environment }}"
-            ENV_NAME="${{ github.environment }}"
             ENV_NAME_LOWER=$(echo "$ENV_NAME" | tr '[:upper:]' '[:lower:]')
 
             sed -i 's/{Env}/$ENV_NAME/g' deploy.sh
