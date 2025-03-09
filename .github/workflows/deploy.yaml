@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
     steps:
-      - name: 🔑 SSH into Server & Deploy
+      - name: 🔑 SSH into Server for Preparation
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
