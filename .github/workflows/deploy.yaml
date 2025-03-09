@@ -62,7 +62,7 @@ jobs:
 
                   # Use sed to replace values in the appsettings.json
                   # Example: Replacing {Env} with the actual environment value
-                  sed -i 's/{Env}/$ENV_NAME_LOWER/g' "$dir/appsettings.json"
+                  sed -i 's/{env}/$ENV_NAME_LOWER/g' "$dir/appsettings.json"
                 else
                   echo "appsettings.json not found in $dir"
                 fi
