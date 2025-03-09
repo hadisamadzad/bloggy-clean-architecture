@@ -8,7 +8,6 @@ on:
 jobs:
   build-and-deploy:
     name: 🚀 Deploy to Server
-    needs: build-and-deploy
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
