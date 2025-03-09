@@ -46,4 +46,4 @@ jobs:
             cd /home/${{ secrets.SERVER_USER }}/bloggy/api
             ls
             chmod +x deploy.sh
-            ./deploy.sh
+            sudo ./deploy.sh
