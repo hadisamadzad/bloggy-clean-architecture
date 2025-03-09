@@ -6,7 +6,7 @@ services:
     networks:
       - bloggy-back
     ports:
-      - 44000:8080
+      - 44000:6000
     build:
       context: ./src
       dockerfile: Gateway/Dockerfile
@@ -22,7 +22,7 @@ services:
     networks:
       - bloggy-back
     ports:
-      - 44001:8080
+      - 44001:6000
     build:
       context: ./src
       dockerfile: Identity/Dockerfile
@@ -37,7 +37,7 @@ services:
     networks:
       - bloggy-back
     ports:
-      - 44002:8080
+      - 44002:6000
     build:
       context: ./src
       dockerfile: Blog/Dockerfile

@@ -1,8 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
-# Run 'docker build' command from the solution directory
+
 WORKDIR /app
 COPY . .
-RUN rm -rf ./src
+RUN rm -rf Identity
 COPY Identity Identity
 RUN dotnet publish Identity -c release -o out
 
