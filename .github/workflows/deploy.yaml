@@ -46,9 +46,11 @@ jobs:
             cd /home/${{ secrets.SERVER_USER }}/bloggy/api
 
             # Replace the environment variables
-            env_var_lower=$(echo "${{ secrets.ENV_NAME }}" | tr '[:upper:]' '[:lower:]')
-            sed -i 's/{Env}/$GITHUB_ENV/g' deploy.sh
-            #sed -i 's/{env}/$env_var_lower/g' deploy.sh
+            ENV_NAME="${{ github.environment }}"
+            ENV_NAME_LOWER=$(echo "$ENV_NAME" | tr '[:upper:]' '[:lower:]')
+
+            sed -i 's/{Env}/$ENV_NAME/g' deploy.sh
+            #sed -i 's/{env}/$ENV_NAME_LOWER/g' deploy.sh
 
             chmod +x deploy.sh
             sudo ./deploy.sh
