@@ -50,19 +50,15 @@ jobs:
 
             ENV_NAME_LOWER=$(echo "${{ vars.ENV_NAME }}" | tr '[:upper:]' '[:lower:]')
             echo "${{ vars.ENV_NAME }}" | tr '[:upper:]' '[:lower:]'
-            # Loop through each directory under ./src/
-            for dir in ./src/*/; do
-              # Check if it's a directory
-              if [ -d "$dir" ]; then
-                echo "Processing directory: $dir"
 
-                # Check if appsettings.json exists in the directory
-                if [ -f "$dir/appsettings.json" ]; then
+            for dir in ./src/*/; do
+              if [ -d "$dir" ]; then # Check if it's a directory
+                echo "Processing directory: $dir"
+                if [ -f "$dir/appsettings.json" ]; then # Check if appsettings.json exists in the directory
                   echo "Updating appsettings.json in $dir"
 
-                  # Use sed to replace values in the appsettings.json
-                  # Example: Replacing {Env} with the actual environment value
-                  sed -i 's/{env}/$ENV_NAME_LOWER/g' "$dir/appsettings.json"
+                  sed -i "s/{env}/$ENV_NAME_LOWER/g" "$dir/appsettings.json"
+
                 else
                   echo "appsettings.json not found in $dir"
                 fi
