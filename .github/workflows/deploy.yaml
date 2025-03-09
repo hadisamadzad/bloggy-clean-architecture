@@ -46,10 +46,10 @@ jobs:
             cd /home/${{ secrets.SERVER_USER }}/bloggy/api
 
             # Replace the environment variables
-            ENV_NAME= ${{ env.ENV_NAME }}
+            ENV_NAME= ${{ vars.ENV_NAME }}
             ENV_NAME_LOWER=$(echo "$ENV_NAME" | tr '[:upper:]' '[:lower:]')
 
-            sed -i 's/{Env}/${{ env.ENV_NAME }}/g' deploy.sh
+            sed -i 's/{Env}/${{ vars.ENV_NAME }}/g' deploy.sh
             #sed -i 's/{env}/$ENV_NAME_LOWER/g' deploy.sh
 
             chmod +x deploy.sh
