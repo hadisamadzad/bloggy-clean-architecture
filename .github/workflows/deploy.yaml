@@ -1,0 +1,39 @@
+name: Bloggy Backend Deployment 🚀
+
+on:
+  push:
+    branches:
+      - main  # Run on main branch push
+
+jobs:
+  build-and-deploy:
+    name: 🚀 Deploy to Server
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🔑 SSH into Server & Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "TesttseT"
+            ls
+            # Pull both latest and versioned image
+            docker pull ${{ secrets.DOCKER_USERNAME }}/bloggy:${{ github.run_number }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/bloggy:latest
+
+            # Stop and remove existing container
+            docker stop bloggy || true
+            docker rm bloggy || true
+
+            # Run with specific version (more stable than latest)
+            docker run -d \
+              --name bloggy \
+              --restart unless-stopped \
+              -p 80:8080 \
+              ${{ secrets.DOCKER_USERNAME }}/bloggy:${{ github.run_number }}
