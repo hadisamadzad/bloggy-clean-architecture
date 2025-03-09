@@ -1,4 +1,4 @@
-# 🧹 Bloggy - Headless Blog Backend (Clean Architecture)
+# 🧹 Bloggy - Headless Blog API (Clean Architecture)
 
 Bloggy is a modern headless blog API designed using Clean Architecture principles. It provides a structured backend for managing articles, tags, and subscriptions, making it easy to integrate with any frontend.
 
