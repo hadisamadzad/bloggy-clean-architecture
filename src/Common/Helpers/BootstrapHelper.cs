@@ -9,8 +9,9 @@ public sealed class BootstrapHelper
 
     public static IConfigurationRoot GetConfigFromAppsettingsJson(string env) =>
         new ConfigurationBuilder()
+#if RELEASE
             .AddJsonFile("appsettings.json", optional: false)
-#if DEBUG
+#elif DEBUG
             .AddJsonFile($"appsettings.{env}.json", optional: false)
 #endif
             .AddEnvironmentVariables()

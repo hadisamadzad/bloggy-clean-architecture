@@ -40,10 +40,17 @@ builder.Services.AddConfiguredOcelot();
 
 builder.Services.AddConfiguredHealthChecks();
 
-WebApplication app = null;
-try { app = builder.Build(); }
-catch (Exception ex) { Log.Fatal(ex, "Application failed to build."); }
-finally { Log.CloseAndFlush(); }
+WebApplication app = default!;
+try
+{
+    app = builder.Build();
+    Log.Information($"Application started on: {configs["urls"]} ({env})");
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, $"Application failed to build.");
+}
+if (app is null) return;
 
 // Add middleware
 
@@ -57,4 +64,3 @@ app.UseConfiguredOcelot();
 
 try { app.Run(); }
 catch (Exception ex) { Log.Fatal(ex, "Application failed to start."); }
-finally { Log.CloseAndFlush(); }
