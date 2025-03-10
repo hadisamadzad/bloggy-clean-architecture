@@ -52,6 +52,9 @@ jobs:
             for dir in ./src/*/; do
               if [ -d "$dir" ]; then # Check if it's a directory
                 echo "Processing directory: $dir"
+
+                dir_name=$(basename "$dir") # Extract directory name
+
                 if [ -f "$dir/appsettings.json" ]; then # Check if appsettings.json exists in the directory
                   echo "Updating appsettings.json in $dir"
 
@@ -59,14 +62,14 @@ jobs:
                   sed -i "s/{env}/$ENV_NAME_LOWER/g" "$dir/appsettings.json"
                   sed -i "s|{datadog_api_key}|${{ secrets.DATADOG_API_KEY }}|g" "$dir/appsettings.json"
 
-                  if [ "$dir" == "Gateway" ]; then
+                  if [ "$dir_name" == "Gateway" ]; then
                     sed -i "s|{auth_jwt_issuer}|${{ vars.AUTH_JWT_ISSUER }}|g" "$dir/appsettings.json"
                     sed -i "s|{auth_jwt_audience}|${{ vars.AUTH_JWT_AUDIENCE }}|g" "$dir/appsettings.json"
                     sed -i "s|{auth_jwt_access_token_secret_key}|${{ secrets.AUTH_JWT_ACCESS_SECRET }}|g" "$dir/appsettings.json"
                     sed -i "s|{allowed_origins}|${{ vars.ALLOWED_ORIGINS }}|g" "$dir/appsettings.json"
                   fi
 
-                  if [ "$dir" == "Identity" ]; then
+                  if [ "$dir_name" == "Identity" ]; then
                     sed -i "s|{mongodb_connection_string}|${{ secrets.MONGODB_CONNECTION_STRING }}|g" "$dir/appsettings.json"
                     sed -i "s|{mongodb_database_name}|${{ vars.MONGODB_DATABASE_NAME }}|g" "$dir/appsettings.json"
                     sed -i "s|"{failed_login_limit}"|${{ vars.AUTH_LOCKOUT_LIMIT }}|g" "$dir/appsettings.json"
@@ -79,7 +82,7 @@ jobs:
                     sed -i "s|{auth_refresh_token_lifetime}|${{ vars.AUTH_JWT_REFRESH_LIFETIME }}|g" "$dir/appsettings.json"
                   fi
 
-                  if [ "$dir" == "Blog" ]; then
+                  if [ "$dir_name" == "Blog" ]; then
                     sed -i "s|{mongodb_connection_string}|${{ secrets.MONGODB_CONNECTION_STRING }}|g" "$dir/appsettings.json"
                     sed -i "s|{mongodb_database_name}|${{ vars.MONGODB_DATABASE_NAME }}|g" "$dir/appsettings.json"
                   fi
