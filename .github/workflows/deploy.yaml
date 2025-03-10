@@ -62,7 +62,7 @@ jobs:
                   sed -i "s/{auth_jwt_issuer}/${{ vars.AUTH_JWT_ISSUER }}/g" "$dir/appsettings.json"
                   sed -i "s/{auth_jwt_audience}/${{ vars.AUTH_JWT_AUDIENCE }}/g" "$dir/appsettings.json"
                   sed -i "s/{auth_jwt_access_token_secret_key}/${{ secrets.AUTH_JWT_ACCESS_SECRET }}/g" "$dir/appsettings.json"
-                  sed -i "s/{allowed_origins}/${{ vars.AUTH_ALLOWED_ORIGINS }}/g" "$dir/appsettings.json"
+                  sed -i "s/{allowed_origins}/${{ vars.ALLOWED_ORIGINS }}/g" "$dir/appsettings.json"
                   sed -i "s/{datadog_api_key}/${{ secrets.DATADOG_API_KEY }}/g" "$dir/appsettings.json"
 
                 else
