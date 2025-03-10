@@ -55,13 +55,27 @@ jobs:
                 if [ -f "$dir/appsettings.json" ]; then # Check if appsettings.json exists in the directory
                   echo "Updating appsettings.json in $dir"
 
+                  # Commons
                   sed -i "s/{env}/$ENV_NAME_LOWER/g" "$dir/appsettings.json"
+                  sed -i "s|{datadog_api_key}|${{ secrets.DATADOG_API_KEY }}|g" "$dir/appsettings.json"
 
+                  # Gateway
                   sed -i "s|{auth_jwt_issuer}|${{ vars.AUTH_JWT_ISSUER }}|g" "$dir/appsettings.json"
                   sed -i "s|{auth_jwt_audience}|${{ vars.AUTH_JWT_AUDIENCE }}|g" "$dir/appsettings.json"
                   sed -i "s|{auth_jwt_access_token_secret_key}|${{ secrets.AUTH_JWT_ACCESS_SECRET }}|g" "$dir/appsettings.json"
                   sed -i "s|{allowed_origins}|${{ vars.ALLOWED_ORIGINS }}|g" "$dir/appsettings.json"
-                  sed -i "s|{datadog_api_key}|${{ secrets.DATADOG_API_KEY }}|g" "$dir/appsettings.json"
+
+                  # Identity
+                  sed -i "s|{mongodb_connection_string}|${{ secrets.MONGODB_CONNECTION_STRING }}|g" "$dir/appsettings.json"
+                  sed -i "s|{mongodb_database_name}|${{ vars.MONGODB_DATABASE_NAME }}|g" "$dir/appsettings.json"
+                  sed -i "s|"{failed_login_limit}"|${{ vars.AUTH_LOCKOUT_LIMIT }}|g" "$dir/appsettings.json"
+                  sed -i "s|{auth_lockout_duration}|${{ vars.AUTH_LOCKOUT_DURATION }}|g" "$dir/appsettings.json"
+                  sed -i "s|{auth_jwt_issuer}|${{ vars.AUTH_JWT_ISSUER }}|g" "$dir/appsettings.json"
+                  sed -i "s|{auth_jwt_audience}|${{ vars.AUTH_JWT_AUDIENCE }}|g" "$dir/appsettings.json"
+                  sed -i "s|{auth_jwt_access_token_secret_key}|${{ secrets.AUTH_JWT_ACCESS_SECRET }}|g" "$dir/appsettings.json"
+                  sed -i "s|{auth_jwt_refresh_token_secret_key}|${{ secrets.AUTH_JWT_REFRESH_SECRET }}|g" "$dir/appsettings.json"
+                  sed -i "s|{auth_access_token_lifetime}|${{ vars.AUTH_JWT_ACCESS_LIFETIME }}|g" "$dir/appsettings.json"
+                  sed -i "s|{auth_refresh_token_lifetime}|${{ vars.AUTH_JWT_REFRESH_LIFETIME }}|g" "$dir/appsettings.json"
 
                 else
                   echo "appsettings.json not found in $dir"
