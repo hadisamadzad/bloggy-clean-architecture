@@ -20,9 +20,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/${{ secrets.SERVER_USER }}/bloggy/api
-            ls
             rm -rf ./*
-            ls
+            echo "Cleared the deployment directory!"
 
       - name: 📥 Checkout repository
         uses: actions/checkout@v3
@@ -49,7 +48,6 @@ jobs:
             sed -i 's/{Env}/${{ vars.ENV_NAME }}/g' deploy.sh
 
             ENV_NAME_LOWER=$(echo "${{ vars.ENV_NAME }}" | tr '[:upper:]' '[:lower:]')
-            echo "${{ vars.ENV_NAME }}" | tr '[:upper:]' '[:lower:]'
 
             for dir in ./src/*/; do
               if [ -d "$dir" ]; then # Check if it's a directory
