@@ -6,21 +6,21 @@
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/health",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "172.90.0.1", "Port": 44002 }]
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 6000 }]
     },
     {
       "UpstreamPathTemplate": "/blog/{all}",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/{all}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "172.90.0.1", "Port": 44002 }]
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 6000 }]
     },
     {
       "UpstreamPathTemplate": "/blog/{all}",
       "UpstreamHttpMethod": [ "Post", "Put", "Patch", "Delete" ],
       "DownstreamPathTemplate": "/api/{all}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "172.90.0.1", "Port": 44002 }],
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 6000 }],
       "AuthenticationOptions": { "AuthenticationProviderKey": "general-auth-key" }
     }
   ]

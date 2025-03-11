@@ -21,8 +21,6 @@ services:
     restart: always
     networks:
       - bloggy-back
-    ports:
-      - 44001:6000
     build:
       context: ./src
       dockerfile: Identity/Dockerfile
@@ -36,8 +34,6 @@ services:
     restart: always
     networks:
       - bloggy-back
-    ports:
-      - 44002:6000
     build:
       context: ./src
       dockerfile: Blog/Dockerfile
