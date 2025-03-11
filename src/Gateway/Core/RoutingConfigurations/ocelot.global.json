@@ -1,6 +1,6 @@
 {
     "Routes": [],
     "GlobalConfiguration": {
-        "BaseUrl": "https://bloggy-api.***.com"
+        "BaseUrl": "https://bloggy-api.hadisamadzad.com"
     }
 }
