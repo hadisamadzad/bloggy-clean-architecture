@@ -38,5 +38,16 @@ public class DevEndpoints : IEndpoint
                 return Results.Ok("Email sent");
             });
 
+        // Test redis
+        group.MapGet("redis", async (
+            ICacheService cache) =>
+            {
+                _ = await cache.SetAsync("test", "test", TimeSpan.FromMinutes(1));
+                var result = await cache.GetAsync<string>("test");
+
+                return Results.Ok("Redis works as expected!");
+            });
+
+
     }
 }

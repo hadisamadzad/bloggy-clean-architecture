@@ -46,7 +46,7 @@ builder.Services.AddConfiguredMediatR();
 builder.Services.AddConfiguredMongoDB(configs);
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
-//builder.Services.AddConfiguredRedisCache(configs);
+builder.Services.AddConfiguredRedisCache(configs);
 
 //builder.Services.AddSingleton<ITransactionalEmailService, BrevoEmailService>();
 
