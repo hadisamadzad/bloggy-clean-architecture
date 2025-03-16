@@ -24,6 +24,7 @@ jobs:
         with:
           scan-type: 'fs'
           scan-ref: '.'
+          file-pattern: '**/*.csproj'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
