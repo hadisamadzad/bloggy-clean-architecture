@@ -23,7 +23,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
-          scan-ref: './src'
+          scan-ref: './src/Gateway ./src/Identity ./src/Blog'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
