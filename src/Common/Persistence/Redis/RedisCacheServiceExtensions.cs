@@ -6,7 +6,7 @@ namespace Common.Persistence.Redis;
 
 public static class RedisCacheServiceExtensions
 {
-    public static IServiceCollection AddConfiguredRedisCache(this IServiceCollection services,
+    public static IServiceCollection AddRedisCache(this IServiceCollection services,
         string instancePrefix, RedisConfig config)
     {
         var options = new ConfigurationOptions();
@@ -16,8 +16,7 @@ public static class RedisCacheServiceExtensions
         services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(options));
 
         services.AddScoped<ICacheService>(x =>
-            new RedisCacheService(x.GetRequiredService<IConnectionMultiplexer>(),
-                instancePrefix: instancePrefix));
+            new RedisCacheService(x.GetRequiredService<IConnectionMultiplexer>(), instancePrefix));
 
         return services;
     }

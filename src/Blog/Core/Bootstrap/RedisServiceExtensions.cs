@@ -1,6 +1,6 @@
-﻿using Common.Persistence.Redis;
+using Common.Persistence.Redis;
 
-namespace Identity.Core.Bootstrap;
+namespace Blog.Core.Bootstrap;
 
 public static class RedisServiceExtensions
 {
@@ -9,7 +9,8 @@ public static class RedisServiceExtensions
     {
         var config = configuration.GetSection(RedisConfig.Key).Get<RedisConfig>();
 
-        services.AddRedisCache("identity", config);
+        // Distributed caching
+        services.AddRedisCache("blog", config);
 
         return services;
     }
