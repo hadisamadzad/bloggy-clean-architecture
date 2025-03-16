@@ -19,7 +19,7 @@ internal class SendPasswordResetEmailHandler(
 {
     private readonly PasswordResetConfig _passwordResetConfig = passwordResetConfig.Value;
 
-    public async Task<OperationResult> Handle(SendPasswordResetEmailCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(SendPasswordResetEmailCommand request, CancellationToken cancellationToken)
     {
         // Validation
         var validation = new SendPasswordResetEmailValidator().Validate(request);

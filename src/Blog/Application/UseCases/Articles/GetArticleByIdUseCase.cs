@@ -10,7 +10,7 @@ namespace Blog.Application.UseCases.Articles;
 internal class GetArticleByIdHandler(IRepositoryManager repository) :
     IRequestHandler<GetArticleByIdQuery, OperationResult>
 {
-    public async Task<OperationResult> Handle(GetArticleByIdQuery request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(GetArticleByIdQuery request, CancellationToken cancellationToken)
     {
         // Validate
         if (string.IsNullOrWhiteSpace(request.ArticleId))

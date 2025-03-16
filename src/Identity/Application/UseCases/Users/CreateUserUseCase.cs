@@ -13,7 +13,7 @@ namespace Identity.Application.UseCases.Users;
 internal class CreateUserHandler(IRepositoryManager repository) :
     IRequestHandler<CreateUserCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(CreateUserCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         // Validation
         var validation = new CreateUserValidator().Validate(request);

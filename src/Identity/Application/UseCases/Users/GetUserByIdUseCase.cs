@@ -10,7 +10,7 @@ namespace Identity.Application.UseCases.Users;
 public class GetUserByIdHandler(IRepositoryManager repository) :
     IRequestHandler<GetUserByIdQuery, OperationResult>
 {
-    public async Task<OperationResult> Handle(GetUserByIdQuery request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         // Get
         var entity = await repository.Users.GetByIdAsync(request.UserId);

@@ -13,7 +13,7 @@ namespace Blog.Application.UseCases.Articles;
 internal class UpdateArticleHandler(IRepositoryManager repository) :
     IRequestHandler<UpdateArticleCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(UpdateArticleCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
     {
         // Validate
         var validation = new UpdateArticleValidator().Validate(request);

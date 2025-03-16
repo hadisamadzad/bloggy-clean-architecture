@@ -19,7 +19,7 @@ internal class ResetPasswordHandler(IRepositoryManager repository,
     private readonly IRepositoryManager _unitOfWork = repository;
     private readonly PasswordResetConfig _passwordResetConfig = passwordResetConfig.Value;
 
-    public async Task<OperationResult> Handle(ResetPasswordCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
         // Validation
         var validation = new ResetPasswordValidator().Validate(request);

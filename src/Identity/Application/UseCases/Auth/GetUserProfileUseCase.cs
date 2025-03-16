@@ -10,7 +10,7 @@ namespace Identity.Application.UseCases.Auth;
 internal class GetUserProfileHandler(IRepositoryManager repository) :
     IRequestHandler<GetUserProfileQuery, OperationResult>
 {
-    public async Task<OperationResult> Handle(GetUserProfileQuery request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(GetUserProfileQuery request, CancellationToken cancellationToken)
     {
         // Validation
         if (string.IsNullOrWhiteSpace(request.RequestedBy))

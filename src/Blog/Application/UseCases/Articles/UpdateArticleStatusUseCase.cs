@@ -11,7 +11,7 @@ namespace Blog.Application.UseCases.Articles;
 internal class UpdateArticleStatusHandler(IRepositoryManager repository) :
     IRequestHandler<UpdateArticleStatusCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(UpdateArticleStatusCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(UpdateArticleStatusCommand request, CancellationToken cancellationToken)
     {
         var entity = await repository.Articles.GetByIdAsync(request.ArticleId);
         if (entity is null)

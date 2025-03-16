@@ -11,7 +11,7 @@ namespace Blog.Application.UseCases.Subscribers;
 internal class UnsubscribeSubscriberHandler(IRepositoryManager repository) :
     IRequestHandler<UnsubscribeSubscriberCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(UnsubscribeSubscriberCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(UnsubscribeSubscriberCommand request, CancellationToken cancellationToken)
     {
         // Validate
         var validation = new UnsubscribeSubscriberValidator().Validate(request);

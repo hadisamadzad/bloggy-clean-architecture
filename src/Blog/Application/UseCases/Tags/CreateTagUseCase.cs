@@ -13,7 +13,7 @@ namespace Blog.Application.UseCases.Tags;
 internal class CreateTagHandler(IRepositoryManager repository) :
     IRequestHandler<CreateTagCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(CreateTagCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(CreateTagCommand request, CancellationToken cancellationToken)
     {
         // Validate
         var validation = new CreateTagValidator().Validate(request);

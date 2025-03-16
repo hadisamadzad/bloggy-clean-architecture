@@ -10,7 +10,7 @@ namespace Blog.Application.UseCases.Articles;
 internal class GetArticlesByFilterHandler(IRepositoryManager repository) :
     IRequestHandler<GetArticlesByFilterQuery, OperationResult>
 {
-    public async Task<OperationResult> Handle(GetArticlesByFilterQuery request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(GetArticlesByFilterQuery request, CancellationToken cancellationToken)
     {
         if (request.Filter is null)
             request = request with { Filter = new() { HasPagination = true } };

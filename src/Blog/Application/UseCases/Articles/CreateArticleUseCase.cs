@@ -14,7 +14,7 @@ namespace Blog.Application.UseCases.Articles;
 internal class CreateArticleHandler(IRepositoryManager repository) :
     IRequestHandler<CreateArticleCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(CreateArticleCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(CreateArticleCommand request, CancellationToken cancellationToken)
     {
         // Validate
         var validation = new CreateArticleValidator().Validate(request);

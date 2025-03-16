@@ -10,7 +10,7 @@ namespace Identity.Application.UseCases.PasswordReset;
 internal class GetPasswordResetInfoHandler(IRepositoryManager repository)
     : IRequestHandler<GetPasswordResetInfoQuery, OperationResult>
 {
-    public async Task<OperationResult> Handle(GetPasswordResetInfoQuery request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(GetPasswordResetInfoQuery request, CancellationToken cancellationToken)
     {
         var (succeeded, email) = PasswordResetTokenHelper.ReadPasswordResetToken(request.Token);
 

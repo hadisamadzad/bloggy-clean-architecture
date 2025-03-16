@@ -15,7 +15,7 @@ namespace Identity.Application.UseCases.Auth;
 internal class RegisterHandler(IRepositoryManager repository)
     : IRequestHandler<RegisterCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(RegisterCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         // Validation
         var validation = new RegisterValidator().Validate(request);

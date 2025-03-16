@@ -13,7 +13,7 @@ namespace Identity.Application.UseCases.Users;
 public class UpdateUserPasswordHandler(IRepositoryManager repository) :
     IRequestHandler<UpdateUserPasswordCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(UpdateUserPasswordCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(UpdateUserPasswordCommand request, CancellationToken cancellationToken)
     {
         // Validation
         var validation = new UpdateUserPasswordValidator().Validate(request);

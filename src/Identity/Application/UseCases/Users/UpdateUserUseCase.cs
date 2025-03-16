@@ -11,7 +11,7 @@ namespace Identity.Application.UseCases.Users;
 internal class UpdateUserHandler(IRepositoryManager repository) :
     IRequestHandler<UpdateUserCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(UpdateUserCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         // Validation
         var validation = new UpdateUserValidator().Validate(request);

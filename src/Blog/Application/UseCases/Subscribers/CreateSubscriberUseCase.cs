@@ -12,7 +12,7 @@ namespace Blog.Application.UseCases.Subscribers;
 internal class CreateSubscriberHandler(IRepositoryManager repository) :
     IRequestHandler<CreateSubscriberCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(CreateSubscriberCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(CreateSubscriberCommand request, CancellationToken cancellationToken)
     {
         // Validate
         var validation = new CreateSubscriberValidator().Validate(request);

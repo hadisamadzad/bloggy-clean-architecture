@@ -9,7 +9,7 @@ namespace Blog.Application.UseCases.Settings;
 internal class GetBlogSettingsHandler(IRepositoryManager repository) :
     IRequestHandler<GetBlogSettingsQuery, OperationResult>
 {
-    public async Task<OperationResult> Handle(GetBlogSettingsQuery request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(GetBlogSettingsQuery request, CancellationToken cancellationToken)
     {
         // Retrieve the article
         var entity = await repository.Settings.GetBlogSettingAsync();

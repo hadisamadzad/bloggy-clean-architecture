@@ -10,7 +10,7 @@ namespace Blog.Application.UseCases.Articles;
 internal class DeleteArticleHandler(IRepositoryManager repository) :
     IRequestHandler<DeleteArticleCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(DeleteArticleCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
     {
         var entity = await repository.Articles.GetByIdAsync(request.ArticleId);
         if (entity is null)

@@ -13,7 +13,7 @@ namespace Identity.Application.UseCases.Auth;
 internal class LoginHandler(IRepositoryManager repository) :
     IRequestHandler<LoginCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(LoginCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         // Validation
         var validation = new LoginValidator().Validate(request);

@@ -10,7 +10,7 @@ namespace Identity.Application.UseCases.Auth;
 // Handler
 internal class RefreshTokenHandler(IRepositoryManager repository) : IRequestHandler<RefreshTokenQuery, OperationResult>
 {
-    public async Task<OperationResult> Handle(RefreshTokenQuery request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(RefreshTokenQuery request, CancellationToken cancellationToken)
     {
         if (!JwtHelper.IsValidJwtRefreshToken(request.RefreshToken))
             return OperationResult.Failure(OperationStatus.Unauthorized, Errors.InvalidCredentials);

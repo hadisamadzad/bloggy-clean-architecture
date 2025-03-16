@@ -11,7 +11,7 @@ namespace Blog.Application.UseCases.Settings;
 internal class UpdateBlogSettingsHandler(IRepositoryManager repository) :
     IRequestHandler<UpdateBlogSettingsCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(UpdateBlogSettingsCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(UpdateBlogSettingsCommand request, CancellationToken cancellationToken)
     {
         // Retrieve the article
         var entity = await repository.Settings.GetBlogSettingAsync();

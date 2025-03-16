@@ -12,7 +12,7 @@ namespace Identity.Application.UseCases.Users;
 internal class UpdateUserStateHandler(IRepositoryManager repository) :
     IRequestHandler<UpdateUserStateCommand, OperationResult>
 {
-    public async Task<OperationResult> Handle(UpdateUserStateCommand request, CancellationToken cancel)
+    public async Task<OperationResult> Handle(UpdateUserStateCommand request, CancellationToken cancellationToken)
     {
         // Validation
         var validation = new UpdateUserStateValidator().Validate(request);
