@@ -15,15 +15,13 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.WithMachineName()
     .CreateLogger();
 
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    ApplicationName = "Gateway",
-    EnvironmentName = env
-});
+var builder = WebApplication.CreateBuilder();
 
-builder.Configuration.AddConfiguration(configs);
+// Use Serilog as logging provider
 builder.Logging.ClearProviders();
 builder.Host.UseSerilog(Log.Logger);
+
+builder.Configuration.AddConfiguration(configs);
 builder.Configuration.AddOcelot(Constants.RouteConfigPath, builder.Environment);
 
 // Add services to the container
@@ -44,7 +42,7 @@ WebApplication app = default!;
 try
 {
     app = builder.Build();
-    Log.Information($"Application started on: {configs["urls"]} ({env})");
+    Log.Information("Application started on: {0} ({1})", configs["Urls"], env);
 }
 catch (Exception ex)
 {
@@ -62,5 +60,5 @@ app.UseHealthChecks("/health");
 
 app.UseConfiguredOcelot();
 
-try { app.Run(); }
+try { await app.RunAsync(); }
 catch (Exception ex) { Log.Fatal(ex, "Application failed to start."); }

@@ -26,7 +26,6 @@ builder.Host.UseSerilog(Log.Logger);
 // Add configs
 builder.Configuration.AddConfiguration(configs);
 
-
 // Configure JSON options to serialize enums as strings
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
