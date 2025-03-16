@@ -32,13 +32,6 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-// Configure cors
-builder.Services.AddCors(options => options
-    .AddPolicy("general", policy => policy
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader()));
-
 // Add services to the container
 builder.Services.AddCustomConfigurations(configs);
 builder.Services.AddConfiguredMediatR();
@@ -66,7 +59,6 @@ catch (Exception ex)
 if (app is null) return;
 
 // Add middleware
-app.UseCors("general");
 app.MapHealthChecks("/health");
 
 // Add endpoints
