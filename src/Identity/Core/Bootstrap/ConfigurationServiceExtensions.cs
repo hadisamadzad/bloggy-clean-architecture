@@ -6,17 +6,17 @@ namespace Identity.Core.Bootstrap;
 public static class ConfigurationServiceExtensions
 {
     public static IServiceCollection AddCustomConfigurations(this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configs)
     {
         // Jwt helper static config
-        var jwtConfig = configuration.GetSection(AuthTokenConfig.Key).Get<AuthTokenConfig>();
+        var jwtConfig = configs.GetSection(AuthTokenConfig.Key).Get<AuthTokenConfig>();
         JwtHelper.Initialize(jwtConfig);
 
         // User helper static lockout config
-        UserHelper.LockoutConfig = configuration.GetSection(LockoutConfig.Key).Get<LockoutConfig>();
+        UserHelper.LockoutConfig = configs.GetSection(LockoutConfig.Key).Get<LockoutConfig>();
+        PasswordResetTokenHelper.SetEncryptionKey(configs["PasswordReset:EncryptionKey"]);
 
-        services.Configure<ActivationConfig>(configuration.GetSection(ActivationConfig.Key));
-        services.Configure<PasswordResetConfig>(configuration.GetSection(PasswordResetConfig.Key));
+        services.Configure<ActivationConfig>(configs.GetSection(ActivationConfig.Key));
 
         return services;
     }

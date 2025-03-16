@@ -19,7 +19,7 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder();
 
 // Use Serilog as logging provider
-//builder.Logging.ClearProviders();
+builder.Logging.ClearProviders();
 builder.Host.UseSerilog(Log.Logger);
 
 // Add configs
@@ -48,8 +48,6 @@ builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
 builder.Services.AddConfiguredRedisCache(configs);
 
-//builder.Services.AddSingleton<ITransactionalEmailService, BrevoEmailService>();
-
 builder.Services.AddConfiguredBrevo(configs);
 
 builder.Services.AddHealthChecks();
@@ -59,7 +57,7 @@ WebApplication app = default!;
 try
 {
     app = builder.Build();
-    Log.Information($"Application started on: {configs["Urls"]} ({env})");
+    Log.Information("Application started on: {0} ({1})", configs["Urls"], env);
 }
 catch (Exception ex)
 {
@@ -77,7 +75,5 @@ app.MapEndpoints();
 if (!app.Environment.IsProduction())
     app.UseConfiguredSwagger();
 
-//MigrationRunner.Run(app.Services);
-
-try { app.Run(); }
+try { await app.RunAsync(); }
 catch (Exception ex) { Log.Fatal(ex, "Application failed to start."); }

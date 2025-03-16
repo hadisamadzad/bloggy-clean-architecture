@@ -4,8 +4,8 @@ public static class AllowedCharacters
 {
     public const string Numeric = "123456789";
     public const string Numeric0 = "1234567890";
-    public const string AlphanumericCase = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    public const string Alphanumeric = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public const string Alphanumeric = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    public const string AlphanumericCapital = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public const string AlphanumericReadable = "1234567890abcdefghkmnprstuvwyz";
 }
 

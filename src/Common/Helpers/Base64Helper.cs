@@ -1,6 +1,6 @@
 ﻿namespace Common.Helpers;
 
-public sealed class Base64Helper
+public static class Base64Helper
 {
     public static string ConvertBase64ToBase64Url(string base64) =>
         base64.Replace('+', '-').Replace('/', '_');

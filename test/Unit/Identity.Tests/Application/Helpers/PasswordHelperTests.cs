@@ -1,14 +1,14 @@
 using Identity.Application.Helpers;
 using Xunit;
 
-namespace Identity.Tests.Services.Application.Helpers;
+namespace Identity.Tests.Application.Helpers;
 
 public class PasswordHelperTests
 {
     private const string SamplePassword = "Te$tPa$$w0rD";
 
     [Fact]
-    public void Test_CheckPasswordHash_ShouldReturnTrue_WhenHashedPasswordIsCorrect()
+    public void TestCheckPasswordHash_ShouldReturnTrue_WhenHashedPasswordIsCorrect()
     {
         // Arrange
         var hash = PasswordHelper.Hash(SamplePassword);
@@ -23,7 +23,7 @@ public class PasswordHelperTests
     [Theory]
     [InlineData("1234")]
     [InlineData("123456")]
-    public void Test_CheckPasswordStrength_ShouldReturnVeryWeakPasswordScore(string password)
+    public void TestCheckPasswordStrength_ShouldReturnVeryWeakPasswordScore(string password)
     {
         // Arrange
 
@@ -36,7 +36,7 @@ public class PasswordHelperTests
 
     [Theory]
     [InlineData("Aa11369")]
-    public void Test_CheckPasswordStrength_ShouldReturnWeakPasswordScore(string password)
+    public void TestCheckPasswordStrength_ShouldReturnWeakPasswordScore(string password)
     {
         // Arrange
 
@@ -51,7 +51,7 @@ public class PasswordHelperTests
     [InlineData("Pa$$123")]
     [InlineData("Pass12!")]
     [InlineData("Pass1234")]
-    public void Test_CheckPasswordStrength_ShouldReturnMediumPasswordScore(string password)
+    public void TestCheckPasswordStrength_ShouldReturnMediumPasswordScore(string password)
     {
         // Arrange
 
@@ -64,7 +64,7 @@ public class PasswordHelperTests
 
     [Theory]
     [InlineData("PaS$12!#")]
-    public void Test_CheckPasswordStrength_ShouldReturnStrongPasswordScore(string password)
+    public void TestCheckPasswordStrength_ShouldReturnStrongPasswordScore(string password)
     {
         // Arrange
 
@@ -77,7 +77,7 @@ public class PasswordHelperTests
 
     [Theory]
     [InlineData("PaS$123456!#")]
-    public void Test_CheckPasswordStrength_ShouldReturnVeryStrongPasswordScore(string password)
+    public void TestCheckPasswordStrength_ShouldReturnVeryStrongPasswordScore(string password)
     {
         // Arrange
 

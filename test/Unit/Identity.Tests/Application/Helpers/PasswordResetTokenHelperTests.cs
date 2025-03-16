@@ -1,13 +1,20 @@
 using System;
+using Common.Helpers;
 using Identity.Application.Helpers;
 using Xunit;
 
-namespace Identity.Tests.Services.Application.Helpers;
+namespace Identity.Tests.Application.Helpers;
 
 public class PasswordResetTokenHelperTests
 {
+    public PasswordResetTokenHelperTests()
+    {
+        PasswordResetTokenHelper.SetEncryptionKey(
+            RandomGenerator.GenerateString(16, AllowedCharacters.Alphanumeric));
+    }
+
     [Fact]
-    public void Test_GeneratePasswordResetToken_CanGeneratePasswordResetToken()
+    public void TestGeneratePasswordResetToken_ShouldGeneratePasswordResetToken()
     {
         // Arrange
         const string fakeEmail = "fake@email.com";
@@ -21,7 +28,7 @@ public class PasswordResetTokenHelperTests
     }
 
     [Fact]
-    public void Test_ReadPasswordResetToken_CanReadAValidPasswordResetToken()
+    public void TestReadPasswordResetToken_ShouldExtractEmail_WhenValidTokenIsProvided()
     {
         // Arrange
         const string fakeEmail = "fake@email.com";
@@ -37,7 +44,7 @@ public class PasswordResetTokenHelperTests
     }
 
     [Fact]
-    public void Test_ReadPasswordResetToken_CanReadAValidPasswordResetToken2()
+    public void TestReadPasswordResetToken_ShouldExtractEmail_WhenValidTokenIsProvided2()
     {
         // Arrange
         const string fakeEmail = "fake@email.com";
@@ -50,5 +57,16 @@ public class PasswordResetTokenHelperTests
         // Assert
         Assert.False(succeeded);
         Assert.Empty(email);
+    }
+
+    [Fact]
+    public void TestReadPasswordResetToken_ShouldReturnFailure_WhenInvalidTokenType()
+    {
+        // Arrange
+        var token = "invalidBase64UrlToken";
+
+        // Assert
+        Assert.Throws<FormatException>(
+            () => PasswordResetTokenHelper.ReadPasswordResetToken(token));
     }
 }
