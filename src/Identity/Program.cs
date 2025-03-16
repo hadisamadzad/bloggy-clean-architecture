@@ -53,13 +53,13 @@ builder.Services.AddConfiguredRedisCache(configs);
 builder.Services.AddConfiguredBrevo(configs);
 
 builder.Services.AddHealthChecks();
-builder.Services.AddConfiguredSwagger();
+builder.Services.AddConfiguredOpenApi();
 
 WebApplication app = default!;
 try
 {
     app = builder.Build();
-    Log.Information($"Application started on: {configs["urls"]} ({env})");
+    Log.Information($"Application started on: {configs["Urls"]} ({env})");
 }
 catch (Exception ex)
 {

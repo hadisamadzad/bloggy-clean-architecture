@@ -40,7 +40,10 @@ public class AuthEndpoints : IEndpoint
                 {
                     IsOwnershipDone = value
                 };
-            });
+            })
+            .WithSummary("Checks if service ownership stage is completed.")
+            .WithDescription("Returns a boolean indicating whether the one-off " +
+                "ownership process is completed or not.");
 
         // Endpoint for getting user profile
         group.MapGet("profile", async (
