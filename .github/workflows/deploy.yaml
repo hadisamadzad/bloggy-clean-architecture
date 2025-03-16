@@ -10,6 +10,25 @@ permissions:
   contents: read
 
 jobs:
+  security-checks:
+    name: 🛡️ Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: 🔍 Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
+
   build-and-deploy:
     name: 🚀 Deploy to Server - Run ${{ github.run_number }}
     runs-on: ubuntu-latest
