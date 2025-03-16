@@ -3,11 +3,11 @@ using System.Text.RegularExpressions;
 
 namespace Identity.Application.Helpers;
 
-public static class PasswordHelper
+public static partial class PasswordHelper
 {
     private const int SaltSize = 128 / 8; // 128 bit
     private const int KeySize = 256 / 8; // 128 bit
-    private const int Iteration = 10000;
+    private const int Iteration = 100_000;
 
     public static string Hash(string password)
     {
@@ -29,7 +29,6 @@ public static class PasswordHelper
               "Should be formatted as `{hash}.{salt}`");
         }
 
-        //var iterations = Convert.ToInt32(parts[0]);
         var key = Convert.FromBase64String(parts[0]);
         var salt = Convert.FromBase64String(parts[1]);
 
@@ -52,18 +51,24 @@ public static class PasswordHelper
             score++;
         if (password.Length >= 12)
             score++;
-        if (Regex.Match(password, @"\d").Success)
+        if (NumberRegex().Match(password).Success)
             score++;
-        if (Regex.Match(password, "[a-z]").Success && Regex.Match(password, "[A-Z]").Success)
+        if (LowercaseRegex().Match(password).Success && UppercaseRegex().Match(password).Success)
             score++;
-        if (Regex.Match(password, ".[~,!,@,#,$,%,^,&,*,(,),-,_,=,?,_]").Success)
+        if (SpecialCharRegex().Match(password).Success)
             score++;
-
-        if (score > (int)PasswordScore.VeryStrong)
-            score = (int)PasswordScore.VeryStrong;
 
         return (PasswordScore)score;
     }
+
+    [GeneratedRegex(@"\d")]
+    private static partial Regex NumberRegex();
+    [GeneratedRegex("[a-z]")]
+    private static partial Regex LowercaseRegex();
+    [GeneratedRegex("[A-Z]")]
+    private static partial Regex UppercaseRegex();
+    [GeneratedRegex(".[~,!,@,#,$,%,^,&,*,(,),-,_,=,?,_]")]
+    private static partial Regex SpecialCharRegex();
 }
 
 public enum PasswordScore
