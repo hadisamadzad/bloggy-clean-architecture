@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   security-checks:
-    uses: ./.github/workflows/security.yaml
+    uses: ./.github/workflows/security-check.yaml
 
   build-and-deploy:
     name: 🚀 Deploy to Server - Run ${{ github.run_number }}
