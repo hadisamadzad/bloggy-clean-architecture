@@ -2,7 +2,7 @@
 
 namespace Common.Helpers;
 
-public sealed class BootstrapHelper
+public static class BootstrapHelper
 {
     public static string GetEnvironmentName(string @default) =>
         Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? @default;

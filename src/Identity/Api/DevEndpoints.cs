@@ -43,7 +43,7 @@ public class DevEndpoints : IEndpoint
             ICacheService cache) =>
             {
                 _ = await cache.SetAsync("test", "test", TimeSpan.FromMinutes(1));
-                var result = await cache.GetAsync<string>("test");
+                _ = await cache.GetAsync<string>("test");
 
                 return Results.Ok("Redis works as expected!");
             });

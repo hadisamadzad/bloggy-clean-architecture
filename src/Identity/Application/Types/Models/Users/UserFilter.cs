@@ -9,6 +9,5 @@ public record UserFilter : PaginationFilter
     public string Email { get; init; }
     public List<UserState> States { get; init; }
 
-    public UserIncludes Include { get; init; }
     public UserSortBy? SortBy { get; init; }
 }

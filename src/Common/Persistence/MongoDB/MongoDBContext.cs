@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace Common.Persistence.MongoDB;
 
-public class MongoDBContext
+public static class MongoDBContext
 {
     public static IMongoDatabase Connect(MongoDBConfig configs)
     {
@@ -12,7 +12,6 @@ public class MongoDBContext
 
         var client = new MongoClient(configs.ConnectionString);
         return client.GetDatabase(configs.DatabaseName);
-        // TODO https://jira.mongodb.org/browse/CSHARP-1728
     }
 
     private static void Configure()
