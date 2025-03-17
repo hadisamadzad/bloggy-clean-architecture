@@ -1,4 +1,4 @@
-name: Bloggy Backend Deployment 🚀
+name: Build & Deploy 🚀
 
 on:
   push:
@@ -11,24 +11,7 @@ permissions:
 
 jobs:
   security-checks:
-    name: 🛡️ Security Checks
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Fetch all history for all branches and tags
-
-      - name: 🔍 Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          file-pattern: '**/*.csproj'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
+    uses: ./.github/workflows/security.yaml
 
   build-and-deploy:
     name: 🚀 Deploy to Server - Run ${{ github.run_number }}
@@ -120,3 +103,17 @@ jobs:
 
             chmod +x deploy.sh
             sudo ./deploy.sh
+
+      - name: 🏥 Verify Deployment
+        run: |
+          # Wait for container to be healthy
+          for i in {1..30}; do
+            if curl -sSf ${{ vars.HEALTH_CHECK_URL }}; then
+              echo "✅ Application is healthy"
+              exit 0
+            fi
+            echo "Waiting for application to become healthy..."
+            sleep 10
+          done
+          echo "❌ Application health check failed"
+          exit 1

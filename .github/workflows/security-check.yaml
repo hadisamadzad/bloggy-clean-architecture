@@ -1,0 +1,25 @@
+name: Security Checks 🛡️
+
+on:
+  workflow_call: # allows it to be called from other workflows
+
+jobs:
+  security-checks:
+    name: 🛡️ Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          file-pattern: '**/*.csproj'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
