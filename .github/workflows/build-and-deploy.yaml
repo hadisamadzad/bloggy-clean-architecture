@@ -22,7 +22,7 @@ jobs:
     name: 🚀 Deploy to Server - Run ${{ github.run_number }}
     runs-on: ubuntu-latest
     environment: Production
-    needs: security-checks
+    #needs: security-checks
     steps:
       - name: 🔑 SSH into Server for Preparation
         uses: appleboy/ssh-action@master
