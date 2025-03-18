@@ -2,7 +2,7 @@ name: SonarCloud Code Quality Check 🛠️
 
 on:
   workflow_call:
-    push:
+  push:
     branches:
       - '*'
 

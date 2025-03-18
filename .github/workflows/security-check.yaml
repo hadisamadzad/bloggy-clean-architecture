@@ -2,7 +2,8 @@ name: Security Checks 🛡️
 
 on:
   workflow_call:
-  branches:
+  push:
+    branches:
       - '*'
 
 jobs:
