@@ -1,4 +1,4 @@
-name: SonarCloud Code Quality Check 🛠️
+name: SonarCloud Quality Check 🧪
 
 on:
   workflow_call:
