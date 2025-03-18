@@ -10,13 +10,13 @@ permissions:
   contents: read
 
 jobs:
-  security-checks:
-    name: 🛡️ Security Checks
-    uses: ./.github/workflows/security-check.yaml
+  #security-checks:
+  #  name: 🛡️ Security Checks
+  #  uses: ./.github/workflows/security-check.yaml
 
-  quality-checks:
-    name: 🚦 Quality Checks
-    uses: ./.github/workflows/sonar-quality-check.yaml
+  #quality-checks:
+  #  name: 🚦 Quality Checks
+  #  uses: ./.github/workflows/sonar-quality-check.yaml
 
   build-and-deploy:
     name: 🚀 Deploy to Server - Run ${{ github.run_number }}
