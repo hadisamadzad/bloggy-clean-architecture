@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: 🧩 SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
+        uses: sonarsource/sonarqube-scan-action@master
         with:
           projectBaseDir: .
         env:
@@ -28,8 +28,13 @@ jobs:
           echo "👉 View report: https://sonarcloud.io/project/overview?id=hadisamadzad_bloggy-clean-architecture"
 
       - name: 🚦 SonarCloud Quality Gate Check
-        uses: SonarSource/sonarcloud-quality-gate-action@v2
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
         with:
           scanMetadataReportFile: .scannerwork/report-task.txt
+          pollingTimeoutSec: 600
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: "Example show SonarQube Quality Gate Status value"
+        run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
