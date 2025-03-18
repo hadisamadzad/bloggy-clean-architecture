@@ -1,7 +1,9 @@
 name: Security Checks 🛡️
 
 on:
-  workflow_call: # allows it to be called from other workflows
+  workflow_call:
+  branches:
+      - '*'
 
 jobs:
   security-checks:

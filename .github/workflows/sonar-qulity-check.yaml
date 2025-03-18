@@ -1,0 +1,35 @@
+name: SonarCloud Code Quality Check 🛠️
+
+on:
+  workflow_call:
+    push:
+    branches:
+      - '*'
+
+jobs:
+  sonarcloud-analysis:
+    name: 🔍 SonarCloud Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🧩 SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: 🔗 SonarCloud Dashboard Link
+        run: |
+          echo "👉 View report: https://sonarcloud.io/project/overview?id=hadisamadzad_bloggy-clean-architecture"
+
+      - name: 🚦 SonarCloud Quality Gate Check
+        uses: SonarSource/sonarcloud-quality-gate-action@master
+        with:
+          scanMetadataReportFile: .scannerwork/report-task.txt
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
