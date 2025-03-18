@@ -3,8 +3,8 @@ name: SonarCloud Code Quality Check 🛠️
 on:
   workflow_call:
   workflow_dispatch:
-  push:
-    branches: [ "main", "develop" ]
+  #push:
+  #  branches: [ "main", "develop" ]
   pull_request:
     branches: [ "main", "develop" ]
 
