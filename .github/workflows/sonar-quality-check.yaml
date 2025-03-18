@@ -28,7 +28,7 @@ jobs:
           echo "👉 View report: https://sonarcloud.io/project/overview?id=hadisamadzad_bloggy-clean-architecture"
 
       - name: 🚦 SonarCloud Quality Gate Check
-        uses: SonarSource/sonarcloud-quality-gate-action@master
+        uses: SonarSource/sonarcloud-quality-gate-action@v2
         with:
           scanMetadataReportFile: .scannerwork/report-task.txt
         env:
