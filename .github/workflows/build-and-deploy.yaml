@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   security-checks:
+    name: 🛡️ Security Checks
     uses: ./.github/workflows/security-check.yaml
 
   build-and-deploy:
