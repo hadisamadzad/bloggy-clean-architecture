@@ -2,9 +2,14 @@ name: SonarCloud Code Quality Check 🛠️
 
 on:
   workflow_call:
+  workflow_dispatch:
   push:
-    branches:
-      - '*'
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+permissions:
+  pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
 jobs:
   sonarcloud-analysis:
@@ -17,9 +22,12 @@ jobs:
           fetch-depth: 0
 
       - name: 🧩 SonarCloud Scan
-        uses: sonarsource/sonarqube-scan-action@master
+        uses: sonarsource/sonarcloud-github-action@master
         with:
           projectBaseDir: .
+          args:
+            -Dsonar.projectKey=hadisamadzad_bloggy-clean-architecture
+            -Dsonar.organization=hadisamadzad
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
