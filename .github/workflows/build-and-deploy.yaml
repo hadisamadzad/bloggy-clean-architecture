@@ -1,4 +1,4 @@
-name: Build & Deploy 🚀
+name: 🚀 Build & Deploy
 
 on:
   push:
@@ -15,6 +15,10 @@ jobs:
   #  uses: ./.github/workflows/security-check.yaml
 
   #quality-checks:
+  #  name: 🚦 Quality Checks
+  #  uses: ./.github/workflows/sonar-quality-check.yaml
+
+  #unit-tests:
   #  name: 🚦 Quality Checks
   #  uses: ./.github/workflows/sonar-quality-check.yaml
 

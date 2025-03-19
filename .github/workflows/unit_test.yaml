@@ -1,16 +1,13 @@
-name: Run Unit Tests 🧩
+name: 🧩 Run Unit Tests
 
 on:
   push:
     branches:
       - '*'
-  pull_request:
-    branches:
-      - '*'
 
 jobs:
   run-tests:
-    name: Run Unit Tests
+    name: 🧩 Run Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
