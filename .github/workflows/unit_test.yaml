@@ -10,15 +10,16 @@ on:
 
 jobs:
   run-tests:
-    name: Run Unit Tests on Solution
+    name: Run Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: 🔧 Install dependencies
-        run: |
-          sudo apt-get install -y dotnet-sdk-9.0
+      - name: 🔧 Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
 
       - name: 🚀 Run unit tests
         run: |
