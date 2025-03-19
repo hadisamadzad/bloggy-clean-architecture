@@ -1,16 +1,17 @@
-name: SonarCloud Quality Check 🧪
+name: 🧪 SonarCloud Quality Check
 
 on:
   workflow_call:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
+  #push:
+  #  branches: [ "main" ]
   pull_request:
     branches: [ "main", "develop" ]
     types: [opened, synchronize, reopened]
 
 permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
+  contents: read
 
 jobs:
   sonarcloud-analysis:
