@@ -8,7 +8,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Subscribers;
 
 // Handler
-internal class UnsubscribeSubscriberHandler(IRepositoryManager repository) :
+public class UnsubscribeSubscriberHandler(IRepositoryManager repository) :
     IRequestHandler<UnsubscribeSubscriberCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(UnsubscribeSubscriberCommand request, CancellationToken cancellationToken)

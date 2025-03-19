@@ -10,7 +10,7 @@ using MediatR;
 namespace Identity.Application.UseCases.Auth;
 
 // Handler
-internal class LoginHandler(IRepositoryManager repository) :
+public class LoginHandler(IRepositoryManager repository) :
     IRequestHandler<LoginCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(LoginCommand request, CancellationToken cancellationToken)

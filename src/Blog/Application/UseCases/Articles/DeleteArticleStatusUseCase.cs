@@ -7,7 +7,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Articles;
 
 // Handler
-internal class DeleteArticleHandler(IRepositoryManager repository) :
+public class DeleteArticleHandler(IRepositoryManager repository) :
     IRequestHandler<DeleteArticleCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)

@@ -8,7 +8,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Settings;
 
 // Handler
-internal class UpdateBlogSettingsHandler(IRepositoryManager repository) :
+public class UpdateBlogSettingsHandler(IRepositoryManager repository) :
     IRequestHandler<UpdateBlogSettingsCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(UpdateBlogSettingsCommand request, CancellationToken cancellationToken)

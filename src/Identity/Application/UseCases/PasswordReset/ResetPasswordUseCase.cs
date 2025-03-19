@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 namespace Identity.Application.UseCases.PasswordReset;
 
 // Handler
-internal class ResetPasswordHandler(IRepositoryManager repository,
+public class ResetPasswordHandler(IRepositoryManager repository,
     IOptions<PasswordResetConfig> passwordResetConfig)
     : IRequestHandler<ResetPasswordCommand, OperationResult>
 {

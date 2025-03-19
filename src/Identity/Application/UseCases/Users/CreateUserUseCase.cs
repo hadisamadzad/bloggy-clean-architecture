@@ -10,7 +10,7 @@ using MediatR;
 namespace Identity.Application.UseCases.Users;
 
 // Handler
-internal class CreateUserHandler(IRepositoryManager repository) :
+public class CreateUserHandler(IRepositoryManager repository) :
     IRequestHandler<CreateUserCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)

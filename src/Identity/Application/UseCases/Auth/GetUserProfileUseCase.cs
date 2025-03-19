@@ -7,7 +7,7 @@ using MediatR;
 namespace Identity.Application.UseCases.Auth;
 
 // Handler
-internal class GetUserProfileHandler(IRepositoryManager repository) :
+public class GetUserProfileHandler(IRepositoryManager repository) :
     IRequestHandler<GetUserProfileQuery, OperationResult>
 {
     public async Task<OperationResult> Handle(GetUserProfileQuery request, CancellationToken cancellationToken)

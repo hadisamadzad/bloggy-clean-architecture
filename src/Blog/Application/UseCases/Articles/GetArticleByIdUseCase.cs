@@ -7,7 +7,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Articles;
 
 // Handler
-internal class GetArticleByIdHandler(IRepositoryManager repository) :
+public class GetArticleByIdHandler(IRepositoryManager repository) :
     IRequestHandler<GetArticleByIdQuery, OperationResult>
 {
     public async Task<OperationResult> Handle(GetArticleByIdQuery request, CancellationToken cancellationToken)

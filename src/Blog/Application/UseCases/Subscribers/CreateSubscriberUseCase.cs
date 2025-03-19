@@ -9,7 +9,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Subscribers;
 
 // Handler
-internal class CreateSubscriberHandler(IRepositoryManager repository) :
+public class CreateSubscriberHandler(IRepositoryManager repository) :
     IRequestHandler<CreateSubscriberCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(CreateSubscriberCommand request, CancellationToken cancellationToken)

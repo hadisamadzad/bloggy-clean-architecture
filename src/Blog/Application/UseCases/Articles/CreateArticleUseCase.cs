@@ -11,7 +11,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Articles;
 
 // Handler
-internal class CreateArticleHandler(IRepositoryManager repository) :
+public class CreateArticleHandler(IRepositoryManager repository) :
     IRequestHandler<CreateArticleCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(CreateArticleCommand request, CancellationToken cancellationToken)

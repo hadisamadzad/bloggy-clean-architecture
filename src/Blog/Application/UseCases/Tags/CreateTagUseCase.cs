@@ -10,7 +10,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Tags;
 
 // Handler
-internal class CreateTagHandler(IRepositoryManager repository) :
+public class CreateTagHandler(IRepositoryManager repository) :
     IRequestHandler<CreateTagCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(CreateTagCommand request, CancellationToken cancellationToken)

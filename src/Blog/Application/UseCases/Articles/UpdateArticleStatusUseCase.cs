@@ -8,7 +8,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Articles;
 
 // Handler
-internal class UpdateArticleStatusHandler(IRepositoryManager repository) :
+public class UpdateArticleStatusHandler(IRepositoryManager repository) :
     IRequestHandler<UpdateArticleStatusCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(UpdateArticleStatusCommand request, CancellationToken cancellationToken)
