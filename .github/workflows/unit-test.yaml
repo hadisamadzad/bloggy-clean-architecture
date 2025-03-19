@@ -24,7 +24,11 @@ jobs:
         run: |
           dotnet restore
           dotnet build
-          dotnet test Bloggy.sln --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test_results.trx"
+          dotnet test Bloggy.sln --collect:"XPlat Code Coverage" --logger "console;verbosity=normal" --logger "trx;LogFileName=test_results.trx"
+
+      #- name: 📝 Show Test Summary
+      #  run: |
+      #    dotnet test Bloggy.sln --no-build --logger "console;verbosity=normal"
 
       - name: 📊 Generate Coverage Report
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.12
