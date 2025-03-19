@@ -18,9 +18,9 @@ jobs:
   #  name: 🚦 Quality Checks
   #  uses: ./.github/workflows/sonar-quality-check.yaml
 
-  #unit-tests:
-  #  name: 🚦 Quality Checks
-  #  uses: ./.github/workflows/sonar-quality-check.yaml
+  unit-tests:
+    name: 🧩 Run Unit Tests
+    uses: ./.github/workflows/unit-test.yaml
 
   build-and-deploy:
     name: 🚀 Deploy to Server - Run ${{ github.run_number }}
