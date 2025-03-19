@@ -34,13 +34,13 @@ jobs:
           reporttypes: 'HtmlInline;Cobertura;TextSummary'
 
       - name: 📤 Upload Coverage Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage-report
 
       - name: 📊 Upload Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: test_results.trx
