@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 namespace Identity.Application.UseCases.PasswordReset;
 
 // Handler
-internal class SendPasswordResetEmailHandler(
+public class SendPasswordResetEmailHandler(
     IRepositoryManager repository,
     IEmailService transactionalEmailService,
     IOptions<PasswordResetConfig> passwordResetConfig)

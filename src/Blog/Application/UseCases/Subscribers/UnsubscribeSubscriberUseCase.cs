@@ -8,7 +8,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Subscribers;
 
 // Handler
-internal class UnsubscribeSubscriberHandler(IRepositoryManager repository) :
+public class UnsubscribeSubscriberHandler(IRepositoryManager repository) :
     IRequestHandler<UnsubscribeSubscriberCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(UnsubscribeSubscriberCommand request, CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ internal class UnsubscribeSubscriberHandler(IRepositoryManager repository) :
 
         var entity = await repository.Subscribers.GetByEmailAsync(request.Email);
         if (entity is null)
-            return OperationResult.Success(OperationStatus.Ignored);
+            return OperationResult.Success(OperationStatus.Ignored, null);
 
         entity.IsActive = false;
         entity.UpdatedAt = DateTime.UtcNow;

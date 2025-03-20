@@ -8,7 +8,7 @@ using MediatR;
 namespace Identity.Application.UseCases.Users;
 
 // Handler
-internal class UpdateUserHandler(IRepositoryManager repository) :
+public class UpdateUserHandler(IRepositoryManager repository) :
     IRequestHandler<UpdateUserCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)

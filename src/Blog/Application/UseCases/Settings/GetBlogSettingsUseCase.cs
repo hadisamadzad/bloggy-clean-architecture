@@ -6,7 +6,7 @@ using MediatR;
 namespace Blog.Application.UseCases.Settings;
 
 // Handler
-internal class GetBlogSettingsHandler(IRepositoryManager repository) :
+public class GetBlogSettingsHandler(IRepositoryManager repository) :
     IRequestHandler<GetBlogSettingsQuery, OperationResult>
 {
     public async Task<OperationResult> Handle(GetBlogSettingsQuery request, CancellationToken cancellationToken)

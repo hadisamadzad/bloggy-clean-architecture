@@ -5,7 +5,7 @@ namespace Common.Tests.Extensions;
 
 public class EnumExtensionsTests
 {
-    private enum SampleEnum
+    private enum Sample
     {
         Short,
         MediumLength,
@@ -16,7 +16,7 @@ public class EnumExtensionsTests
     public void TestGetMaxLength_ReturnsCorrectMaxLength()
     {
         // Arrange
-        var value = SampleEnum.VeryLongEnumName;
+        var value = Sample.VeryLongEnumName;
 
         // Act
         int maxLength = value.GetMaxLength();
@@ -29,7 +29,7 @@ public class EnumExtensionsTests
     public void TestGetMaxLength_ReturnsCorrectMaxLength2()
     {
         // Act
-        var maxLength = typeof(SampleEnum).GetEnumMaxLength();
+        var maxLength = typeof(Sample).GetEnumMaxLength();
 
         // Assert
         Assert.Equal("VeryLongEnumName".Length, maxLength);

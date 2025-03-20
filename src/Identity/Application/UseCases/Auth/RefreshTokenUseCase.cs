@@ -8,7 +8,7 @@ using MediatR;
 namespace Identity.Application.UseCases.Auth;
 
 // Handler
-internal class RefreshTokenHandler(IRepositoryManager repository) : IRequestHandler<RefreshTokenQuery, OperationResult>
+public class RefreshTokenHandler(IRepositoryManager repository) : IRequestHandler<RefreshTokenQuery, OperationResult>
 {
     public async Task<OperationResult> Handle(RefreshTokenQuery request, CancellationToken cancellationToken)
     {
