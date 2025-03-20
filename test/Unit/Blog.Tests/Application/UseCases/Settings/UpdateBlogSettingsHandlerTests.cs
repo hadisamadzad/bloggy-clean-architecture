@@ -6,7 +6,6 @@ using Blog.Application.Types.Entities;
 using Blog.Application.UseCases.Settings;
 using Common.Utilities;
 using Common.Utilities.OperationResult;
-using Microsoft.VisualBasic;
 using NSubstitute;
 using Xunit;
 
@@ -17,7 +16,7 @@ public class UpdateBlogSettingsHandlerTests
     private readonly IRepositoryManager _repository;
     private readonly UpdateBlogSettingsHandler _handler;
 
-    UpdateBlogSettingsCommand ValidCommand = new()
+    readonly UpdateBlogSettingsCommand ValidCommand = new()
     {
         BlogTitle = "Updated Blog Title",
         BlogDescription = "Updated Description",
@@ -45,11 +44,7 @@ public class UpdateBlogSettingsHandlerTests
     public async Task TestHandle_WhenSettingsNotFound_ShouldReturnUnprocessable()
     {
         // Arrange
-        var command = new UpdateBlogSettingsCommand
-        {
-            BlogTitle = "Test Blog",
-            BlogDescription = "Description"
-        };
+        var command = ValidCommand;
 
         _repository.Settings.GetBlogSettingAsync().Returns((SettingEntity)null!);
 
