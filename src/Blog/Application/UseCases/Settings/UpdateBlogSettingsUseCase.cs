@@ -1,6 +1,7 @@
 using Blog.Application.Constants;
 using Blog.Application.Interfaces;
 using Blog.Application.Types.Entities;
+using Common.Helpers;
 using Common.Utilities.OperationResult;
 using FluentValidation;
 using MediatR;
@@ -13,6 +14,11 @@ public class UpdateBlogSettingsHandler(IRepositoryManager repository) :
 {
     public async Task<OperationResult> Handle(UpdateBlogSettingsCommand request, CancellationToken cancellationToken)
     {
+        // Validate request
+        var validation = new UpdateBlogSettingsValidator().Validate(request);
+        if (!validation.IsValid)
+            return OperationResult.Failure(OperationStatus.Invalid, validation.GetFirstError());
+
         // Retrieve the article
         var entity = await repository.Settings.GetBlogSettingAsync();
         if (entity is null)
@@ -54,12 +60,14 @@ public class UpdateBlogSettingsValidator : AbstractValidator<UpdateBlogSettingsC
         // BlogTitle
         RuleFor(x => x.BlogTitle)
             .NotEmpty()
+            .WithState(_ => Errors.InvalidBlogTitle)
             .MaximumLength(100)
             .WithState(_ => Errors.InvalidBlogTitle);
 
         // BlogDescription
         RuleFor(x => x.BlogDescription)
             .NotEmpty()
+            .WithState(_ => Errors.InvalidBlogDescription)
             .MaximumLength(500)
             .WithState(_ => Errors.InvalidBlogDescription);
 
@@ -79,12 +87,6 @@ public class UpdateBlogSettingsValidator : AbstractValidator<UpdateBlogSettingsC
         RuleFor(x => x.BlogUrl)
             .NotEmpty()
             .WithState(_ => Errors.InvalidBlogUrl);
-
-        // BlogLogoUrl
-        RuleFor(x => x.BlogLogoUrl)
-            .NotEmpty()
-            .When(x => !string.IsNullOrEmpty(x.BlogLogoUrl))
-            .WithState(_ => Errors.InvalidBlogLogoUrl);
 
         // Socials
         RuleForEach(x => x.Socials)
