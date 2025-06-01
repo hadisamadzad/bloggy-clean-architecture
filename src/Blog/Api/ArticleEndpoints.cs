@@ -90,17 +90,22 @@ public class ArticleEndpoints : IEndpoint
         // Endpoint for getting a list of articles
         group.MapGet("/", async (
             IMediator mediator,
-            [FromBody] GetArticlesByFilterRequest request) =>
+            [FromQuery] string? keyword,
+            [FromQuery] string[]? tagIds,
+            [FromQuery] ArticleStatus[]? statuses,
+            [FromQuery] ArticleSortBy? sortBy,
+            [FromQuery] int page,
+            [FromQuery] int pageSize) =>
             {
                 return await mediator.Send(new GetArticlesByFilterQuery(new()
                 {
-                    Keyword = request.Keyword,
-                    TagIds = request.TagIds ?? [],
-                    Statuses = request.Statuses ?? [],
-                    SortBy = request.SortBy ?? ArticleSortBy.CreatedAtNewest,
+                    Keyword = keyword,
+                    TagIds = [.. tagIds ?? []],
+                    Statuses = [.. statuses ?? []],
+                    SortBy = sortBy ?? ArticleSortBy.CreatedAtNewest,
 
-                    Page = request.Page,
-                    PageSize = request.PageSize
+                    Page = page,
+                    PageSize = pageSize
                 }));
             })
             .AddEndpointFilter(async (context, next) =>
@@ -240,16 +245,5 @@ public record UpdateArticleRequest(
     string CoverImageUrl,
     int TimeToRead,
     ICollection<string> TagIds);
-
-public class GetArticlesByFilterRequest
-{
-    public string? Keyword { get; set; }
-    public List<string>? TagIds { get; set; }
-    public List<ArticleStatus>? Statuses { get; set; }
-    public ArticleSortBy? SortBy { get; set; }
-
-    public int Page { get; set; }
-    public int PageSize { get; set; }
-}
 
 public record UpdateArticleStatusRequest(ArticleStatus Status);
