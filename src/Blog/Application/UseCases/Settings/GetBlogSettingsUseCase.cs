@@ -14,7 +14,7 @@ public class GetBlogSettingsHandler(IRepositoryManager repository) :
         // Retrieve the article
         var entity = await repository.Settings.GetBlogSettingAsync();
         if (entity is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.SettingsNotFound);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.SettingsNotFound);
 
         return OperationResult.Success(entity);
     }

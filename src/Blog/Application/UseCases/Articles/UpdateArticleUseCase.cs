@@ -23,7 +23,7 @@ public class UpdateArticleHandler(IRepositoryManager repository) :
         // Check duplicate
         var existingSlug = await repository.Articles.GetBySlugAsync(request.Slug);
         if (existingSlug is not null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.DuplicateArticle);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.DuplicateArticle);
 
         var entity = await repository.Articles.GetByIdAsync(request.ArticleId);
 

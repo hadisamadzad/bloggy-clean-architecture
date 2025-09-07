@@ -29,10 +29,10 @@ public class SendPasswordResetEmailHandler(
         // Get
         var user = await repository.Users.GetByEmailAsync(request.Email);
         if (user is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         if (user.IsLockedOutOrNotActive())
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.LockedUser);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.LockedUser);
 
         var expirationTime = ExpirationTimeHelper
             .GetExpirationTime(_passwordResetConfig.LinkLifetimeInDays);

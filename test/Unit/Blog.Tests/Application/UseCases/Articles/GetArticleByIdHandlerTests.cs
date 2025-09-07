@@ -46,7 +46,7 @@ public class GetArticleByIdHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        Assert.Equal(OperationStatus.Unprocessable, result.Status);
+        Assert.Equal(OperationStatus.Failed, result.Status);
     }
 
     [Fact]

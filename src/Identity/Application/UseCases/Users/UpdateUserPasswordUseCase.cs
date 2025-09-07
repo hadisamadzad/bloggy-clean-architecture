@@ -23,12 +23,12 @@ public class UpdateUserPasswordHandler(IRepositoryManager repository) :
         // Get
         var user = await repository.Users.GetByIdAsync(request.UserId);
         if (user is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         if (PasswordHelper.CheckPasswordHash(user.PasswordHash, request.CurrentPassword))
             user.PasswordHash = PasswordHelper.Hash(request.NewPassword);
         else
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidCredentials);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidCredentials);
 
         user.UpdatedAt = DateTime.UtcNow;
         _ = await repository.Users.UpdateAsync(user);

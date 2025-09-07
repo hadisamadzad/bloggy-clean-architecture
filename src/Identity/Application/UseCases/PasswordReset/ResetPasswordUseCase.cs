@@ -29,14 +29,14 @@ public class ResetPasswordHandler(IRepositoryManager repository,
         // Get
         var (succeeded, email) = PasswordResetTokenHelper.ReadPasswordResetToken(request.Token);
         if (!succeeded)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidToken);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidToken);
 
         var user = await _unitOfWork.Users.GetByEmailAsync(email);
         if (user is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         if (user.IsLockedOutOrNotActive())
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.LockedUser);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.LockedUser);
 
         user.PasswordHash = PasswordHelper.Hash(request.NewPassword);
 

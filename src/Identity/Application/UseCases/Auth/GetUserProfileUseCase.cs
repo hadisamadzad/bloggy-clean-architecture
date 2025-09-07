@@ -19,7 +19,7 @@ public class GetUserProfileHandler(IRepositoryManager repository) :
         // Get
         var user = await repository.Users.GetByIdAsync(request.RequestedBy);
         if (user is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         // Mapping
         var response = user.MapToUserModel();

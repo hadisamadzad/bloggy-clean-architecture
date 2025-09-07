@@ -27,7 +27,7 @@ public class RegisterHandler(IRepositoryManager repository)
         // there is any existing user, it means there is nothing to do with registration.
         var isAlreadyOwned = await repository.Users.AnyAsync();
         if (isAlreadyOwned)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.OwnershipAlreadyDone);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.OwnershipAlreadyDone);
 
         var user = new UserEntity
         {

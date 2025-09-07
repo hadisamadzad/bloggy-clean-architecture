@@ -23,11 +23,11 @@ public class LoginHandler(IRepositoryManager repository) :
         // Get
         var user = await repository.Users.GetByEmailAsync(request.Email);
         if (user is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         // Lockout check
         if (user.IsLockedOutOrNotActive())
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidCredentials);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidCredentials);
 
         // Login check via password
         var loggedIn = PasswordHelper.CheckPasswordHash(user.PasswordHash, request.Password);
@@ -38,7 +38,7 @@ public class LoginHandler(IRepositoryManager repository) :
             user.TryToLockout();
             _ = await repository.Users.UpdateAsync(user);
             await repository.CommitAsync();
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidCredentials);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidCredentials);
         }
 
         /* Here user is authenticated */
