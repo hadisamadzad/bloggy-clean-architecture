@@ -19,9 +19,10 @@ public class GetArticleByIdHandler(IRepositoryManager repository) :
         // Retrieve the article
         var entity = await repository.Articles.GetByIdAsync(request.ArticleId);
         if (entity is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.ArticleNotFound);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.ArticleNotFound);
 
-        var model = entity.MapToModel();
+        var tags = await repository.Tags.GetByIdsAsync(entity.TagIds);
+        var model = entity.MapToModelWithTags(tags);
 
         return OperationResult.Success(model);
     }

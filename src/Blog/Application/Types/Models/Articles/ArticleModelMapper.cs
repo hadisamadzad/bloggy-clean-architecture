@@ -22,6 +22,7 @@ public static class ArticleModelMapper
             TimeToReadInMinute = entity.TimeToReadInMinute,
             Likes = entity.Likes,
             TagIds = entity.TagIds,
+            TagSlugs = [],
 
             Status = entity.Status,
             CreatedAt = entity.CreatedAt,
@@ -35,5 +36,19 @@ public static class ArticleModelMapper
     {
         foreach (var entity in entities)
             yield return entity.MapToModel();
+    }
+
+    public static ArticleModel MapToModelWithTags(this ArticleEntity entity, IEnumerable<TagEntity> tagEntities)
+    {
+        var model = entity.MapToModel();
+
+        var tagSlugMap = tagEntities.ToDictionary(x => x.Id, x => x.Slug);
+
+        var slugs = entity.TagIds
+            .Where(tagSlugMap.ContainsKey)
+            .Select(tagId => tagSlugMap[tagId])
+            .ToList();
+
+        return model with { TagSlugs = slugs };
     }
 }
