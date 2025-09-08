@@ -23,7 +23,7 @@ public class CreateUserHandler(IRepositoryManager repository) :
         // Check if user is admin
         var requesterUser = await repository.Users.GetByIdAsync(request.AdminUserId);
         if (requesterUser is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         // Check role
         if (!requesterUser.HasAdminRole())
@@ -33,7 +33,7 @@ public class CreateUserHandler(IRepositoryManager repository) :
         var isDuplicate = await repository.Users
             .ExistsAsync(x => x.Email.ToLower() == request.Email.ToLower());
         if (isDuplicate)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.DuplicateUsername);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.DuplicateUsername);
 
         // Factory
         var entity = new UserEntity

@@ -11,10 +11,10 @@ public static class OperationResultExtensions
         return operation.Status switch
         {
             OperationStatus.Completed => Results.Ok(response),
-            OperationStatus.Ignored => Results.Ok(response),
+            OperationStatus.NoOperation => Results.Ok(response),
             OperationStatus.Invalid => Results.BadRequest(response),
             OperationStatus.Unauthorized => Results.UnprocessableEntity(response),
-            OperationStatus.Unprocessable => Results.UnprocessableEntity(response),
+            OperationStatus.Failed => Results.UnprocessableEntity(response),
             _ => Results.UnprocessableEntity(response)
         };
     }

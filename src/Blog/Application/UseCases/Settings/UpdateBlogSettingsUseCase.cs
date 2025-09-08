@@ -22,7 +22,7 @@ public class UpdateBlogSettingsHandler(IRepositoryManager repository) :
         // Retrieve the article
         var entity = await repository.Settings.GetBlogSettingAsync();
         if (entity is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.SettingsNotFound);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.SettingsNotFound);
 
         entity.BlogTitle = request.BlogTitle;
         entity.BlogDescription = request.BlogDescription;

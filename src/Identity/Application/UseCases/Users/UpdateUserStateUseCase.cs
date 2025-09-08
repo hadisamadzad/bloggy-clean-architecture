@@ -22,7 +22,7 @@ public class UpdateUserStateHandler(IRepositoryManager repository) :
         // Get
         var user = await repository.Users.GetByIdAsync(request.UserId);
         if (user is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         // Update
         user.State = request.State;

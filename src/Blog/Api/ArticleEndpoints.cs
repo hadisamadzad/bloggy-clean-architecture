@@ -79,6 +79,7 @@ public class ArticleEndpoints : IEndpoint
                     TimeToReadInMinute = value.TimeToReadInMinute,
                     Likes = value.Likes,
                     TagIds = value.TagIds,
+                    TagSlugs = value.TagSlugs,
                     Status = value.Status,
                     CreatedAt = value.CreatedAt,
                     UpdatedAt = value.UpdatedAt,

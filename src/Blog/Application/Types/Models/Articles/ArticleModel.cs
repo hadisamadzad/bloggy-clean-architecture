@@ -18,6 +18,7 @@ public record ArticleModel
     public int TimeToReadInMinute { get; init; }
     public int Likes { get; init; }
     public ICollection<string> TagIds { get; init; } = [];
+    public ICollection<string> TagSlugs { get; init; } = [];
 
     public ArticleStatus Status { get; init; }
     public DateTime CreatedAt { get; init; }

@@ -22,7 +22,7 @@ public class UnsubscribeSubscriberHandler(IRepositoryManager repository) :
 
         var entity = await repository.Subscribers.GetByEmailAsync(request.Email);
         if (entity is null)
-            return OperationResult.Success(OperationStatus.Ignored, null);
+            return OperationResult.Success(OperationStatus.NoOperation, null);
 
         entity.IsActive = false;
         entity.UpdatedAt = DateTime.UtcNow;

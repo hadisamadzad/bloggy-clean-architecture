@@ -21,12 +21,12 @@ public class UpdateUserHandler(IRepositoryManager repository) :
         // Check if user is admin
         var requesterUser = await repository.Users.GetByIdAsync(request.AdminUserId);
         if (requesterUser is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         // Get
         var user = await repository.Users.GetByIdAsync(request.UserId);
         if (user is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         // Update
         user.FirstName = request.FirstName;

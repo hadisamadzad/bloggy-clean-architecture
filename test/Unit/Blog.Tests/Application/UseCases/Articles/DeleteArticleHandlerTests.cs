@@ -56,7 +56,7 @@ public class DeleteArticleHandlerTests
 
         // Assert
         Assert.False(result.Succeeded);
-        Assert.Equal(OperationStatus.Unprocessable, result.Status);
+        Assert.Equal(OperationStatus.Failed, result.Status);
         await _repository.Articles.DidNotReceive().UpdateAsync(Arg.Any<ArticleEntity>());
     }
 }

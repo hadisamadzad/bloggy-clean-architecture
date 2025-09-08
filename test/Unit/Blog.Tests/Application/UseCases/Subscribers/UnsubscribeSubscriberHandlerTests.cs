@@ -47,7 +47,7 @@ public class UnsubscribeSubscriberHandlerTests
 
         // Assert
         Assert.True(result.Succeeded);
-        Assert.Equal(OperationStatus.Ignored, result.Status);
+        Assert.Equal(OperationStatus.NoOperation, result.Status);
     }
 
     [Fact]

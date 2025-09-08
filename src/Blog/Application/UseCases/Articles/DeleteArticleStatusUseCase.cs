@@ -14,7 +14,7 @@ public class DeleteArticleHandler(IRepositoryManager repository) :
     {
         var entity = await repository.Articles.GetByIdAsync(request.ArticleId);
         if (entity is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.ArticleNotFound);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.ArticleNotFound);
 
         entity.IsDeleted = true;
         entity.DeletedAt = DateTime.UtcNow;

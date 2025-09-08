@@ -26,7 +26,7 @@ public class CreateTagHandler(IRepositoryManager repository) :
         // Check duplicate
         var existingSlug = await repository.Tags.GetBySlugAsync(slug);
         if (existingSlug is not null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.DuplicateTag);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.DuplicateTag);
 
         var entity = new TagEntity
         {

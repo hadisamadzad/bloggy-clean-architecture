@@ -33,7 +33,7 @@ public class UpdateArticleStatusHandlerTests
 
         // Assert
         Assert.False(result.Succeeded);
-        Assert.Equal(OperationStatus.Unprocessable, result.Status);
+        Assert.Equal(OperationStatus.Failed, result.Status);
     }
 
     [Fact]

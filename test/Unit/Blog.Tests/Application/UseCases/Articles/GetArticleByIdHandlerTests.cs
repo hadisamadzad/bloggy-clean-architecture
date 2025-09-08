@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Blog.Application.Interfaces;
@@ -46,7 +47,7 @@ public class GetArticleByIdHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        Assert.Equal(OperationStatus.Unprocessable, result.Status);
+        Assert.Equal(OperationStatus.Failed, result.Status);
     }
 
     [Fact]
@@ -54,13 +55,24 @@ public class GetArticleByIdHandlerTests
     {
         // Arrange
         var request = new GetArticleByIdQuery("article-1");
+        var tagIds = new[] { "tag-1" };
         _repository.Articles.GetByIdAsync(request.ArticleId)
             .Returns(
                 new ArticleEntity
                 {
                     Id = "article-1",
-                    AuthorId = UidHelper.GenerateNewId("user")
+                    AuthorId = UidHelper.GenerateNewId("user"),
+                    TagIds = tagIds
                 });
+
+        _repository.Tags.GetByIdsAsync(tagIds)
+            .Returns([
+                new TagEntity{
+                    Id = "tag-1",
+                    Name = "tag-1",
+                    Slug = "tag-1"
+                }
+            ]);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

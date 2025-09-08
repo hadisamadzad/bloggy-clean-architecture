@@ -15,7 +15,7 @@ public class UpdateArticleStatusHandler(IRepositoryManager repository) :
     {
         var entity = await repository.Articles.GetByIdAsync(request.ArticleId);
         if (entity is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.ArticleNotFound);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.ArticleNotFound);
 
         // Update timestamps
         if (request.Status == ArticleStatus.Archived)

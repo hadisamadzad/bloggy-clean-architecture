@@ -2,7 +2,7 @@ namespace Common.Utilities.OperationResult;
 
 public record OperationResult(OperationStatus Status, object Value)
 {
-    public bool Succeeded => Status is OperationStatus.Completed or OperationStatus.Ignored;
+    public bool Succeeded => Status is OperationStatus.Completed or OperationStatus.NoOperation;
 
     public static OperationResult Success(object value) => new(OperationStatus.Completed, value);
     public static OperationResult Success(OperationStatus status, object value) => new(status, value);
@@ -12,8 +12,9 @@ public record OperationResult(OperationStatus Status, object Value)
 public enum OperationStatus
 {
     Completed = 1,
-    Ignored,
+    NoOperation,
+
     Invalid,
     Unauthorized,
-    Unprocessable
+    Failed
 }

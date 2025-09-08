@@ -15,7 +15,7 @@ public class GetUserByIdHandler(IRepositoryManager repository) :
         // Get
         var entity = await repository.Users.GetByIdAsync(request.UserId);
         if (entity is null)
-            return OperationResult.Failure(OperationStatus.Unprocessable, Errors.InvalidId);
+            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
 
         // Mapping
         var model = entity.MapToUserModel();
