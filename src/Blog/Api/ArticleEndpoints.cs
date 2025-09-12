@@ -51,12 +51,12 @@ public class ArticleEndpoints : IEndpoint
                 };
             });
 
-        // Endpoint for getting an article
-        group.MapGet("{articleId}/", async (
+        // Endpoint for getting an article by slug
+        group.MapGet("{slug}/", async (
             IMediator mediator,
-            [FromRoute] string articleId) =>
+            [FromRoute] string slug) =>
             {
-                return await mediator.Send(new GetArticleByIdQuery(articleId));
+                return await mediator.Send(new GetArticleBySlugQuery(slug));
             })
             .AddEndpointFilter(async (context, next) =>
             {
