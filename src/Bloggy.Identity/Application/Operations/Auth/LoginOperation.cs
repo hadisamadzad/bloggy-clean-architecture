@@ -1,45 +1,43 @@
 ﻿using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
-using Bloggy.Identity.Application.Constants;
 using Bloggy.Identity.Application.Helpers;
 using Bloggy.Identity.Application.Interfaces;
 using Bloggy.Identity.Application.Types.Models.Auth;
 using FluentValidation;
 using Identity.Application.Helpers;
-using MediatR;
 
-namespace Bloggy.Identity.Application.UseCases.Auth;
+namespace Bloggy.Identity.Application.Operations.Auth;
 
-// Handler
-public class LoginHandler(IRepositoryManager repository) :
-    IRequestHandler<LoginCommand, OperationResult>
+public class LoginOperation(IRepositoryManager repository) :
+    IOperation<LoginCommand, LoginResult>
 {
-    public async Task<OperationResult> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<LoginResult>> ExecuteAsync(
+        LoginCommand command, CancellationToken cancellation)
     {
         // Validation
-        var validation = new LoginValidator().Validate(request);
+        var validation = new LoginValidator().Validate(command);
         if (!validation.IsValid)
-            return OperationResult.Failure(OperationStatus.Invalid, validation.GetFirstError());
+            return OperationResult<LoginResult>.ValidationFailure([.. validation.GetErrorMessages()]);
 
         // Get
-        var user = await repository.Users.GetByEmailAsync(request.Email);
+        var user = await repository.Users.GetByEmailAsync(command.Email);
         if (user is null)
-            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
+            return OperationResult<LoginResult>.Failure("User not found");
 
         // Lockout check
         if (user.IsLockedOutOrNotActive())
-            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidCredentials);
+            return OperationResult<LoginResult>.Failure("User is locked out or not active");
 
         // Login check via password
-        var loggedIn = PasswordHelper.CheckPasswordHash(user.PasswordHash, request.Password);
+        var isLoginSuccessful = PasswordHelper.CheckPasswordHash(user.PasswordHash, command.Password);
 
         // Lockout history
-        if (!loggedIn)
+        if (!isLoginSuccessful)
         {
             user.TryToLockout();
             _ = await repository.Users.UpdateAsync(user);
             await repository.CommitAsync();
-            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidCredentials);
+            return OperationResult<LoginResult>.Failure("Invalid credentials");
         }
 
         /* Here user is authenticated */
@@ -55,27 +53,23 @@ public class LoginHandler(IRepositoryManager repository) :
             RefreshToken = user.CreateJwtRefreshToken()
         };
 
-        return OperationResult.Success(result);
+        return OperationResult<LoginResult>.Success(result);
     }
 }
 
-// Model
 public record LoginCommand(
     string Email,
-    string Password) : IRequest<OperationResult>;
+    string Password) : IOperationCommand;
 
-// Model Validator
 public class LoginValidator : AbstractValidator<LoginCommand>
 {
     public LoginValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty()
-            .EmailAddress()
-            .WithState(_ => Errors.InvalidEmail);
+            .EmailAddress();
 
         RuleFor(x => x.Password)
-            .NotEmpty()
-            .WithState(_ => Errors.InvalidPassword);
+            .NotEmpty();
     }
 }

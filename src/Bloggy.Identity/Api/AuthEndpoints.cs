@@ -26,7 +26,7 @@ public class AuthEndpoints : IEndpoint
         group.MapGet("ownership-check", async (
             IMediator mediator) =>
             {
-                return await mediator.Send(new GetOwnershipStatusQuery());
+                return await mediator.Send(new GetOwnershipStatusCommand());
             })
             .AddEndpointFilter(async (context, next) =>
             {
@@ -127,7 +127,7 @@ public class AuthEndpoints : IEndpoint
             IMediator mediator,
             [FromQuery] string email) =>
             {
-                return await mediator.Send(new CheckUsernameQuery(email));
+                return await mediator.Send(new CheckUsernameCommand(email));
             })
             .AddEndpointFilter(async (context, next) =>
             {

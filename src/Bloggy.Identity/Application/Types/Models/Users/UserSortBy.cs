@@ -1,4 +1,4 @@
-﻿﻿namespace Bloggy.Identity.Application.Types.Models.Users;
+﻿namespace Bloggy.Identity.Application.Types.Models.Users;
 
 public enum UserSortBy
 {

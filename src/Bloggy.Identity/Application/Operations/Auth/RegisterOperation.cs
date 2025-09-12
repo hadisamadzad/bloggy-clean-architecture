@@ -1,40 +1,37 @@
 ﻿using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
-using Bloggy.Identity.Application.Constants;
 using Bloggy.Identity.Application.Helpers;
 using Bloggy.Identity.Application.Interfaces;
-using Bloggy.Identity.Application.Specifications.Auth;
 using Bloggy.Identity.Application.Types.Entities;
 using Bloggy.Identity.Application.Types.Models.Auth;
 using FluentValidation;
 using Identity.Application.Helpers;
-using MediatR;
 
-namespace Bloggy.Identity.Application.UseCases.Auth;
+namespace Bloggy.Identity.Application.Operations.Auth;
 
-// Handler
-public class RegisterHandler(IRepositoryManager repository)
-    : IRequestHandler<RegisterCommand, OperationResult>
+public class RegisterOperation(IRepositoryManager repository)
+    : IOperation<RegisterCommand, RegisterResult>
 {
-    public async Task<OperationResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<RegisterResult>> ExecuteAsync(
+        RegisterCommand command, CancellationToken cancellation)
     {
         // Validation
-        var validation = new RegisterValidator().Validate(request);
+        var validation = new RegisterValidator().Validate(command);
         if (!validation.IsValid)
-            return OperationResult.Failure(OperationStatus.Invalid, validation.GetFirstError());
+            return OperationResult<RegisterResult>.ValidationFailure([.. validation.GetErrorMessages()]);
 
         // Check initial ownership
         // NOTE Registration is supposed to be done only once and for the first user. So if
         // there is any existing user, it means there is nothing to do with registration.
         var isAlreadyOwned = await repository.Users.AnyAsync();
         if (isAlreadyOwned)
-            return OperationResult.Failure(OperationStatus.Failed, Errors.OwnershipAlreadyDone);
+            return OperationResult<RegisterResult>.Failure("Registration is already done");
 
         var user = new UserEntity
         {
             Id = UidHelper.GenerateNewId("user"),
-            Email = request.Email.ToLower(),
-            PasswordHash = PasswordHelper.Hash(request.Password),
+            Email = command.Email.ToLower(),
+            PasswordHash = PasswordHelper.Hash(command.Password),
             State = UserState.Active,
             Role = Role.Owner, // The first user will be the owner
             SecurityStamp = UserHelper.CreateUserStamp(),
@@ -51,24 +48,21 @@ public class RegisterHandler(IRepositoryManager repository)
             Email = user.Email
         };
 
-        return OperationResult.Success(result);
+        return OperationResult<RegisterResult>.Success(result);
     }
 }
 
-// Model
-public record RegisterCommand(string Email, string Password) : IRequest<OperationResult>;
+public record RegisterCommand(string Email, string Password) : IOperationCommand;
 
-// Model Validator
 public class RegisterValidator : AbstractValidator<RegisterCommand>
 {
     public RegisterValidator()
     {
         RuleFor(x => x.Email)
-            .EmailAddress()
-            .WithState(_ => Errors.InvalidEmail);
+            .EmailAddress();
 
         RuleFor(x => x.Password)
-            .Must(x => new AcceptablePasswordStrengthSpecification().IsSatisfiedBy(x))
-            .WithState(_ => Errors.WeakPassword);
+            .Must(password => PasswordHelper.CheckStrength(password) >= PasswordScore.Medium)
+            .WithMessage("Password is not strong enough");
     }
 }

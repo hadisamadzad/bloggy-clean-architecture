@@ -18,7 +18,7 @@ public class ValidationHelperTests
         ]);
 
         // Act
-        var result = validationResult.GetFirstErrorMessage();
+        var result = validationResult.GetErrorMessages();
 
         // Assert
         Assert.Equal("Error message 1", result);
@@ -31,7 +31,7 @@ public class ValidationHelperTests
         var validationResult = new ValidationResult();
 
         // Act
-        var result = validationResult.GetFirstErrorMessage();
+        var result = validationResult.GetErrorMessages();
 
         // Assert
         Assert.Null(result);

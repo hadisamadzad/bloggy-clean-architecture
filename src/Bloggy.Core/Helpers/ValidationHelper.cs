@@ -4,13 +4,8 @@ namespace Bloggy.Core.Helpers;
 
 public static class ValidationHelper
 {
-    public static string GetFirstErrorMessage(this ValidationResult result)
+    public static IEnumerable<string> GetErrorMessages(this ValidationResult result)
     {
-        return result.Errors.FirstOrDefault()?.ErrorMessage;
-    }
-
-    public static object GetFirstError(this ValidationResult result)
-    {
-        return result.Errors.FirstOrDefault()?.CustomState;
+        return result.Errors.Select(x => x.ErrorMessage);
     }
 }

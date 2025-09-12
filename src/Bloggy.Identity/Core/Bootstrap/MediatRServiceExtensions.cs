@@ -1,4 +1,4 @@
-﻿using Bloggy.Identity.Application.UseCases.Auth;
+﻿using Bloggy.Identity.Application.Operations.Auth;
 
 namespace Bloggy.Identity.Core.Bootstrap;
 

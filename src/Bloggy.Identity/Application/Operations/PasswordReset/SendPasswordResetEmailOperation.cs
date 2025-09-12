@@ -1,38 +1,36 @@
 ﻿using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
-using Bloggy.Identity.Application.Constants;
 using Bloggy.Identity.Application.Helpers;
 using Bloggy.Identity.Application.Interfaces;
 using Bloggy.Identity.Application.Types.Configs;
 using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.Options;
 
-namespace Bloggy.Identity.Application.UseCases.PasswordReset;
+namespace Bloggy.Identity.Application.Operations.PasswordReset;
 
-// Handler
-public class SendPasswordResetEmailHandler(
+public class SendPasswordResetEmailOperation(
     IRepositoryManager repository,
     IEmailService transactionalEmailService,
     IOptions<PasswordResetConfig> passwordResetConfig)
-    : IRequestHandler<SendPasswordResetEmailCommand, OperationResult>
+    : IOperation<SendPasswordResetEmailCommand, string>
 {
     private readonly PasswordResetConfig _passwordResetConfig = passwordResetConfig.Value;
 
-    public async Task<OperationResult> Handle(SendPasswordResetEmailCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<string>> ExecuteAsync(
+        SendPasswordResetEmailCommand request, CancellationToken cancellation)
     {
         // Validation
         var validation = new SendPasswordResetEmailValidator().Validate(request);
         if (!validation.IsValid)
-            return OperationResult.Failure(OperationStatus.Invalid, validation.GetFirstError());
+            return OperationResult<string>.ValidationFailure([.. validation.GetErrorMessages()]);
 
         // Get
         var user = await repository.Users.GetByEmailAsync(request.Email);
         if (user is null)
-            return OperationResult.Failure(OperationStatus.Failed, Errors.InvalidId);
+            return OperationResult<string>.Failure("User not found");
 
         if (user.IsLockedOutOrNotActive())
-            return OperationResult.Failure(OperationStatus.Failed, Errors.LockedUser);
+            return OperationResult<string>.Failure("User is locked out or not active");
 
         var expirationTime = ExpirationTimeHelper
             .GetExpirationTime(_passwordResetConfig.LinkLifetimeInDays);
@@ -51,20 +49,17 @@ public class SendPasswordResetEmailHandler(
         _ = await transactionalEmailService.SendEmailByTemplateIdAsync(
             _passwordResetConfig.BrevoTemplateId, [email], @params);
 
-        return OperationResult.Success(user.Id);
+        return OperationResult<string>.Success(user.Id);
     }
 }
 
-// Model
-public record SendPasswordResetEmailCommand(string Email) : IRequest<OperationResult>;
+public record SendPasswordResetEmailCommand(string Email) : IOperationCommand;
 
-// Model Validator
 public class SendPasswordResetEmailValidator : AbstractValidator<SendPasswordResetEmailCommand>
 {
     public SendPasswordResetEmailValidator()
     {
         RuleFor(x => x.Email)
-            .EmailAddress()
-            .WithState(_ => Errors.InvalidEmail);
+            .EmailAddress();
     }
 }

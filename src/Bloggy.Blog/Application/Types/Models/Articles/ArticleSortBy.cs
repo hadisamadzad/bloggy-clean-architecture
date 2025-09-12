@@ -1,4 +1,4 @@
-﻿﻿namespace Bloggy.Blog.Application.Types.Models.Articles;
+﻿namespace Bloggy.Blog.Application.Types.Models.Articles;
 
 public enum ArticleSortBy
 {
