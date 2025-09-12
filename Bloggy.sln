@@ -1,27 +1,27 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{29FEA239-D305-4615-986A-734BDB27E498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "src\Common\Common.csproj", "{359C8B81-ED30-47CB-8B95-66E697190293}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Core", "src\Bloggy.Core\Bloggy.Core.csproj", "{359C8B81-ED30-47CB-8B95-66E697190293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "src\Gateway\Gateway.csproj", "{4D4A71BE-ED7B-4221-BAEE-494838B7F535}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Gateway", "src\Bloggy.Gateway\Bloggy.Gateway.csproj", "{4D4A71BE-ED7B-4221-BAEE-494838B7F535}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "src\Identity\Identity.csproj", "{F4287F2A-DFD7-47A3-9813-D0135F2E1594}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Identity", "src\Bloggy.Identity\Bloggy.Identity.csproj", "{F4287F2A-DFD7-47A3-9813-D0135F2E1594}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog", "src\Blog\Blog.csproj", "{09DAFB8B-0BD7-436F-8DB5-4EB4693A1ADB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Blog", "src\Bloggy.Blog\Bloggy.Blog.csproj", "{09DAFB8B-0BD7-436F-8DB5-4EB4693A1ADB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FC0163BE-7C6F-409D-A066-34B9C73BEBE3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FC0163BE-7C6F-409D-A066-34B9C73BEBE3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{FA59DD89-B41B-4F7E-91C7-2DE50228C068}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unit", "unit", "{FA59DD89-B41B-4F7E-91C7-2DE50228C068}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Tests", "test\Unit\Identity.Tests\Identity.Tests.csproj", "{8AC614B2-8FC2-43CE-8844-17744782A2B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Identity.Tests", "tests\unit\Bloggy.Identity.Tests\Bloggy.Identity.Tests.csproj", "{8AC614B2-8FC2-43CE-8844-17744782A2B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "test\Unit\Common.Tests\Common.Tests.csproj", "{D4A8A5F6-ABB3-4A8A-9EA4-2ABE9ACB4D69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Core.Tests", "tests\unit\Bloggy.Core.Tests\Bloggy.Core.Tests.csproj", "{D4A8A5F6-ABB3-4A8A-9EA4-2ABE9ACB4D69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Tests", "test\Unit\Blog.Tests\Blog.Tests.csproj", "{A018176D-D689-4C6C-9E5C-E7F102754FC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Blog.Tests", "tests\unit\Bloggy.Blog.Tests\Bloggy.Blog.Tests.csproj", "{A018176D-D689-4C6C-9E5C-E7F102754FC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
