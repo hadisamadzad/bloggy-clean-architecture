@@ -27,10 +27,10 @@ public class SendPasswordResetEmailOperation(
         // Get
         var user = await repository.Users.GetByEmailAsync(command.Email);
         if (user is null)
-            return OperationResult.Failure("User not found");
+            return OperationResult.NotFoundFailure("User not found");
 
         if (user.IsLockedOutOrNotActive())
-            return OperationResult.Failure("User is locked out or not active");
+            return OperationResult.AuthorizationFailure("User is locked out or not active");
 
         var expirationTime = ExpirationTimeHelper
             .GetExpirationTime(_passwordResetConfig.LinkLifetimeInDays);

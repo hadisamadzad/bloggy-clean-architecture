@@ -22,7 +22,7 @@ public class OperationService(
     IOperation<UpdateUserPasswordCommand, NoResult> updateUserPassword,
     IOperation<UpdateUserStateCommand, NoResult> updateUserState,
     IOperation<SendPasswordResetEmailCommand, NoResult> sendPasswordResetEmail,
-    IOperation<GetPasswordResetInfoCommand, string> getPasswordResetInfo,
+    IOperation<GetPasswordResetEmailCommand, string> getPasswordResetInfo,
     IOperation<ResetPasswordCommand, NoResult> resetPassword
     ) : IOperationService
 #pragma warning restore S107
@@ -56,8 +56,8 @@ public class OperationService(
     // Password Reset
     public SendPasswordResetEmailOperation SendPasswordResetEmail { get; } =
         sendPasswordResetEmail as SendPasswordResetEmailOperation;
-    public GetPasswordResetInfoOperation GetPasswordResetInfo { get; } =
-        getPasswordResetInfo as GetPasswordResetInfoOperation;
+    public GetPasswordResetEmailOperation GetPasswordResetEmail { get; } =
+        getPasswordResetInfo as GetPasswordResetEmailOperation;
     public ResetPasswordOperation ResetPassword { get; } =
         resetPassword as ResetPasswordOperation;
 }

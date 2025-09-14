@@ -23,6 +23,6 @@ public interface IOperationService
 
     // Password Reset
     SendPasswordResetEmailOperation SendPasswordResetEmail { get; }
-    GetPasswordResetInfoOperation GetPasswordResetInfo { get; }
+    GetPasswordResetEmailOperation GetPasswordResetEmail { get; }
     ResetPasswordOperation ResetPassword { get; }
 }

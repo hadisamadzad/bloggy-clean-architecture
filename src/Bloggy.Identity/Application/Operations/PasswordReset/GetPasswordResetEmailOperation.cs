@@ -4,16 +4,15 @@ using Bloggy.Identity.Application.Interfaces;
 
 namespace Bloggy.Identity.Application.Operations.PasswordReset;
 
-public class GetPasswordResetInfoOperation(IRepositoryManager repository)
-    : IOperation<GetPasswordResetInfoCommand, string>
+public class GetPasswordResetEmailOperation(IRepositoryManager repository)
+    : IOperation<GetPasswordResetEmailCommand, string>
 {
     public async Task<OperationResult<string>> ExecuteAsync(
-        GetPasswordResetInfoCommand command, CancellationToken? cancellation = null)
+        GetPasswordResetEmailCommand command, CancellationToken? cancellation = null)
     {
         var (succeeded, email) = PasswordResetTokenHelper.ReadPasswordResetToken(command.Token);
-
         if (!succeeded)
-            return OperationResult<string>.Failure("Invalid token");
+            return OperationResult<string>.ValidationFailure(["Invalid token"]);
 
         var user = await repository.Users.GetByEmailAsync(email) ??
             throw new AggregateException($"Unable to read the valid password-reset token: {command.Token}");
@@ -28,4 +27,4 @@ public class GetPasswordResetInfoOperation(IRepositoryManager repository)
     }
 }
 
-public record GetPasswordResetInfoCommand(string Token) : IOperationCommand;
+public record GetPasswordResetEmailCommand(string Token) : IOperationCommand;
