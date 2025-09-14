@@ -23,6 +23,9 @@ public record OperationResult<TResult>(
     public static OperationResult<TResult> ValidationFailure(string[] messages) =>
         new(OperationStatus.Invalid, Error: OperationError.Validation(messages));
 
+    public static OperationResult<TResult> NotFoundFailure(string message) =>
+        new(OperationStatus.NotFound, Error: OperationError.Unexpected(message));
+
     public static OperationResult<TResult> AuthorizationFailure(string message) =>
         new(OperationStatus.Unauthorized, Error: OperationError.Authorization(message));
 
@@ -36,6 +39,7 @@ public enum OperationStatus
     NoOperation,
 
     Invalid,
+    NotFound,
     Unauthorized,
     Failed
 }

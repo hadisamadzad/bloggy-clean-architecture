@@ -10,16 +10,16 @@ public class GetNewAccessTokenOperation(
     IOperation<GetNewAccessTokenCommand, TokenResult>
 {
     public async Task<OperationResult<TokenResult>> ExecuteAsync(
-        GetNewAccessTokenCommand command, CancellationToken cancellation)
+        GetNewAccessTokenCommand command, CancellationToken? cancellation = null)
     {
         if (!JwtHelper.IsValidJwtRefreshToken(command.RefreshToken))
-            return OperationResult<TokenResult>.AuthorizationFailure("Invalid refresh token");
+            return OperationResult<TokenResult>.ValidationFailure(["Invalid refresh token"]);
 
         var email = JwtHelper.GetEmail(command.RefreshToken);
 
         var user = await repository.Users.GetByEmailAsync(email);
         if (user is null)
-            return OperationResult<TokenResult>.AuthorizationFailure("User not found");
+            return OperationResult<TokenResult>.NotFoundFailure("User not found");
 
         // Lockout check
         if (user.IsLockedOutOrNotActive())

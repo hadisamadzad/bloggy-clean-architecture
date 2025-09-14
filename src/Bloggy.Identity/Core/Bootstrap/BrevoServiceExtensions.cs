@@ -15,7 +15,7 @@ public static class BrevoServiceExtensions
         // Brevo client
         services.AddHttpClient<IEmailService, BrevoEmailService>((serviceProvider, client) =>
         {
-            client.BaseAddress = new Uri(brevoConfig.BaseAddress);
+            //client.BaseAddress = new Uri(brevoConfig.BaseAddress); // FIXME
         });
 
         return services;

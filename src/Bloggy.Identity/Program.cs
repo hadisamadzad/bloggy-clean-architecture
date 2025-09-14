@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
 using Bloggy.Core.Extensions;
 using Bloggy.Core.Helpers;
+using Bloggy.Core.Utilities.OperationResult;
 using Bloggy.Identity.Application.Interfaces;
+using Bloggy.Identity.Application.Operations;
 using Bloggy.Identity.Core.Bootstrap;
 using Bloggy.Identity.Infrastructure.Database;
 using Serilog;
@@ -34,7 +36,8 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 // Add services to the container
 builder.Services.AddCustomConfigurations(configs);
-builder.Services.AddConfiguredMediatR();
+builder.Services.AddOperations();
+builder.Services.AddTransient<IOperationService, OperationService>();
 
 builder.Services.AddConfiguredMongoDB(configs);
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();

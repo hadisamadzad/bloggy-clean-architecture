@@ -8,7 +8,7 @@ public class GetPasswordResetInfoOperation(IRepositoryManager repository)
     : IOperation<GetPasswordResetInfoCommand, string>
 {
     public async Task<OperationResult<string>> ExecuteAsync(
-        GetPasswordResetInfoCommand command, CancellationToken cancellation)
+        GetPasswordResetInfoCommand command, CancellationToken? cancellation = null)
     {
         var (succeeded, email) = PasswordResetTokenHelper.ReadPasswordResetToken(command.Token);
 

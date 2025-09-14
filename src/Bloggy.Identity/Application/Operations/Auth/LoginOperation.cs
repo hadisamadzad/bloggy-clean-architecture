@@ -12,7 +12,7 @@ public class LoginOperation(IRepositoryManager repository) :
     IOperation<LoginCommand, LoginResult>
 {
     public async Task<OperationResult<LoginResult>> ExecuteAsync(
-        LoginCommand command, CancellationToken cancellation)
+        LoginCommand command, CancellationToken? cancellation = null)
     {
         // Validation
         var validation = new LoginValidator().Validate(command);
@@ -22,11 +22,11 @@ public class LoginOperation(IRepositoryManager repository) :
         // Get
         var user = await repository.Users.GetByEmailAsync(command.Email);
         if (user is null)
-            return OperationResult<LoginResult>.Failure("User not found");
+            return OperationResult<LoginResult>.NotFoundFailure("User not found");
 
         // Lockout check
         if (user.IsLockedOutOrNotActive())
-            return OperationResult<LoginResult>.Failure("User is locked out or not active");
+            return OperationResult<LoginResult>.AuthorizationFailure("User is locked out or not active");
 
         // Login check via password
         var isLoginSuccessful = PasswordHelper.CheckPasswordHash(user.PasswordHash, command.Password);
@@ -37,7 +37,7 @@ public class LoginOperation(IRepositoryManager repository) :
             user.TryToLockout();
             _ = await repository.Users.UpdateAsync(user);
             await repository.CommitAsync();
-            return OperationResult<LoginResult>.Failure("Invalid credentials");
+            return OperationResult<LoginResult>.AuthorizationFailure("Invalid credentials");
         }
 
         /* Here user is authenticated */

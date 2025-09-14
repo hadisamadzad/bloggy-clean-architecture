@@ -7,7 +7,7 @@ public class GetOwnershipStatusOperation(IRepositoryManager repository)
     : IOperation<GetOwnershipStatusCommand, bool>
 {
     public async Task<OperationResult<bool>> ExecuteAsync(
-        GetOwnershipStatusCommand command, CancellationToken cancellation)
+        GetOwnershipStatusCommand command, CancellationToken? cancellation = null)
     {
         var isAlreadyOwned = await repository.Users.AnyAsync();
 

@@ -13,7 +13,7 @@ public class RegisterOperation(IRepositoryManager repository)
     : IOperation<RegisterCommand, RegisterResult>
 {
     public async Task<OperationResult<RegisterResult>> ExecuteAsync(
-        RegisterCommand command, CancellationToken cancellation)
+        RegisterCommand command, CancellationToken? cancellation = null)
     {
         // Validation
         var validation = new RegisterValidator().Validate(command);

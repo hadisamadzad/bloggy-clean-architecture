@@ -5,12 +5,11 @@ using FluentValidation;
 
 namespace Bloggy.Identity.Application.Operations.Auth;
 
-public class CheckUsernameOperation(
-    IRepositoryManager repository) :
+public class CheckUsernameOperation(IRepositoryManager repository) :
     IOperation<CheckUsernameCommand, bool>
 {
     public async Task<OperationResult<bool>> ExecuteAsync(
-        CheckUsernameCommand command, CancellationToken cancellation)
+        CheckUsernameCommand command, CancellationToken? cancellation = null)
     {
         // Validation
         var validation = new CheckUsernameValidator().Validate(command);
@@ -33,6 +32,7 @@ public class CheckUsernameValidator : AbstractValidator<CheckUsernameCommand>
     public CheckUsernameValidator()
     {
         RuleFor(x => x.Email)
+            .NotEmpty()
             .EmailAddress();
     }
 }

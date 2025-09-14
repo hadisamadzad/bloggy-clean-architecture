@@ -12,25 +12,25 @@ public class SendPasswordResetEmailOperation(
     IRepositoryManager repository,
     IEmailService transactionalEmailService,
     IOptions<PasswordResetConfig> passwordResetConfig)
-    : IOperation<SendPasswordResetEmailCommand, string>
+    : IOperation<SendPasswordResetEmailCommand, NoResult>
 {
     private readonly PasswordResetConfig _passwordResetConfig = passwordResetConfig.Value;
 
-    public async Task<OperationResult<string>> ExecuteAsync(
-        SendPasswordResetEmailCommand request, CancellationToken cancellation)
+    public async Task<OperationResult> ExecuteAsync(
+        SendPasswordResetEmailCommand command, CancellationToken? cancellation = null)
     {
         // Validation
-        var validation = new SendPasswordResetEmailValidator().Validate(request);
+        var validation = new SendPasswordResetEmailValidator().Validate(command);
         if (!validation.IsValid)
-            return OperationResult<string>.ValidationFailure([.. validation.GetErrorMessages()]);
+            return OperationResult.ValidationFailure([.. validation.GetErrorMessages()]);
 
         // Get
-        var user = await repository.Users.GetByEmailAsync(request.Email);
+        var user = await repository.Users.GetByEmailAsync(command.Email);
         if (user is null)
-            return OperationResult<string>.Failure("User not found");
+            return OperationResult.Failure("User not found");
 
         if (user.IsLockedOutOrNotActive())
-            return OperationResult<string>.Failure("User is locked out or not active");
+            return OperationResult.Failure("User is locked out or not active");
 
         var expirationTime = ExpirationTimeHelper
             .GetExpirationTime(_passwordResetConfig.LinkLifetimeInDays);
@@ -49,7 +49,7 @@ public class SendPasswordResetEmailOperation(
         _ = await transactionalEmailService.SendEmailByTemplateIdAsync(
             _passwordResetConfig.BrevoTemplateId, [email], @params);
 
-        return OperationResult<string>.Success(user.Id);
+        return OperationResult.Success();
     }
 }
 

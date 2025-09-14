@@ -9,38 +9,37 @@ using Microsoft.Extensions.Options;
 
 namespace Bloggy.Identity.Application.Operations.PasswordReset;
 
-// Handler
 public class ResetPasswordOperation(IRepositoryManager repository,
     IOptions<PasswordResetConfig> passwordResetConfig)
-    : IOperation<ResetPasswordCommand, string>
+    : IOperation<ResetPasswordCommand, NoResult>
 {
     private readonly PasswordResetConfig _passwordResetConfig = passwordResetConfig.Value;
 
-    public async Task<OperationResult<string>> ExecuteAsync(
-        ResetPasswordCommand command, CancellationToken cancellation)
+    public async Task<OperationResult<NoResult>> ExecuteAsync(
+        ResetPasswordCommand command, CancellationToken? cancellation = default)
     {
         // Validation
         var validation = new ResetPasswordValidator().Validate(command);
         if (!validation.IsValid)
-            return OperationResult<string>.ValidationFailure([.. validation.GetErrorMessages()]);
+            return OperationResult.ValidationFailure([.. validation.GetErrorMessages()]);
 
         // Get
         var (succeeded, email) = PasswordResetTokenHelper.ReadPasswordResetToken(command.Token);
         if (!succeeded)
-            return OperationResult<string>.Failure("Invalid token");
+            return OperationResult.Failure("Invalid token");
 
         var user = await repository.Users.GetByEmailAsync(email);
         if (user is null)
-            return OperationResult<string>.Failure("User not found");
+            return OperationResult.Failure("User not found");
 
         if (user.IsLockedOutOrNotActive())
-            return OperationResult<string>.Failure("User is locked out or not active");
+            return OperationResult.Failure("User is locked out or not active");
 
         user.PasswordHash = PasswordHelper.Hash(command.NewPassword);
 
         _ = await repository.Users.UpdateAsync(user);
 
-        return OperationResult<string>.Success(user.Id);
+        return OperationResult.Success();
     }
 }
 

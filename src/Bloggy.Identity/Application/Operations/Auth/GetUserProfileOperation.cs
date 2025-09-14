@@ -9,16 +9,16 @@ public class GetUserProfileOperation(
     IOperation<GetUserProfileCommand, UserModel>
 {
     public async Task<OperationResult<UserModel>> ExecuteAsync(
-        GetUserProfileCommand command, CancellationToken cancellation)
+        GetUserProfileCommand command, CancellationToken? cancellation = null)
     {
         // Validation
-        if (string.IsNullOrWhiteSpace(command.RequestedBy))
+        if (string.IsNullOrWhiteSpace(command.RequestedById))
             return OperationResult<UserModel>.ValidationFailure(["Invalid userId"]);
 
         // Get
-        var user = await repository.Users.GetByIdAsync(command.RequestedBy);
+        var user = await repository.Users.GetByIdAsync(command.RequestedById);
         if (user is null)
-            return OperationResult<UserModel>.Failure("User not found");
+            return OperationResult<UserModel>.NotFoundFailure("User not found");
 
         // Mapping
         var response = user.MapToUserModel();
@@ -27,4 +27,4 @@ public class GetUserProfileOperation(
     }
 }
 
-public record GetUserProfileCommand(string RequestedBy) : IOperationCommand;
+public record GetUserProfileCommand(string RequestedById) : IOperationCommand;
