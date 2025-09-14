@@ -18,10 +18,10 @@ public class GetPasswordResetEmailOperation(IRepositoryManager repository)
             throw new AggregateException($"Unable to read the valid password-reset token: {command.Token}");
 
         if (user.IsLockedOutOrNotActive())
-            return OperationResult<string>.Failure("User is locked out or not active");
+            return OperationResult<string>.AuthorizationFailure("User is locked out or not active");
 
         if (!string.Equals(user.Email, email, StringComparison.OrdinalIgnoreCase))
-            return OperationResult<string>.Failure("Invalid token");
+            return OperationResult<string>.AuthorizationFailure("Invalid token");
 
         return OperationResult<string>.Success(user.Email);
     }

@@ -12,7 +12,7 @@ public class GetProfileEndpoint : IEndpoint
     public void MapEndpoints(WebApplication app)
     {
         // Endpoint for getting user profile
-        app.MapGroup(RouteConstants.AuthBaseRoute)
+        app.MapGroup(Routes.AuthBaseRoute)
             .MapGet("profile", async (IOperationService operations,
                 [FromHeader] string requestedBy) =>
             {
@@ -39,7 +39,7 @@ public class GetProfileEndpoint : IEndpoint
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
-            .WithTags(RouteConstants.AuthEndpointGroupTag);
+            .WithTags(Routes.AuthEndpointGroupTag);
     }
 }
 

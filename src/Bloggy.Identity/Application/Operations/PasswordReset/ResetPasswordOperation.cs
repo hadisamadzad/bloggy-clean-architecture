@@ -26,14 +26,14 @@ public class ResetPasswordOperation(IRepositoryManager repository,
         // Get
         var (succeeded, email) = PasswordResetTokenHelper.ReadPasswordResetToken(command.Token);
         if (!succeeded)
-            return OperationResult.Failure("Invalid token");
+            return OperationResult.AuthorizationFailure("Invalid token");
 
         var user = await repository.Users.GetByEmailAsync(email);
         if (user is null)
-            return OperationResult.Failure("User not found");
+            return OperationResult.NotFoundFailure("User not found");
 
         if (user.IsLockedOutOrNotActive())
-            return OperationResult.Failure("User is locked out or not active");
+            return OperationResult.AuthorizationFailure("User is locked out or not active");
 
         user.PasswordHash = PasswordHelper.Hash(command.NewPassword);
 

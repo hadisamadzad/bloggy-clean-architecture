@@ -11,7 +11,7 @@ public class GetNewAccessTokenEndpoint : IEndpoint
     public void MapEndpoints(WebApplication app)
     {
         // Endpoint for getting access token by refresh token
-        app.MapGroup(RouteConstants.AuthBaseRoute)
+        app.MapGroup(Routes.AuthBaseRoute)
             .MapGet("access-token", async (IOperationService operations,
                 [FromHeader] string refreshToken) =>
             {
@@ -32,7 +32,7 @@ public class GetNewAccessTokenEndpoint : IEndpoint
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
-            .WithTags(RouteConstants.AuthEndpointGroupTag);
+            .WithTags(Routes.AuthEndpointGroupTag);
     }
 }
 

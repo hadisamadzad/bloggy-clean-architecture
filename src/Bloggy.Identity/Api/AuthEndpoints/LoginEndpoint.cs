@@ -11,7 +11,7 @@ public class LoginEndpoint : IEndpoint
     public void MapEndpoints(WebApplication app)
     {
         // Endpoint for logging in
-        app.MapGroup(RouteConstants.AuthBaseRoute)
+        app.MapGroup(Routes.AuthBaseRoute)
             .MapPost("login", async (IOperationService operations,
                 [FromBody] LoginRequest request) =>
             {
@@ -39,7 +39,7 @@ public class LoginEndpoint : IEndpoint
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
-            .WithTags(RouteConstants.AuthEndpointGroupTag);
+            .WithTags(Routes.AuthEndpointGroupTag);
     }
 }
 

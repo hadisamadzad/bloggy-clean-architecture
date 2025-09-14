@@ -11,7 +11,7 @@ public class RegisterEndpoint : IEndpoint
     public void MapEndpoints(WebApplication app)
     {
         // Endpoint for registration
-        app.MapGroup(RouteConstants.AuthBaseRoute)
+        app.MapGroup(Routes.AuthBaseRoute)
             .MapPost("register", async (IOperationService operations,
                 [FromBody] RegisterRequest request) =>
             {
@@ -34,7 +34,7 @@ public class RegisterEndpoint : IEndpoint
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
-            .WithTags(RouteConstants.AuthEndpointGroupTag);
+            .WithTags(Routes.AuthEndpointGroupTag);
     }
 
     public record RegisterRequest(string Email, string Password);
