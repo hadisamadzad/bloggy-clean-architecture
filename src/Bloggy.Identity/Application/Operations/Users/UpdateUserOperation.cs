@@ -19,12 +19,12 @@ public class UpdateUserOperation(IRepositoryManager repository) :
         // Check if user is admin
         var requesterUser = await repository.Users.GetByIdAsync(command.AdminUserId);
         if (requesterUser is null)
-            return OperationResult.Failure("User not found");
+            return OperationResult.AuthorizationFailure("Access denied");
 
         // Get
         var user = await repository.Users.GetByIdAsync(command.UserId);
         if (user is null)
-            return OperationResult.Failure("User not found");
+            return OperationResult.NotFoundFailure("User not found");
 
         // Update
         user.FirstName = command.FirstName;
