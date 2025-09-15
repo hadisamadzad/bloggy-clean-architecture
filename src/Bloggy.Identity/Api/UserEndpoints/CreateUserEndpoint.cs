@@ -29,7 +29,7 @@ public class CreateUserEndpoint : IEndpoint
                 return operationResult.Status switch
                 {
                     OperationStatus.Completed => Results.Ok(
-                        new CreateUserResponse(UserId: operationResult.Value)),
+                        new CreateUserResponse(UserId: operationResult.Value!)),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     OperationStatus.NotFound => Results.UnprocessableEntity(operationResult.Error),
                     OperationStatus.Unauthorized => Results.Unauthorized(),
