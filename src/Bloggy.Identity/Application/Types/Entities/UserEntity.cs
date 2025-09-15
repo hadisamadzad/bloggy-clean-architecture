@@ -6,17 +6,17 @@ public class UserEntity : IEntity
 {
     #region Identity
 
-    public string Id { get; set; }
-    public string Email { get; set; }
+    public string Id { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
     public bool IsEmailConfirmed { get; set; }
 
-    public string Mobile { get; set; }
+    public string? Mobile { get; set; }
 
     #endregion
 
     #region Login
 
-    public string PasswordHash { get; set; }
+    public string PasswordHash { get; set; } = string.Empty;
     public DateTime? LastPasswordChangeTime { get; set; }
 
     public int FailedLoginCount { get; set; }
@@ -28,8 +28,8 @@ public class UserEntity : IEntity
 
     #region Profile
 
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
     public Role Role { get; set; }
     public UserState State { get; set; }
 
@@ -37,8 +37,8 @@ public class UserEntity : IEntity
 
     #region Management
 
-    public string SecurityStamp { get; set; }
-    public string ConcurrencyStamp { get; set; }
+    public string SecurityStamp { get; set; } = string.Empty;
+    public string ConcurrencyStamp { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 

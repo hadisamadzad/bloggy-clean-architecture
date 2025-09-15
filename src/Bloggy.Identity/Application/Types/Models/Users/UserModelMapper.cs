@@ -7,9 +7,6 @@ public static class UserModelMapper
 {
     public static UserModel MapToUserModel(this UserEntity entity)
     {
-        if (entity is null)
-            return null;
-
         return new UserModel
         {
             UserId = entity.Id,

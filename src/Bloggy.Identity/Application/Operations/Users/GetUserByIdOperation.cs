@@ -13,7 +13,7 @@ public class GetUserByIdOperation(IRepositoryManager repository) :
         // Get
         var entity = await repository.Users.GetByIdAsync(command.UserId);
         if (entity is null)
-            return OperationResult<UserModel>.Failure("User not found");
+            return OperationResult<UserModel>.NotFoundFailure("User not found");
 
         // Mapping
         var model = entity.MapToUserModel();
