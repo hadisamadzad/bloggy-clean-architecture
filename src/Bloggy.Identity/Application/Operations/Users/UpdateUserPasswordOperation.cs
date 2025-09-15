@@ -20,7 +20,7 @@ public class UpdateUserPasswordOperation(IRepositoryManager repository) :
         // Get
         var user = await repository.Users.GetByIdAsync(command.UserId);
         if (user is null)
-            return OperationResult.Failure("User not found");
+            return OperationResult.NotFoundFailure("User not found");
 
         // Check if user password is correct and update
         if (PasswordHelper.CheckPasswordHash(user.PasswordHash, command.CurrentPassword))
