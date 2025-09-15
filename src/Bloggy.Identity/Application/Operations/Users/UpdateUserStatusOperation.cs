@@ -6,21 +6,21 @@ using FluentValidation;
 
 namespace Bloggy.Identity.Application.Operations.Users;
 
-public class UpdateUserStateOperation(IRepositoryManager repository) :
-    IOperation<UpdateUserStateCommand, NoResult>
+public class UpdateUserStatusOperation(IRepositoryManager repository) :
+    IOperation<UpdateUserStatusCommand, NoResult>
 {
     public async Task<OperationResult<NoResult>> ExecuteAsync(
-        UpdateUserStateCommand command, CancellationToken? cancellation = null)
+        UpdateUserStatusCommand command, CancellationToken? cancellation = null)
     {
         // Validation
-        var validation = new UpdateUserStateValidator().Validate(command);
+        var validation = new UpdateUserStatusValidator().Validate(command);
         if (!validation.IsValid)
             return OperationResult.ValidationFailure([.. validation.GetErrorMessages()]);
 
         // Get
         var user = await repository.Users.GetByIdAsync(command.UserId);
         if (user is null)
-            return OperationResult.Failure("User not found");
+            return OperationResult.NotFoundFailure("User not found");
 
         // Update
         user.State = command.State;
@@ -32,14 +32,14 @@ public class UpdateUserStateOperation(IRepositoryManager repository) :
     }
 }
 
-public record UpdateUserStateCommand(
+public record UpdateUserStatusCommand(
     string AdminUserId,
     string UserId,
     UserState State) : IOperationCommand;
 
-public class UpdateUserStateValidator : AbstractValidator<UpdateUserStateCommand>
+public class UpdateUserStatusValidator : AbstractValidator<UpdateUserStatusCommand>
 {
-    public UpdateUserStateValidator()
+    public UpdateUserStatusValidator()
     {
         // User id
         RuleFor(x => x.UserId)

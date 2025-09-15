@@ -19,7 +19,7 @@ public interface IOperationService
     GetUserByIdOperation GetUserById { get; }
     UpdateUserOperation UpdateUser { get; }
     UpdateUserPasswordOperation UpdateUserPassword { get; }
-    UpdateUserStateOperation UpdateUserState { get; }
+    UpdateUserStatusOperation UpdateUserState { get; }
 
     // Password Reset
     SendPasswordResetEmailOperation SendPasswordResetEmail { get; }

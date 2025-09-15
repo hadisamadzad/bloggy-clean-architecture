@@ -20,7 +20,7 @@ public class OperationService(
     IOperation<GetUserByIdCommand, UserModel> getUserById,
     IOperation<UpdateUserCommand, NoResult> updateUser,
     IOperation<UpdateUserPasswordCommand, NoResult> updateUserPassword,
-    IOperation<UpdateUserStateCommand, NoResult> updateUserState,
+    IOperation<UpdateUserStatusCommand, NoResult> updateUserState,
     IOperation<SendPasswordResetEmailCommand, NoResult> sendPasswordResetEmail,
     IOperation<GetPasswordResetEmailCommand, string> getPasswordResetInfo,
     IOperation<ResetPasswordCommand, NoResult> resetPassword
@@ -50,8 +50,8 @@ public class OperationService(
         updateUser as UpdateUserOperation;
     public UpdateUserPasswordOperation UpdateUserPassword { get; } =
         updateUserPassword as UpdateUserPasswordOperation;
-    public UpdateUserStateOperation UpdateUserState { get; } =
-        updateUserState as UpdateUserStateOperation;
+    public UpdateUserStatusOperation UpdateUserState { get; } =
+        updateUserState as UpdateUserStatusOperation;
 
     // Password Reset
     public SendPasswordResetEmailOperation SendPasswordResetEmail { get; } =
