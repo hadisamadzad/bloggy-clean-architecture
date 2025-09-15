@@ -4,7 +4,8 @@ using Bloggy.Identity.Application.Interfaces;
 
 namespace Bloggy.Identity.Application.Operations.PasswordReset;
 
-public class GetPasswordResetEmailOperation(IRepositoryManager repository)
+public class GetPasswordResetEmailOperation(
+    IRepositoryManager repository)
     : IOperation<GetPasswordResetEmailCommand, string>
 {
     public async Task<OperationResult<string>> ExecuteAsync(
@@ -14,8 +15,12 @@ public class GetPasswordResetEmailOperation(IRepositoryManager repository)
         if (!succeeded)
             return OperationResult<string>.ValidationFailure(["Invalid token"]);
 
-        var user = await repository.Users.GetByEmailAsync(email) ??
-            throw new AggregateException($"Unable to read the valid password-reset token: {command.Token}");
+        var user = await repository.Users.GetByEmailAsync(email);
+        if (user == null)
+        {
+            //logger.LogWarning("No user found for password reset token: {Token}", command.Token);
+            return OperationResult<string>.NotFoundFailure("No user found for the provided token");
+        }
 
         if (user.IsLockedOutOrNotActive())
             return OperationResult<string>.AuthorizationFailure("User is locked out or not active");
