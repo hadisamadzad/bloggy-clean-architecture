@@ -23,7 +23,7 @@ public class CreateUserOperation(IRepositoryManager repository) :
         // Check if user is admin
         var requesterUser = await repository.Users.GetByIdAsync(command.AdminUserId);
         if (requesterUser is null)
-            return OperationResult<string>.Failure("User not found");
+            return OperationResult<string>.NotFoundFailure("User not found");
 
         // Check role
         if (!requesterUser.HasAdminRole())
@@ -78,6 +78,7 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
 
         // Email
         RuleFor(x => x.Email)
+            .NotEmpty()
             .EmailAddress();
 
         // Password
