@@ -36,7 +36,11 @@ public class UpdateUserPasswordEndpoint : IEndpoint
                 };
             })
             .WithTags(Routes.UserEndpointGroupTag)
-            .WithDescription("Update a user's password. Requires the current password and the new password.");
+            .WithDescription("Update a user's password. Requires the current password and the new password.")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 

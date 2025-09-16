@@ -30,6 +30,11 @@ public class SendPasswordResetEmailEndpoint : IEndpoint
                 };
             })
             .WithTags(Routes.PasswordResetEndpointGroupTag)
-            .WithDescription("Sends a password reset email including special token to the user's email address.");
+            .WithDescription("Sends a password reset email including special token to the user's email address.")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }

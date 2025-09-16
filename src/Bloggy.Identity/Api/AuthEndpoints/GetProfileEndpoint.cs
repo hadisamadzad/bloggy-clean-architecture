@@ -13,6 +13,7 @@ public class GetProfileEndpoint : IEndpoint
     {
         // Endpoint for getting user profile
         app.MapGroup(Routes.AuthBaseRoute)
+            .WithSummary("Gets the current user's profile")
             .MapGet("profile", async (IOperationService operations,
                 [FromHeader] string requestedBy) =>
             {
@@ -25,7 +26,7 @@ public class GetProfileEndpoint : IEndpoint
                 {
                     OperationStatus.Completed => Results.Ok(
                         new GetUserProfileResponse(
-                            UserId: operationResult.Value.UserId,
+                            UserId: operationResult.Value!.UserId,
                             Email: operationResult.Value.Email,
                             FirstName: operationResult.Value.FirstName,
                             LastName: operationResult.Value.LastName,
@@ -39,15 +40,20 @@ public class GetProfileEndpoint : IEndpoint
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
-            .WithTags(Routes.AuthEndpointGroupTag);
+            .WithTags(Routes.AuthEndpointGroupTag)
+            .WithDescription("Returns the profile information for the authenticated user.")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 
 public record GetUserProfileResponse(
     string UserId,
     string Email,
-    string FirstName,
-    string LastName,
+    string? FirstName,
+    string? LastName,
     string FullName,
     Role Role,
     DateTime CreatedAt,

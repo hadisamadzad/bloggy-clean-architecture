@@ -64,8 +64,8 @@ public record CreateUserCommand(
     string Email,
     string Password) : IOperationCommand
 {
-    public string FirstName { get; init; }
-    public string LastName { get; init; }
+    public string? FirstName { get; init; }
+    public string? LastName { get; init; }
 }
 
 public class CreateUserValidator : AbstractValidator<CreateUserCommand>

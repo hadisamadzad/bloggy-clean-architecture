@@ -12,6 +12,7 @@ public class CheckUsernameAvailabilityEndpoint : IEndpoint
     {
         // Endpoint for checking username availability
         app.MapGroup(Routes.AuthBaseRoute)
+            .WithSummary("Check Username Availability")
             .MapGet("username-check", async (IOperationService operations,
                 [FromQuery] string email) =>
             {
@@ -29,7 +30,11 @@ public class CheckUsernameAvailabilityEndpoint : IEndpoint
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
-            .WithTags(Routes.AuthEndpointGroupTag);
+            .WithTags(Routes.AuthEndpointGroupTag)
+            .WithDescription("Checks if a username (email) is available.")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 

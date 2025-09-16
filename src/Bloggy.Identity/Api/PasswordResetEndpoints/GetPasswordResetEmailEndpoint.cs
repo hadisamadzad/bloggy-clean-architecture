@@ -21,7 +21,7 @@ public class GetPasswordResetEmailEndpoint : IEndpoint
                 {
                     OperationStatus.Completed => Results.Ok(
                         new GetPasswordResetEmailResponse(
-                            Email: operationResult.Value
+                            Email: operationResult.Value!
                         )),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     OperationStatus.NotFound => Results.Unauthorized(),
@@ -31,7 +31,11 @@ public class GetPasswordResetEmailEndpoint : IEndpoint
             })
             .WithTags(Routes.PasswordResetEndpointGroupTag)
             .WithSummary("Get Password Reset Email by Token")
-            .WithDescription("Retrieves the email associated with a valid password reset token.");
+            .WithDescription("Retrieves the email associated with a valid password reset token.")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 

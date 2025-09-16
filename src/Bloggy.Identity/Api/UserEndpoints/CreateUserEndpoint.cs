@@ -32,13 +32,18 @@ public class CreateUserEndpoint : IEndpoint
                         new CreateUserResponse(UserId: operationResult.Value!)),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     OperationStatus.NotFound => Results.UnprocessableEntity(operationResult.Error),
-                    OperationStatus.Unauthorized => Results.Unauthorized(),
+                    OperationStatus.Unauthorized => Results.Forbid(),
                     OperationStatus.Failed => Results.UnprocessableEntity(operationResult.Error),
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
             .WithTags(Routes.UserEndpointGroupTag)
-            .WithDescription("Creates a new user in the system. This endpoint is intended for use by administrators.");
+            .WithDescription("Creates a new user in the system. This endpoint is intended for use by administrators.")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 

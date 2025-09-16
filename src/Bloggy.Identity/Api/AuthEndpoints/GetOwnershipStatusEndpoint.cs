@@ -11,6 +11,7 @@ public class GetOwnershipStatusEndpoint : IEndpoint
     {
         // Endpoint for checking if ownership is done
         app.MapGroup(Routes.AuthBaseRoute)
+            .WithSummary("Checks whether the service ownership stage is completed")
             .MapGet("ownership-check", async (IOperationService operations
                 ) =>
             {
@@ -27,9 +28,10 @@ public class GetOwnershipStatusEndpoint : IEndpoint
                 };
             })
             .WithTags(Routes.AuthEndpointGroupTag)
-            .WithSummary("Checks whether the service ownership stage is completed.")
             .WithDescription("Returns a boolean indicating whether the one-off " +
-                "ownership process is completed or not.");
+                "ownership process is completed or not.")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 

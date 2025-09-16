@@ -41,7 +41,10 @@ public class GetUserByIdEndpoint : IEndpoint
                 };
             })
             .WithTags(Routes.UserEndpointGroupTag)
-            .WithDescription("Retrieves a user's details by their unique identifier.");
+            .WithDescription("Retrieves a user's details by their unique identifier.")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 

@@ -30,13 +30,18 @@ public class UpdateUserEndpoint : IEndpoint
                 {
                     OperationStatus.Completed => Results.NoContent(),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
-                    OperationStatus.Unauthorized => Results.Unauthorized(),
+                    OperationStatus.Unauthorized => Results.Forbid(),
                     OperationStatus.NotFound => Results.UnprocessableEntity(operationResult.Error),
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
             .WithTags(Routes.UserEndpointGroupTag)
-            .WithDescription("Updates a user's details such as first name and last name. This endpoint is intended for use by administrators.");
+            .WithDescription("Updates a user's details such as first name and last name. This endpoint is intended for use by administrators.")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 

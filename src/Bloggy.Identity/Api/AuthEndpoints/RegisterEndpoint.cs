@@ -12,14 +12,15 @@ public class RegisterEndpoint : IEndpoint
     {
         // Endpoint for registration
         app.MapGroup(Routes.AuthBaseRoute)
+            .WithSummary("Registers the owner")
             .MapPost("register", async (IOperationService operations,
                 [FromBody] RegisterRequest request) =>
             {
                 // Operation
                 var operationResult = await operations.Register.ExecuteAsync(new RegisterCommand
                 (
-                    Email: request.Email?.Trim(),
-                    Password: request.Password?.Trim()
+                    Email: request.Email.Trim(),
+                    Password: request.Password.Trim()
                 ));
 
                 // Result
@@ -27,14 +28,19 @@ public class RegisterEndpoint : IEndpoint
                 {
                     OperationStatus.Completed => Results.Ok(
                         new RegisterResponse(
-                            UserId: operationResult.Value.UserId
+                            UserId: operationResult.Value!.UserId
                         )),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     OperationStatus.Failed => Results.UnprocessableEntity(operationResult.Error),
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
-            .WithTags(Routes.AuthEndpointGroupTag);
+            .WithTags(Routes.AuthEndpointGroupTag)
+            .WithDescription("Registers the first user as the owner.")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 
     public record RegisterRequest(string Email, string Password);

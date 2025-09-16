@@ -12,6 +12,7 @@ public class GetNewAccessTokenEndpoint : IEndpoint
     {
         // Endpoint for getting access token by refresh token
         app.MapGroup(Routes.AuthBaseRoute)
+            .WithSummary("Gets a new access token using a refresh token")
             .MapGet("access-token", async (IOperationService operations,
                 [FromHeader] string refreshToken) =>
             {
@@ -24,7 +25,7 @@ public class GetNewAccessTokenEndpoint : IEndpoint
                 {
                     OperationStatus.Completed => Results.Ok(
                         new GetNewAccessTokenResponse(
-                            NewAccessToken: operationResult.Value.AccessToken
+                            NewAccessToken: operationResult.Value!.AccessToken
                         )),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     OperationStatus.NotFound => Results.UnprocessableEntity(operationResult.Error),
@@ -32,7 +33,13 @@ public class GetNewAccessTokenEndpoint : IEndpoint
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
-            .WithTags(Routes.AuthEndpointGroupTag);
+            .WithTags(Routes.AuthEndpointGroupTag)
+            .WithDescription("Returns a new access token if the refresh token is valid.")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 

@@ -12,14 +12,15 @@ public class LoginEndpoint : IEndpoint
     {
         // Endpoint for logging in
         app.MapGroup(Routes.AuthBaseRoute)
+            .WithSummary("Login endpoint")
             .MapPost("login", async (IOperationService operations,
                 [FromBody] LoginRequest request) =>
             {
                 // Operation
                 var operationResult = await operations.Login.ExecuteAsync(new LoginCommand
                 (
-                    Email: request.Email?.Trim(),
-                    Password: request.Password?.Trim()
+                    Email: request.Email.Trim(),
+                    Password: request.Password.Trim()
                 ));
 
                 // Result
@@ -27,7 +28,7 @@ public class LoginEndpoint : IEndpoint
                 {
                     OperationStatus.Completed => Results.Ok(
                         new LoginResponse(
-                            Email: operationResult.Value.Email,
+                            Email: operationResult.Value!.Email,
                             FullName: operationResult.Value.FullName,
                             AccessToken: operationResult.Value.AccessToken,
                             RefreshToken: operationResult.Value.RefreshToken
@@ -39,7 +40,13 @@ public class LoginEndpoint : IEndpoint
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
-            .WithTags(Routes.AuthEndpointGroupTag);
+            .WithTags(Routes.AuthEndpointGroupTag)
+            .WithDescription("Authenticates a user and returns access and refresh tokens.")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 

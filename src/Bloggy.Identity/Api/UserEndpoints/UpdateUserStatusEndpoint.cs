@@ -33,11 +33,15 @@ public class UpdateUserStatusEndpoint : IEndpoint
                 {
                     OperationStatus.Completed => Results.NoContent(),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
-                    OperationStatus.NotFound => Results.Unauthorized(),
+                    OperationStatus.NotFound => Results.Forbid(),
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
             .WithTags(Routes.UserEndpointGroupTag)
-            .WithDescription("Updates the status of a user (e.g., Active, Inactive, Suspended).");
+            .WithDescription("Updates the status of a user (e.g., Active, Inactive, Suspended).")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }

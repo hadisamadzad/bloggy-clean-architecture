@@ -28,7 +28,12 @@ public class ResetPasswordEndpoint : IEndpoint
                 };
             })
             .WithTags(Routes.PasswordResetEndpointGroupTag)
-            .WithDescription("Resets the user's password using a valid password reset token.");
+            .WithDescription("Resets the user's password using a valid password reset token.")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 }
 
