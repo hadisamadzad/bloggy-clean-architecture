@@ -9,7 +9,7 @@ namespace Bloggy.Identity.Application.Operations.Users;
 public class UpdateUserPasswordOperation(IRepositoryManager repository) :
     IOperation<UpdateUserPasswordCommand, NoResult>
 {
-    public async Task<OperationResult> ExecuteAsync(
+    public async Task<OperationResult<NoResult>> ExecuteAsync(
         UpdateUserPasswordCommand command, CancellationToken? cancellation = null)
     {
         // Validation
