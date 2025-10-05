@@ -2,12 +2,10 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-stage
 
 WORKDIR /app
 COPY . .
-RUN rm -rf Identity
-COPY Identity Identity
-
-RUN dotnet publish Identity -c release -o out
+RUN dotnet publish Bloggy.Identity/Bloggy.Identity.csproj -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build-stage /app/out .
-ENTRYPOINT ["dotnet", "Identity.dll"]
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "Bloggy.Identity.dll"]

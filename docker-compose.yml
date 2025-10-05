@@ -6,10 +6,10 @@ services:
     networks:
       - bloggy-backend
     ports:
-      - 44000:6000
+      - 44000:5000
     build:
       context: ./src
-      dockerfile: Gateway/Dockerfile
+      dockerfile: Bloggy.Gateway/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=$ENV
     extra_hosts:
@@ -23,11 +23,12 @@ services:
       - bloggy-backend
     build:
       context: ./src
-      dockerfile: Identity/Dockerfile
+      dockerfile: Bloggy.Identity/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=$ENV
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
   blog:
     container_name: bloggy-blog
     image: "bloggy-blog"
@@ -36,15 +37,15 @@ services:
       - bloggy-backend
     build:
       context: ./src
-      dockerfile: Blog/Dockerfile
+      dockerfile: Bloggy.Blog/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=$ENV
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
 networks:
-  bloggy-back:
-    name: bloggy-back
+  bloggy-backend:
+    name: bloggy-backend
     driver: bridge
     ipam:
       config:
