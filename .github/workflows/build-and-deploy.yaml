@@ -78,14 +78,14 @@ jobs:
                   sed -i "s/{env}/$ENV_NAME_LOWER/g" "$dir/appsettings.json"
                   sed -i "s|{datadog_api_key}|${{ secrets.DATADOG_API_KEY }}|g" "$dir/appsettings.json"
 
-                  if [ "$dir_name" == "Gateway" ]; then
+                  if [ "$dir_name" == "Bloggy.Gateway" ]; then
                     sed -i "s|{auth_jwt_issuer}|${{ vars.AUTH_JWT_ISSUER }}|g" "$dir/appsettings.json"
                     sed -i "s|{auth_jwt_audience}|${{ vars.AUTH_JWT_AUDIENCE }}|g" "$dir/appsettings.json"
                     sed -i "s|{auth_jwt_access_token_secret_key}|${{ secrets.AUTH_JWT_ACCESS_SECRET }}|g" "$dir/appsettings.json"
                     sed -i "s|{allowed_origins}|${{ vars.ALLOWED_ORIGINS }}|g" "$dir/appsettings.json"
                   fi
 
-                  if [ "$dir_name" == "Identity" ]; then
+                  if [ "$dir_name" == "Bloggy.Identity" ]; then
                     sed -i "s|{mongodb_connection_string}|${{ secrets.MONGODB_CONNECTION_STRING }}|g" "$dir/appsettings.json"
                     sed -i "s|{mongodb_database_name}|${{ vars.MONGODB_DATABASE_NAME }}|g" "$dir/appsettings.json"
                     sed -i "s|{auth_jwt_issuer}|${{ vars.AUTH_JWT_ISSUER }}|g" "$dir/appsettings.json"
@@ -99,7 +99,7 @@ jobs:
                     sed -i "s|{password_reset_encryption_key}|${{ secrets.PASSWORD_RESET_ENCRYPTION_KEY }}|g" "$dir/appsettings.json"
                   fi
 
-                  if [ "$dir_name" == "Blog" ]; then
+                  if [ "$dir_name" == "Bloggy.Blog" ]; then
                     sed -i "s|{mongodb_connection_string}|${{ secrets.MONGODB_CONNECTION_STRING }}|g" "$dir/appsettings.json"
                     sed -i "s|{mongodb_database_name}|${{ vars.MONGODB_DATABASE_NAME }}|g" "$dir/appsettings.json"
                   fi
