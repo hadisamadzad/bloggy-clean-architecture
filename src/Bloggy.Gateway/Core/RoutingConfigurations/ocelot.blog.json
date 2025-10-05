@@ -3,25 +3,27 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/blog/health",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/health",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 6000 }]
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }]
     },
     {
       "UpstreamPathTemplate": "/blog/{all}",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/api/{all}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 6000 }]
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }]
     },
     {
       "UpstreamPathTemplate": "/blog/{all}",
-      "UpstreamHttpMethod": [ "Post", "Put", "Patch", "Delete" ],
+      "UpstreamHttpMethod": ["Post", "Put", "Patch", "Delete"],
       "DownstreamPathTemplate": "/api/{all}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 6000 }],
-      "AuthenticationOptions": { "AuthenticationProviderKey": "general-auth-key" }
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "general-auth-key"
+      }
     }
   ]
 }

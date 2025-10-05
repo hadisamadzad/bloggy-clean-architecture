@@ -3,23 +3,27 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/identity/auth/{all}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Patch" ],
+      "UpstreamHttpMethod": ["Get", "Post", "Patch"],
       "DownstreamPathTemplate": "/api/auth/{all}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 6000 }]
-    },{
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 5000 }]
+    },
+    {
       "UpstreamPathTemplate": "/identity/health",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/health",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 6000 }]
-    },{
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 5000 }]
+    },
+    {
       "UpstreamPathTemplate": "/identity/{all}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Patch", "Delete" ],
+      "UpstreamHttpMethod": ["Get", "Post", "Put", "Patch", "Delete"],
       "DownstreamPathTemplate": "/api/{all}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 6000 }],
-      "AuthenticationOptions": { "AuthenticationProviderKey": "general-auth-key" }
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 5000 }],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "general-auth-key"
+      }
     }
   ]
 }

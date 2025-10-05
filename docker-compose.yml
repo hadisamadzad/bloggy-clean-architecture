@@ -14,6 +14,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=$ENV
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - redis
 
   identity:
     container_name: bloggy-identity
@@ -28,6 +30,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=$ENV
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - redis
 
   blog:
     container_name: bloggy-blog
@@ -42,6 +46,22 @@ services:
       - ASPNETCORE_ENVIRONMENT=$ENV
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - redis
+
+  redis:
+    container_name: bloggy-redis
+    image: redis:7-alpine
+    restart: always
+    networks:
+      - bloggy-backend
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  redis-data:
+    driver: local
 
 networks:
   bloggy-backend:
