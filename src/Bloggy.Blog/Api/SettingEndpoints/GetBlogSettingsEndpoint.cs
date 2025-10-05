@@ -58,7 +58,7 @@ public record GetBlogSettingsResponse
     public required string BlogTitle { get; set; }
     public required string BlogSubtitle { get; set; }
     public required string BlogPageTitle { get; set; }
-    public required string BlogDescription { get; set; } = string.Empty;
+    public string BlogDescription { get; set; } = string.Empty;
     public string SeoMetaTitle { get; set; } = string.Empty;
     public string SeoMetaDescription { get; set; } = string.Empty;
     public string BlogUrl { get; set; } = string.Empty;
