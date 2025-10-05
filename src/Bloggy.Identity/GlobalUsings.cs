@@ -1,0 +1,1 @@
+global using OperationResult = Bloggy.Core.Utilities.OperationResult.OperationResult<Bloggy.Core.Utilities.OperationResult.NoResult>;
