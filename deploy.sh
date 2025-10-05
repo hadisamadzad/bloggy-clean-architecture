@@ -44,4 +44,10 @@ else
     echo "Successfully deployed $RUNNING_CONTAINERS container(s)"
 fi
 
+# Final cleanup of unused Docker resources
+echo "Cleaning up unused Docker resources..."
+docker system prune -f
+docker image prune -f
+docker container prune -f
+
 echo "Deployment completed!"
