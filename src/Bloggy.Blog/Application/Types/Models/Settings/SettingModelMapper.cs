@@ -9,6 +9,8 @@ public static class SettingModelMapper
         return new SettingModel
         {
             BlogTitle = entity.BlogTitle,
+            BlogSubtitle = entity.BlogSubtitle,
+            BlogPageTitle = entity.BlogPageTitle,
             BlogDescription = entity.BlogDescription,
             SeoMetaTitle = entity.SeoMetaTitle,
             SeoMetaDescription = entity.SeoMetaDescription,

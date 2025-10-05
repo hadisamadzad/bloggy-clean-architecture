@@ -20,6 +20,8 @@ public class UpdateBlogSettingsOperationTests
     readonly UpdateBlogSettingsCommand ValidCommand = new()
     {
         BlogTitle = "Updated Blog Title",
+        BlogSubtitle = "Updated Blog Subtitle",
+        BlogPageTitle = "Updated Blog Page Title",
         BlogDescription = "Updated Description",
         SeoMetaTitle = "Updated SEO Title",
         SeoMetaDescription = "Updated SEO Description",
@@ -65,6 +67,8 @@ public class UpdateBlogSettingsOperationTests
         var command = new UpdateBlogSettingsCommand
         {
             BlogTitle = "Updated Blog Title",
+            BlogSubtitle = "Updated Blog Subtitle",
+            BlogPageTitle = "Updated Blog Page Title",
             BlogDescription = "Updated Description",
             SeoMetaTitle = "Updated SEO Title",
             SeoMetaDescription = "Updated SEO Description",
@@ -83,7 +87,9 @@ public class UpdateBlogSettingsOperationTests
         var existingSettings = new SettingEntity
         {
             Id = "settings-1",
-            BlogTitle = string.Empty
+            BlogTitle = "Old Title",
+            BlogSubtitle = "Old Subtitle",
+            BlogPageTitle = "Old Page Title"
         };
         _repository.Settings.GetBlogSettingAsync().Returns(existingSettings);
 

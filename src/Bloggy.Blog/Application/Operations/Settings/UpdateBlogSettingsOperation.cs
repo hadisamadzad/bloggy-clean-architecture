@@ -1,4 +1,3 @@
-using Bloggy.Blog.Application.Constants;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Helpers;
@@ -24,6 +23,8 @@ public class UpdateBlogSettingsOperation(IRepositoryManager repository) :
             return OperationResult.NotFoundFailure("Blog settings not found.");
 
         entity.BlogTitle = command.BlogTitle;
+        entity.BlogSubtitle = command.BlogSubtitle;
+        entity.BlogPageTitle = command.BlogPageTitle;
         entity.BlogDescription = command.BlogDescription;
         entity.SeoMetaTitle = command.SeoMetaTitle;
         entity.SeoMetaDescription = command.SeoMetaDescription;
@@ -42,7 +43,9 @@ public class UpdateBlogSettingsOperation(IRepositoryManager repository) :
 public record UpdateBlogSettingsCommand() : IOperationCommand
 {
     public required string BlogTitle { get; set; }
-    public required string BlogDescription { get; set; } = string.Empty;
+    public required string BlogSubtitle { get; set; }
+    public required string BlogPageTitle { get; set; }
+    public string BlogDescription { get; set; } = string.Empty;
     public string SeoMetaTitle { get; set; } = string.Empty;
     public string SeoMetaDescription { get; set; } = string.Empty;
     public string BlogUrl { get; set; } = string.Empty;
@@ -58,37 +61,39 @@ public class UpdateBlogSettingsValidator : AbstractValidator<UpdateBlogSettingsC
         // BlogTitle
         RuleFor(x => x.BlogTitle)
             .NotEmpty()
-            .WithState(_ => Errors.InvalidBlogTitle)
-            .MaximumLength(100)
-            .WithState(_ => Errors.InvalidBlogTitle);
+            .MaximumLength(100);
+
+        // BlogSubtitle
+        RuleFor(x => x.BlogSubtitle)
+            .NotEmpty()
+            .MaximumLength(200);
+
+        // BlogPageTitle
+        RuleFor(x => x.BlogPageTitle)
+            .NotEmpty()
+            .MaximumLength(150);
 
         // BlogDescription
         RuleFor(x => x.BlogDescription)
             .NotEmpty()
-            .WithState(_ => Errors.InvalidBlogDescription)
-            .MaximumLength(500)
-            .WithState(_ => Errors.InvalidBlogDescription);
+            .MaximumLength(500);
 
         // SeoMetaTitle
         RuleFor(x => x.SeoMetaTitle)
             .MaximumLength(60)
-            .When(x => !string.IsNullOrEmpty(x.SeoMetaTitle))
-            .WithState(_ => Errors.InvalidSeoTitle);
+            .When(x => !string.IsNullOrEmpty(x.SeoMetaTitle));
 
         // SeoMetaDescription
         RuleFor(x => x.SeoMetaDescription)
             .MaximumLength(160)
-            .When(x => !string.IsNullOrEmpty(x.SeoMetaDescription))
-            .WithState(_ => Errors.InvalidSeoDescription);
+            .When(x => !string.IsNullOrEmpty(x.SeoMetaDescription));
 
         // BlogUrl
         RuleFor(x => x.BlogUrl)
-            .NotEmpty()
-            .WithState(_ => Errors.InvalidBlogUrl);
+            .NotEmpty();
 
         // Socials
         RuleForEach(x => x.Socials)
-            .Must(x => Enum.IsDefined(x.Name))
-            .WithState(_ => Errors.InvalidSocialNetworkName);
+            .Must(x => Enum.IsDefined(x.Name));
     }
 }

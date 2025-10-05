@@ -1,5 +1,4 @@
-﻿using Bloggy.Blog.Application.Constants;
-using Bloggy.Blog.Application.Interfaces;
+﻿using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
@@ -50,8 +49,8 @@ public class CreateSubscriberValidator : AbstractValidator<CreateSubscriberComma
     {
         // Email
         RuleFor(x => x.Email)
+            .NotEmpty()
             .EmailAddress()
-            .MaximumLength(100)
-            .WithState(_ => Errors.InvalidEmail);
+            .MaximumLength(100);
     }
 }
