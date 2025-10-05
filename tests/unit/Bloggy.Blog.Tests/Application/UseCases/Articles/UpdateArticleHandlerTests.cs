@@ -1,34 +1,34 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations.Articles;
 using Bloggy.Blog.Application.Types.Entities;
-using Bloggy.Blog.Application.UseCases.Articles;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
 using NSubstitute;
 using Xunit;
 
-namespace Bloggy.Blog.Tests.Application.UseCases.Articles;
+namespace Bloggy.Blog.Tests.Application.Operations.Articles;
 
-public class UpdateArticleHandlerTests
+public class UpdateArticleOperationTests
 {
     private readonly IRepositoryManager _repository;
-    private readonly UpdateArticleHandler _handler;
+    private readonly UpdateArticleOperation _operation;
 
-    public UpdateArticleHandlerTests()
+    public UpdateArticleOperationTests()
     {
         _repository = Substitute.For<IRepositoryManager>();
-        _handler = new UpdateArticleHandler(_repository);
+        _operation = new UpdateArticleOperation(_repository);
     }
 
     [Fact]
-    public async Task TestHandle_WhenValidationFails_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenValidationFails_ShouldReturnInvalid()
     {
         // Arrange
         var request = new UpdateArticleCommand { ArticleId = "", Title = "" }; // Missing required fields
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
@@ -36,7 +36,7 @@ public class UpdateArticleHandlerTests
     }
 
     [Fact]
-    public async Task TestHandle_WhenSlugAlreadyExists_ShouldReturnUnprocessable()
+    public async Task ExecuteAsync_WhenSlugAlreadyExists_ShouldReturnUnprocessable()
     {
         // Arrange
         var request = new UpdateArticleCommand
@@ -55,7 +55,7 @@ public class UpdateArticleHandlerTests
             });
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
@@ -63,7 +63,7 @@ public class UpdateArticleHandlerTests
     }
 
     [Fact]
-    public async Task TestHandle_WhenValidRequest_ShouldUpdateArticle()
+    public async Task ExecuteAsync_WhenValidRequest_ShouldUpdateArticle()
     {
         // Arrange
         var request = new UpdateArticleCommand
@@ -84,7 +84,7 @@ public class UpdateArticleHandlerTests
         _repository.Articles.GetByIdAsync(request.ArticleId).Returns(article);
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.True(result.Succeeded);

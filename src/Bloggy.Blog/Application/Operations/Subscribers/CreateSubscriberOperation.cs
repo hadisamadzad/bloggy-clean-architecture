@@ -4,20 +4,19 @@ using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
 using FluentValidation;
-using MediatR;
 
-namespace Bloggy.Blog.Application.UseCases.Subscribers;
+namespace Bloggy.Blog.Application.Operations.Subscribers;
 
-// Handler
-public class CreateSubscriberHandler(IRepositoryManager repository) :
-    IRequestHandler<CreateSubscriberCommand, OperationResult>
+public class CreateSubscriberOperation(IRepositoryManager repository) :
+    IOperation<CreateSubscriberCommand, string>
 {
-    public async Task<OperationResult> Handle(CreateSubscriberCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<string>> ExecuteAsync(
+        CreateSubscriberCommand request, CancellationToken? cancellation = null)
     {
         // Validate
         var validation = new CreateSubscriberValidator().Validate(request);
         if (!validation.IsValid)
-            return OperationResult.Failure(OperationStatus.Invalid, validation.GetFirstError());
+            return OperationResult<string>.ValidationFailure([.. validation.GetErrorMessages()]);
 
         request = request with { Email = request.Email.ToLower() };
 
@@ -38,14 +37,13 @@ public class CreateSubscriberHandler(IRepositoryManager repository) :
         else
             _ = await repository.Subscribers.UpdateAsync(entity);
 
-        return OperationResult.Success(entity);
+        return OperationResult<string>.Success(entity.Id);
     }
 }
 
-// Model
-public record CreateSubscriberCommand(string Email) : IRequest<OperationResult>;
+public record CreateSubscriberCommand(string Email) : IOperationCommand;
 
-// Model Validator
+// Validator
 public class CreateSubscriberValidator : AbstractValidator<CreateSubscriberCommand>
 {
     public CreateSubscriberValidator()

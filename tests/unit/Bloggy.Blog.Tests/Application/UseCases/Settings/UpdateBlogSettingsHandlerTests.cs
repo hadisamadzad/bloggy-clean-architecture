@@ -1,20 +1,21 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Bloggy.Blog.Application.Constants;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations.Settings;
 using Bloggy.Blog.Application.Types.Entities;
-using Bloggy.Blog.Application.UseCases.Settings;
 using Bloggy.Core.Utilities;
 using Bloggy.Core.Utilities.OperationResult;
 using NSubstitute;
 using Xunit;
 
-namespace Bloggy.Blog.Tests.Application.UseCases.Settings;
+namespace Bloggy.Blog.Tests.Application.Operations.Settings;
 
-public class UpdateBlogSettingsHandlerTests
+public class UpdateBlogSettingsOperationTests
 {
     private readonly IRepositoryManager _repository;
-    private readonly UpdateBlogSettingsHandler _handler;
+    private readonly UpdateBlogSettingsOperation _operation;
 
     readonly UpdateBlogSettingsCommand ValidCommand = new()
     {
@@ -34,14 +35,14 @@ public class UpdateBlogSettingsHandlerTests
             ]
     };
 
-    public UpdateBlogSettingsHandlerTests()
+    public UpdateBlogSettingsOperationTests()
     {
         _repository = Substitute.For<IRepositoryManager>();
-        _handler = new UpdateBlogSettingsHandler(_repository);
+        _operation = new UpdateBlogSettingsOperation(_repository);
     }
 
     [Fact]
-    public async Task TestHandle_WhenSettingsNotFound_ShouldReturnUnprocessable()
+    public async Task ExecuteAsync_WhenSettingsNotFound_ShouldReturnUnprocessable()
     {
         // Arrange
         var command = ValidCommand;
@@ -49,16 +50,16 @@ public class UpdateBlogSettingsHandlerTests
         _repository.Settings.GetBlogSettingAsync().Returns((SettingEntity)null!);
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
-        Assert.Equal(OperationStatus.Failed, result.Status);
-        Assert.Equal(Errors.SettingsNotFound, result.Value);
+        Assert.Equal(OperationStatus.NotFound, result.Status);
+        Assert.NotNull(result.Error);
     }
 
     [Fact]
-    public async Task TestHandle_WhenValidRequest_ShouldUpdateSettings()
+    public async Task ExecuteAsync_WhenValidRequest_ShouldUpdateSettings()
     {
         // Arrange
         var command = new UpdateBlogSettingsCommand
@@ -87,7 +88,7 @@ public class UpdateBlogSettingsHandlerTests
         _repository.Settings.GetBlogSettingAsync().Returns(existingSettings);
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.Succeeded);
@@ -103,87 +104,89 @@ public class UpdateBlogSettingsHandlerTests
     }
 
     [Fact]
-    public async Task TestHandle_WhenInvalidBlogTitle_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenInvalidBlogTitle_ShouldReturnInvalid()
     {
         // Arrange
         var command = ValidCommand with { BlogTitle = string.Empty };
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
-        var error = result.Value as ErrorModel;
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
         Assert.Equal(OperationStatus.Invalid, result.Status);
-        Assert.Equal("Invalid blog title.", error.Message);
+        Assert.NotNull(result.Error);
+        Assert.Contains("'Blog Title' must not be empty.", result.Error.Messages);
     }
 
     [Fact]
-    public async Task TestHandle_WhenInvalidBlogDescription_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenInvalidBlogDescription_ShouldReturnInvalid()
     {
         // Arrange
         var command = ValidCommand with { BlogDescription = string.Empty };
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
-        var error = result.Value as ErrorModel;
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
         Assert.Equal(OperationStatus.Invalid, result.Status);
-        Assert.Equal("Invalid blog description.", error.Message);
+        Assert.NotNull(result.Error);
+        Assert.Contains("'Blog Description' must not be empty.", result.Error.Messages);
     }
 
     [Fact]
-    public async Task TestHandle_WhenInvalidSeoMetaTitle_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenInvalidSeoMetaTitle_ShouldReturnInvalid()
     {
         // Arrange
         var command = ValidCommand with { SeoMetaTitle = new string('a', 61) }; // Too long title
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
-        var error = result.Value as ErrorModel;
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
         Assert.Equal(OperationStatus.Invalid, result.Status);
-        Assert.Equal("Invalid SEO title.", error.Message);
+        Assert.NotNull(result.Error);
+        Assert.NotEmpty(result.Error.Messages);
+        Assert.Contains(result.Error.Messages, m => m.Contains("Seo Meta Title") && m.Contains("60"));
     }
 
     [Fact]
-    public async Task TestHandle_WhenInvalidSeoMetaDescription_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenInvalidSeoMetaDescription_ShouldReturnInvalid()
     {
         // Arrange
         var command = ValidCommand with { SeoMetaDescription = new string('a', 161) }; // Too long description
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
-        var error = result.Value as ErrorModel;
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
         Assert.Equal(OperationStatus.Invalid, result.Status);
-        Assert.Equal("Invalid SEO description.", error.Message);
+        Assert.NotNull(result.Error);
+        Assert.NotEmpty(result.Error.Messages);
+        Assert.Contains(result.Error.Messages, m => m.Contains("Seo Meta Description") && m.Contains("160"));
     }
 
     [Fact]
-    public async Task TestHandle_WhenInvalidBlogUrl_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenInvalidBlogUrl_ShouldReturnInvalid()
     {
         // Arrange
         var command = ValidCommand with { BlogUrl = string.Empty };
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
-        var error = result.Value as ErrorModel;
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
         Assert.Equal(OperationStatus.Invalid, result.Status);
-        Assert.Equal("Invalid blog URL.", error.Message);
+        Assert.NotNull(result.Error);
+        Assert.Contains("'Blog Url' must not be empty.", result.Error.Messages);
     }
 
     [Fact]
-    public async Task TestHandle_WhenInvalidSocialNetworkName_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenInvalidSocialNetworkName_ShouldReturnInvalid()
     {
         // Arrange
         var command = ValidCommand with
@@ -192,12 +195,12 @@ public class UpdateBlogSettingsHandlerTests
         };
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
-        var error = result.Value as ErrorModel;
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
         Assert.Equal(OperationStatus.Invalid, result.Status);
-        Assert.Equal("Invalid social network name.", error.Message);
+        Assert.NotNull(result.Error);
+        Assert.Contains("The specified condition was not met for 'Socials'.", result.Error.Messages);
     }
 }

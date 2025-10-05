@@ -5,33 +5,32 @@ using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
 using FluentValidation;
-using MediatR;
 
-namespace Bloggy.Blog.Application.UseCases.Tags;
+namespace Bloggy.Blog.Application.Operations.Tags;
 
-// Handler
-public class CreateTagHandler(IRepositoryManager repository) :
-    IRequestHandler<CreateTagCommand, OperationResult>
+public class CreateTagOperation(IRepositoryManager repository) :
+    IOperation<CreateTagCommand, string>
 {
-    public async Task<OperationResult> Handle(CreateTagCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<string>> ExecuteAsync(
+        CreateTagCommand command, CancellationToken? cancellation = null)
     {
         // Validate
-        var validation = new CreateTagValidator().Validate(request);
+        var validation = new CreateTagValidator().Validate(command);
         if (!validation.IsValid)
-            return OperationResult.Failure(OperationStatus.Invalid, validation.GetFirstError());
+            return OperationResult<string>.ValidationFailure([.. validation.GetErrorMessages()]);
 
-        var slug = string.IsNullOrWhiteSpace(request.Slug) ?
-            SlugHelper.GenerateSlug(request.Name) : request.Slug;
+        var slug = string.IsNullOrWhiteSpace(command.Slug) ?
+            SlugHelper.GenerateSlug(command.Name) : command.Slug;
 
         // Check duplicate
         var existingSlug = await repository.Tags.GetBySlugAsync(slug);
         if (existingSlug is not null)
-            return OperationResult.Failure(OperationStatus.Failed, Errors.DuplicateTag);
+            return OperationResult<string>.Failure("Slug already in use.");
 
         var entity = new TagEntity
         {
             Id = UidHelper.GenerateNewId("tag"),
-            Name = request.Name,
+            Name = command.Name,
             Slug = slug,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
@@ -39,14 +38,13 @@ public class CreateTagHandler(IRepositoryManager repository) :
 
         await repository.Tags.InsertAsync(entity);
 
-        return OperationResult.Success(entity);
+        return OperationResult<string>.Success(entity.Id);
     }
 }
 
-// Model
-public record CreateTagCommand(string Name, string Slug) : IRequest<OperationResult>;
+public record CreateTagCommand(string Name, string Slug) : IOperationCommand;
 
-// Model Validator
+// Validator
 public class CreateTagValidator : AbstractValidator<CreateTagCommand>
 {
     public CreateTagValidator()

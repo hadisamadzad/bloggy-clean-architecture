@@ -4,44 +4,42 @@ using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
 using FluentValidation;
-using MediatR;
 
-namespace Bloggy.Blog.Application.UseCases.Settings;
+namespace Bloggy.Blog.Application.Operations.Settings;
 
-// Handler
-public class UpdateBlogSettingsHandler(IRepositoryManager repository) :
-    IRequestHandler<UpdateBlogSettingsCommand, OperationResult>
+public class UpdateBlogSettingsOperation(IRepositoryManager repository) :
+    IOperation<UpdateBlogSettingsCommand, NoResult>
 {
-    public async Task<OperationResult> Handle(UpdateBlogSettingsCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<NoResult>> ExecuteAsync(
+        UpdateBlogSettingsCommand command, CancellationToken? cancellation = null)
     {
         // Validate request
-        var validation = new UpdateBlogSettingsValidator().Validate(request);
+        var validation = new UpdateBlogSettingsValidator().Validate(command);
         if (!validation.IsValid)
-            return OperationResult.Failure(OperationStatus.Invalid, validation.GetFirstError());
+            return OperationResult.ValidationFailure([.. validation.GetErrorMessages()]);
 
         // Retrieve the article
         var entity = await repository.Settings.GetBlogSettingAsync();
         if (entity is null)
-            return OperationResult.Failure(OperationStatus.Failed, Errors.SettingsNotFound);
+            return OperationResult.NotFoundFailure("Blog settings not found.");
 
-        entity.BlogTitle = request.BlogTitle;
-        entity.BlogDescription = request.BlogDescription;
-        entity.SeoMetaTitle = request.SeoMetaTitle;
-        entity.SeoMetaDescription = request.SeoMetaDescription;
-        entity.BlogUrl = request.BlogUrl;
-        entity.BlogLogoUrl = request.BlogLogoUrl;
-        entity.Socials = request.Socials;
+        entity.BlogTitle = command.BlogTitle;
+        entity.BlogDescription = command.BlogDescription;
+        entity.SeoMetaTitle = command.SeoMetaTitle;
+        entity.SeoMetaDescription = command.SeoMetaDescription;
+        entity.BlogUrl = command.BlogUrl;
+        entity.BlogLogoUrl = command.BlogLogoUrl;
+        entity.Socials = command.Socials;
 
         entity.UpdatedAt = DateTime.UtcNow;
 
         _ = await repository.Settings.UpdateAsync(entity);
 
-        return OperationResult.Success(entity);
+        return OperationResult.Success();
     }
 }
 
-// Model
-public record UpdateBlogSettingsCommand() : IRequest<OperationResult>
+public record UpdateBlogSettingsCommand() : IOperationCommand
 {
     public required string BlogTitle { get; set; }
     public required string BlogDescription { get; set; } = string.Empty;
@@ -52,7 +50,7 @@ public record UpdateBlogSettingsCommand() : IRequest<OperationResult>
     public ICollection<SocialNetwork> Socials { get; set; } = [];
 }
 
-// Model Validator
+// Validator
 public class UpdateBlogSettingsValidator : AbstractValidator<UpdateBlogSettingsCommand>
 {
     public UpdateBlogSettingsValidator()

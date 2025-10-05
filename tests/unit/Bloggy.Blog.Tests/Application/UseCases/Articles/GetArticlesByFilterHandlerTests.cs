@@ -2,32 +2,32 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations.Articles;
 using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Blog.Application.Types.Models.Articles;
-using Bloggy.Blog.Application.UseCases.Articles;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.Pagination;
 using NSubstitute;
 using Xunit;
 
-namespace Bloggy.Blog.Tests.Application.UseCases.Articles;
+namespace Bloggy.Blog.Tests.Application.Operations.Articles;
 
-public class GetArticlesByFilterHandlerTests
+public class GetArticlesByFilterOperationTests
 {
     private readonly IRepositoryManager _repository;
-    private readonly GetArticlesByFilterHandler _handler;
+    private readonly GetArticlesByFilterOperation _operation;
 
-    public GetArticlesByFilterHandlerTests()
+    public GetArticlesByFilterOperationTests()
     {
         _repository = Substitute.For<IRepositoryManager>();
-        _handler = new GetArticlesByFilterHandler(_repository);
+        _operation = new GetArticlesByFilterOperation(_repository);
     }
 
     [Fact]
-    public async Task TestHandle_WhenFilterIsNull_ShouldDefaultToPaginationAndReturnResult()
+    public async Task ExecuteAsync_WhenFilterIsNull_ShouldDefaultToPaginationAndReturnResult()
     {
         // Arrange
-        var query = new GetArticlesByFilterQuery(null!);
+        var query = new GetArticlesByFilterCommand(null!);
 
         _repository.Articles.GetByFilterAsync(Arg.Any<ArticleFilter>())
             .Returns([new() { Id = "1", AuthorId = UidHelper.GenerateNewId("user") }]);
@@ -36,7 +36,7 @@ public class GetArticlesByFilterHandlerTests
             .Returns(1);
 
         // Act
-        var result = await _handler.Handle(query, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(query, CancellationToken.None);
 
         // Assert
         Assert.True(result.Succeeded);
@@ -44,17 +44,17 @@ public class GetArticlesByFilterHandlerTests
     }
 
     [Fact]
-    public async Task TestHandle_WhenNoArticlesFound_ShouldReturnEmptyPaginatedList()
+    public async Task ExecuteAsync_WhenNoArticlesFound_ShouldReturnEmptyPaginatedList()
     {
         // Arrange
-        var query = new GetArticlesByFilterQuery(new ArticleFilter { Page = 1, PageSize = 10 });
+        var query = new GetArticlesByFilterCommand(new ArticleFilter { Page = 1, PageSize = 10 });
 
         _repository.Articles.GetByFilterAsync(Arg.Any<ArticleFilter>())
             .Returns((List<ArticleEntity>)null!);
         _repository.Articles.CountByFilterAsync(Arg.Any<ArticleFilter>()).Returns(0);
 
         // Act
-        var result = await _handler.Handle(query, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(query, CancellationToken.None);
 
         // Assert
         var paginatedList = Assert.IsType<PaginatedList<ArticleModel>>(result.Value);

@@ -1,33 +1,33 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations.Tags;
 using Bloggy.Blog.Application.Types.Entities;
-using Bloggy.Blog.Application.UseCases.Tags;
 using Bloggy.Core.Utilities.OperationResult;
 using NSubstitute;
 using Xunit;
 
-namespace Bloggy.Blog.Tests.Application.UseCases.Tags;
+namespace Bloggy.Blog.Tests.Application.Operations.Tags;
 
-public class CreateTagHandlerTests
+public class CreateTagOperationTests
 {
     private readonly IRepositoryManager _repository;
-    private readonly CreateTagHandler _handler;
+    private readonly CreateTagOperation _operation;
 
-    public CreateTagHandlerTests()
+    public CreateTagOperationTests()
     {
         _repository = Substitute.For<IRepositoryManager>();
-        _handler = new CreateTagHandler(_repository);
+        _operation = new CreateTagOperation(_repository);
     }
 
     [Fact]
-    public async Task TestHandle_WhenTagValidationFails_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenTagValidationFails_ShouldReturnInvalid()
     {
         // Arrange
         var command = new CreateTagCommand("", "slug"); // Invalid name
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
@@ -35,7 +35,7 @@ public class CreateTagHandlerTests
     }
 
     [Fact]
-    public async Task TestHandle_WhenDuplicateTagSlug_ShouldReturnUnprocessable()
+    public async Task ExecuteAsync_WhenDuplicateTagSlug_ShouldReturnUnprocessable()
     {
         // Arrange
         var command = new CreateTagCommand("Valid Name", "duplicate-slug");
@@ -43,7 +43,7 @@ public class CreateTagHandlerTests
             .Returns(new TagEntity { Id = string.Empty, Name = string.Empty });
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
@@ -51,18 +51,18 @@ public class CreateTagHandlerTests
     }
 
     [Fact]
-    public async Task TestHandle_WhenValidRequest_ShouldCreateTag()
+    public async Task ExecuteAsync_WhenValidRequest_ShouldCreateTag()
     {
         // Arrange
         var command = new CreateTagCommand("Valid Name", "valid-slug");
         _repository.Tags.GetBySlugAsync(command.Slug).Returns((TagEntity)null!); // No duplicate slug
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.Succeeded);
-        Assert.IsType<TagEntity>(result.Value);
+        Assert.IsType<string>(result.Value);
         await _repository.Tags.Received(1).InsertAsync(Arg.Any<TagEntity>());
     }
 }

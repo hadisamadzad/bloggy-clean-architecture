@@ -2,35 +2,33 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations.Subscribers;
 using Bloggy.Blog.Application.Types.Entities;
-using Bloggy.Blog.Application.UseCases.Subscribers;
 using Bloggy.Core.Utilities.OperationResult;
 using NSubstitute;
 using Xunit;
 
-namespace Bloggy.Blog.Tests.Application.UseCases.Subscribers;
+namespace Bloggy.Blog.Tests.Application.Operations.Subscribers;
 
-public class CreateSubscriberHandlerTests
+public class CreateSubscriberOperationTests
 {
     private readonly IRepositoryManager _repository;
-    private readonly CreateSubscriberHandler _handler;
+    private readonly CreateSubscriberOperation _operation;
 
-    public CreateSubscriberHandlerTests()
+    public CreateSubscriberOperationTests()
     {
         _repository = Substitute.For<IRepositoryManager>();
-        _handler = new CreateSubscriberHandler(_repository);
+        _operation = new CreateSubscriberOperation(_repository);
     }
 
     [Fact]
-    public async Task Handle_WhenValidationFails_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenValidationFails_ShouldReturnInvalid()
     {
         // Arrange
         var request = new CreateSubscriberCommand("invalidemail");
-        var validation = new CreateSubscriberValidator();
-        var result = validation.Validate(request);
 
         // Act
-        var response = await _handler.Handle(request, CancellationToken.None);
+        var response = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.False(response.Succeeded);
@@ -38,7 +36,7 @@ public class CreateSubscriberHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenEmailIsNew_ShouldCreateNewSubscriber()
+    public async Task ExecuteAsync_WhenEmailIsNew_ShouldCreateNewSubscriber()
     {
         // Arrange
         var request = new CreateSubscriberCommand("test@example.com");
@@ -46,7 +44,7 @@ public class CreateSubscriberHandlerTests
         _repository.Subscribers.GetByEmailAsync(request.Email).Returns(existingSubscriber);
 
         // Act
-        var response = await _handler.Handle(request, CancellationToken.None);
+        var response = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.True(response.Succeeded);
@@ -55,7 +53,7 @@ public class CreateSubscriberHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenEmailExists_ShouldUpdateSubscriber()
+    public async Task ExecuteAsync_WhenEmailExists_ShouldUpdateSubscriber()
     {
         // Arrange
         var request = new CreateSubscriberCommand("test@example.com");
@@ -70,12 +68,11 @@ public class CreateSubscriberHandlerTests
         _repository.Subscribers.GetByEmailAsync(request.Email).Returns(existingSubscriber);
 
         // Act
-        var response = await _handler.Handle(request, CancellationToken.None);
-        var responseValue = response.Value as SubscriberEntity;
+        var response = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.True(response.Succeeded);
-        Assert.Equal(existingSubscriber.Email, responseValue.Email);
+        Assert.Equal(existingSubscriber.Id, response.Value);
         await _repository.Subscribers.Received(1).UpdateAsync(existingSubscriber);
     }
 }

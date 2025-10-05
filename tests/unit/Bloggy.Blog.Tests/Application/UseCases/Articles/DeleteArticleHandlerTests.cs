@@ -1,28 +1,28 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations.Articles;
 using Bloggy.Blog.Application.Types.Entities;
-using Bloggy.Blog.Application.UseCases.Articles;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
 using NSubstitute;
 using Xunit;
 
-namespace Bloggy.Blog.Tests.Application.UseCases.Articles;
+namespace Bloggy.Blog.Tests.Application.Operations.Articles;
 
-public class DeleteArticleHandlerTests
+public class DeleteArticleOperationTests
 {
     private readonly IRepositoryManager _repository;
-    private readonly DeleteArticleHandler _handler;
+    private readonly DeleteArticleOperation _operation;
 
-    public DeleteArticleHandlerTests()
+    public DeleteArticleOperationTests()
     {
         _repository = Substitute.For<IRepositoryManager>();
-        _handler = new DeleteArticleHandler(_repository);
+        _operation = new DeleteArticleOperation(_repository);
     }
 
     [Fact]
-    public async Task TestHandle_WhenArticleExists_ShouldSoftDeleteAndReturnSuccess()
+    public async Task ExecuteAsync_WhenArticleExists_ShouldSoftDeleteAndReturnSuccess()
     {
         // Arrange
         var article = new ArticleEntity
@@ -36,7 +36,7 @@ public class DeleteArticleHandlerTests
         var command = new DeleteArticleCommand("article-1");
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.True(result.Succeeded);
@@ -45,18 +45,18 @@ public class DeleteArticleHandlerTests
     }
 
     [Fact]
-    public async Task TestHandle_WhenArticleDoesNotExist_ShouldReturnUnprocessable()
+    public async Task ExecuteAsync_WhenArticleDoesNotExist_ShouldReturnUnprocessable()
     {
         // Arrange
         _repository.Articles.GetByIdAsync("non-existent").Returns((ArticleEntity)null!);
         var command = new DeleteArticleCommand("non-existent");
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
-        Assert.Equal(OperationStatus.Failed, result.Status);
+        Assert.Equal(OperationStatus.NotFound, result.Status);
         await _repository.Articles.DidNotReceive().UpdateAsync(Arg.Any<ArticleEntity>());
     }
 }

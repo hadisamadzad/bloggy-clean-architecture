@@ -2,33 +2,33 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations.Subscribers;
 using Bloggy.Blog.Application.Types.Entities;
-using Bloggy.Blog.Application.UseCases.Subscribers;
 using Bloggy.Core.Utilities.OperationResult;
 using NSubstitute;
 using Xunit;
 
-namespace Bloggy.Blog.Tests.Application.UseCases.Subscribers;
+namespace Bloggy.Blog.Tests.Application.Operations.Subscribers;
 
-public class UnsubscribeSubscriberHandlerTests
+public class DeleteSubscriberOperationTests
 {
     private readonly IRepositoryManager _repository;
-    private readonly UnsubscribeSubscriberHandler _handler;
+    private readonly DeleteSubscriberOperation _operation;
 
-    public UnsubscribeSubscriberHandlerTests()
+    public DeleteSubscriberOperationTests()
     {
         _repository = Substitute.For<IRepositoryManager>();
-        _handler = new UnsubscribeSubscriberHandler(_repository);
+        _operation = new DeleteSubscriberOperation(_repository);
     }
 
     [Fact]
-    public async Task Handle_WhenEmailIsInvalid_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenEmailIsInvalid_ShouldReturnInvalid()
     {
         // Arrange
-        var request = new UnsubscribeSubscriberCommand("invalidemail");
+        var request = new DeleteSubscriberCommand("invalidemail");
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
@@ -36,14 +36,14 @@ public class UnsubscribeSubscriberHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenSubscriberNotFound_ShouldReturnIgnored()
+    public async Task ExecuteAsync_WhenSubscriberNotFound_ShouldReturnNoOperation()
     {
         // Arrange
-        var request = new UnsubscribeSubscriberCommand("test@example.com");
+        var request = new DeleteSubscriberCommand("test@example.com");
         _repository.Subscribers.GetByEmailAsync(request.Email).Returns((SubscriberEntity)null!);
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.True(result.Succeeded);
@@ -51,10 +51,10 @@ public class UnsubscribeSubscriberHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenSubscriberFound_ShouldUpdateSubscriberToInactive()
+    public async Task ExecuteAsync_WhenSubscriberFound_ShouldUpdateSubscriberToInactive()
     {
         // Arrange
-        var request = new UnsubscribeSubscriberCommand("test@example.com");
+        var request = new DeleteSubscriberCommand("test@example.com");
         var existingSubscriber = new SubscriberEntity
         {
             Id = string.Empty,
@@ -66,7 +66,7 @@ public class UnsubscribeSubscriberHandlerTests
         _repository.Subscribers.GetByEmailAsync(request.Email).Returns(existingSubscriber);
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.True(result.Succeeded);

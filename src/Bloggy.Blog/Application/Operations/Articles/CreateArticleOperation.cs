@@ -1,54 +1,62 @@
 ﻿using Bloggy.Blog.Application.Constants;
 using Bloggy.Blog.Application.Helpers;
 using Bloggy.Blog.Application.Interfaces;
-using Bloggy.Blog.Application.Types.Models.Articles;
+using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
 using FluentValidation;
-using MediatR;
 
-namespace Bloggy.Blog.Application.UseCases.Articles;
+namespace Bloggy.Blog.Application.Operations.Articles;
 
-// Handler
-public class UpdateArticleHandler(IRepositoryManager repository) :
-    IRequestHandler<UpdateArticleCommand, OperationResult>
+public class CreateArticleOperation(IRepositoryManager repository) :
+    IOperation<CreateArticleCommand, string>
 {
-    public async Task<OperationResult> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<string>> ExecuteAsync(
+        CreateArticleCommand command, CancellationToken? cancellation = null)
     {
         // Validate
-        var validation = new UpdateArticleValidator().Validate(request);
+        var validation = new CreateArticleValidator().Validate(command);
         if (!validation.IsValid)
-            return OperationResult.Failure(OperationStatus.Invalid, validation.GetFirstError());
+            return OperationResult<string>.ValidationFailure([.. validation.GetErrorMessages()]);
+
+        var slug = string.IsNullOrWhiteSpace(command.Slug) ?
+            SlugHelper.GenerateSlug(command.Title) : command.Slug;
 
         // Check duplicate
-        var existingSlug = await repository.Articles.GetBySlugAsync(request.Slug);
+        var existingSlug = await repository.Articles.GetBySlugAsync(command.Slug);
         if (existingSlug is not null)
-            return OperationResult.Failure(OperationStatus.Failed, Errors.DuplicateArticle);
+            return OperationResult<string>.Failure("Slug is already in use.");
 
-        var entity = await repository.Articles.GetByIdAsync(request.ArticleId);
+        var entity = new ArticleEntity
+        {
+            Id = UidHelper.GenerateNewId("article"),
+            AuthorId = command.AuthorId,
 
-        entity.Title = request.Title;
-        entity.Subtitle = request.Subtitle;
-        entity.Summary = request.Summary;
-        entity.Content = request.Content;
-        entity.Slug = request.Slug.ToLower();
-        entity.ThumbnailUrl = request.ThumbnailUrl;
-        entity.CoverImageUrl = request.CoverImageUrl;
+            Title = command.Title,
+            Subtitle = command.Subtitle,
+            Summary = command.Summary,
+            Content = command.Content,
+            Slug = slug,
+            ThumbnailUrl = command.ThumbnailUrl,
+            CoverImageUrl = command.CoverImageUrl,
 
-        entity.TimeToReadInMinute = request.TimeToRead;
-        entity.TagIds = [.. request.TagIds];
-        entity.UpdatedAt = DateTime.UtcNow;
+            TimeToReadInMinute = 6, // FIXME: Calculate time to read
+            TagIds = [.. command.TagIds],
 
-        _ = await repository.Articles.UpdateAsync(entity);
+            Status = ArticleStatus.Draft,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
 
-        return OperationResult.Success(entity.MapToModel());
+        await repository.Articles.InsertAsync(entity);
+
+        return OperationResult<string>.Success(entity.Id);
     }
 }
 
-// Model
-public record UpdateArticleCommand : IRequest<OperationResult>
+public record CreateArticleCommand : IOperationCommand
 {
-    public string ArticleId { get; init; } = string.Empty;
+    public required string AuthorId { get; init; }
     public string Title { get; init; } = string.Empty;
     public string Subtitle { get; set; } = string.Empty;
     public string Summary { get; set; } = string.Empty;
@@ -56,17 +64,16 @@ public record UpdateArticleCommand : IRequest<OperationResult>
     public string Slug { get; set; } = string.Empty;
     public string ThumbnailUrl { get; set; } = string.Empty;
     public string CoverImageUrl { get; set; } = string.Empty;
-    public int TimeToRead { get; set; }
     public ICollection<string> TagIds { get; set; } = [];
 }
 
-// Model Validator
-public class UpdateArticleValidator : AbstractValidator<UpdateArticleCommand>
+// Validator
+public class CreateArticleValidator : AbstractValidator<CreateArticleCommand>
 {
-    public UpdateArticleValidator()
+    public CreateArticleValidator()
     {
-        // ArticleId
-        RuleFor(x => x.ArticleId)
+        // AuthorId
+        RuleFor(x => x.AuthorId)
             .NotEmpty()
             .WithState(_ => Errors.InvalidId);
 
@@ -90,9 +97,8 @@ public class UpdateArticleValidator : AbstractValidator<UpdateArticleCommand>
 
         // Slug
         RuleFor(x => x.Slug)
-            .NotEmpty()
             .MaximumLength(100)
-            .Must(x => SlugHelper.IsValidSlug(x))
+            .When(x => !string.IsNullOrEmpty(x.Slug))
             .WithState(_ => Errors.InvalidSlug);
 
         // ThumbnailUrl

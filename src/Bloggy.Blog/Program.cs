@@ -2,9 +2,11 @@ using System.Text.Json.Serialization;
 using Blog.Core.Bootstrap;
 using Blog.Infrastructure.Database;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations;
 using Bloggy.Core.Extensions;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Persistence.MongoDB;
+using Bloggy.Core.Utilities.OperationResult;
 using Serilog;
 
 var env = BootstrapHelper.GetEnvironmentName("Local");
@@ -34,7 +36,8 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 // Add services to the container
 builder.Services.AddCustomConfigurations(configs);
-builder.Services.AddConfiguredMediatR();
+builder.Services.AddOperations();
+builder.Services.AddTransient<IOperationService, OperationService>();
 
 builder.Services.AddConfiguredMongoDB(configs);
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();

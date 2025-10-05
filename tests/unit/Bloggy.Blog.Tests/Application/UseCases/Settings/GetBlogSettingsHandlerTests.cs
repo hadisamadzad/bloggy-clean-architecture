@@ -2,52 +2,54 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bloggy.Blog.Application.Constants;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations.Settings;
 using Bloggy.Blog.Application.Types.Entities;
-using Bloggy.Blog.Application.UseCases.Settings;
+using Bloggy.Blog.Application.Types.Models.Settings;
 using Bloggy.Core.Utilities.OperationResult;
 using NSubstitute;
 using Xunit;
 
-namespace Bloggy.Blog.Tests.Application.UseCases.Settings;
+namespace Bloggy.Blog.Tests.Application.Operations.Settings;
 
-public class GetBlogSettingsHandlerTests
+public class GetBlogSettingsOperationTests
 {
     private readonly IRepositoryManager _repository;
-    private readonly GetBlogSettingsHandler _handler;
+    private readonly GetBlogSettingsOperation _operation;
 
-    public GetBlogSettingsHandlerTests()
+    public GetBlogSettingsOperationTests()
     {
         _repository = Substitute.For<IRepositoryManager>();
-        _handler = new GetBlogSettingsHandler(_repository);
+        _operation = new GetBlogSettingsOperation(_repository);
     }
 
     [Fact]
-    public async Task TestHandle_WhenSettingsFound_ShouldReturnSuccess()
+    public async Task ExecuteAsync_WhenSettingsFound_ShouldReturnSuccess()
     {
         // Arrange
         var settings = new SettingEntity { Id = "settings-1", BlogTitle = string.Empty };
         _repository.Settings.GetBlogSettingAsync().Returns(settings);
 
         // Act
-        var result = await _handler.Handle(new GetBlogSettingsQuery(), CancellationToken.None);
+        var result = await _operation.ExecuteAsync(new GetBlogSettingsCommand(), CancellationToken.None);
 
         // Assert
         Assert.True(result.Succeeded);
-        Assert.Equal(settings, result.Value);
+        Assert.NotNull(result.Value);
+        Assert.IsType<SettingModel>(result.Value);
     }
 
     [Fact]
-    public async Task TestHandle_WhenSettingsNotFound_ShouldReturnUnprocessable()
+    public async Task ExecuteAsync_WhenSettingsNotFound_ShouldReturnUnprocessable()
     {
         // Arrange
         _repository.Settings.GetBlogSettingAsync().Returns((SettingEntity)null!);
 
         // Act
-        var result = await _handler.Handle(new GetBlogSettingsQuery(), CancellationToken.None);
+        var result = await _operation.ExecuteAsync(new GetBlogSettingsCommand(), CancellationToken.None);
 
         // Assert
         Assert.False(result.Succeeded);
-        Assert.Equal(OperationStatus.Failed, result.Status);
-        Assert.Equal(Errors.SettingsNotFound, result.Value);
+        Assert.Equal(OperationStatus.NotFound, result.Status);
+        Assert.NotNull(result.Error);
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Bloggy.Core.Helpers;
 using FluentValidation.Results;
 using Xunit;
@@ -21,7 +22,7 @@ public class ValidationHelperTests
         var result = validationResult.GetErrorMessages();
 
         // Assert
-        Assert.Equal("Error message 1", result);
+        Assert.Equal("Error message 1", result.First());
     }
 
     [Fact]
@@ -34,11 +35,11 @@ public class ValidationHelperTests
         var result = validationResult.GetErrorMessages();
 
         // Assert
-        Assert.Null(result);
+        Assert.Empty(result);
     }
 
     [Fact]
-    public void GetFirstError_ShouldReturnCustomState_WhenErrorsExist()
+    public void GetFirstError_ShouldReturnFirstErrorMessage_WhenErrorsExist()
     {
         // Arrange
         var validationResult = new ValidationResult(
@@ -49,10 +50,10 @@ public class ValidationHelperTests
         );
 
         // Act
-        var result = validationResult.GetFirstError();
+        var result = validationResult.GetErrorMessages().FirstOrDefault();
 
         // Assert
-        Assert.Equal("CustomState1", result);
+        Assert.Equal("Error message 1", result);
     }
 
     [Fact]
@@ -62,7 +63,7 @@ public class ValidationHelperTests
         var validationResult = new ValidationResult();
 
         // Act
-        var result = validationResult.GetFirstError();
+        var result = validationResult.GetErrorMessages().FirstOrDefault();
 
         // Assert
         Assert.Null(result);

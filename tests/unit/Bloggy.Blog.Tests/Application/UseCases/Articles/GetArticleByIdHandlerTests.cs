@@ -1,34 +1,34 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Operations.Articles;
 using Bloggy.Blog.Application.Types.Entities;
-using Bloggy.Blog.Application.UseCases.Articles;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
 using NSubstitute;
 using Xunit;
 
-namespace Bloggy.Blog.Tests.Application.UseCases.Articles;
+namespace Bloggy.Blog.Tests.Application.Operations.Articles;
 
-public class GetArticleByIdHandlerTests
+public class GetArticleByIdOperationTests
 {
     private readonly IRepositoryManager _repository;
-    private readonly GetArticleByIdHandler _handler;
+    private readonly GetArticleByIdOperation _operation;
 
-    public GetArticleByIdHandlerTests()
+    public GetArticleByIdOperationTests()
     {
         _repository = Substitute.For<IRepositoryManager>();
-        _handler = new GetArticleByIdHandler(_repository);
+        _operation = new GetArticleByIdOperation(_repository);
     }
 
     [Fact]
-    public async Task TestHandle_WhenArticleIdIsInvalid_ShouldReturnInvalid()
+    public async Task ExecuteAsync_WhenArticleIdIsInvalid_ShouldReturnInvalid()
     {
         // Arrange
-        var request = new GetArticleByIdQuery("");
+        var request = new GetArticleByIdCommand("");
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.Equal(OperationStatus.Invalid, result.Status);
@@ -36,24 +36,24 @@ public class GetArticleByIdHandlerTests
     }
 
     [Fact]
-    public async Task TestHandle_WhenArticleDoesNotExist_ShouldReturnUnprocessable()
+    public async Task ExecuteAsync_WhenArticleDoesNotExist_ShouldReturnUnprocessable()
     {
         // Arrange
-        var request = new GetArticleByIdQuery("non-existent-id");
+        var request = new GetArticleByIdCommand("non-existent-id");
         _repository.Articles.GetByIdAsync(request.ArticleId).Returns((ArticleEntity)null!);
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
-        Assert.Equal(OperationStatus.Failed, result.Status);
+        Assert.Equal(OperationStatus.NotFound, result.Status);
     }
 
     [Fact]
-    public async Task TestHandle_WhenArticleExists_ShouldReturnSuccess()
+    public async Task ExecuteAsync_WhenArticleExists_ShouldReturnSuccess()
     {
         // Arrange
-        var request = new GetArticleByIdQuery("article-1");
+        var request = new GetArticleByIdCommand("article-1");
         var tagIds = new[] { "tag-1" };
         _repository.Articles.GetByIdAsync(request.ArticleId)
             .Returns(
@@ -74,7 +74,7 @@ public class GetArticleByIdHandlerTests
             ]);
 
         // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
+        var result = await _operation.ExecuteAsync(request, CancellationToken.None);
 
         // Assert
         Assert.True(result.Succeeded);

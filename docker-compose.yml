@@ -4,7 +4,7 @@ services:
     image: "bloggy-gateway"
     restart: always
     networks:
-      - bloggy-back
+      - bloggy-backend
     ports:
       - 44000:6000
     build:
@@ -20,7 +20,7 @@ services:
     image: "bloggy-identity"
     restart: always
     networks:
-      - bloggy-back
+      - bloggy-backend
     build:
       context: ./src
       dockerfile: Identity/Dockerfile
@@ -33,7 +33,7 @@ services:
     image: "bloggy-blog"
     restart: always
     networks:
-      - bloggy-back
+      - bloggy-backend
     build:
       context: ./src
       dockerfile: Blog/Dockerfile
