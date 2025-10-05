@@ -24,6 +24,8 @@ public class UpdateBlogSettingsOperation(IRepositoryManager repository) :
             return OperationResult.NotFoundFailure("Blog settings not found.");
 
         entity.BlogTitle = command.BlogTitle;
+        entity.BlogSubtitle = command.BlogSubtitle;
+        entity.BlogPageTitle = command.BlogPageTitle;
         entity.BlogDescription = command.BlogDescription;
         entity.SeoMetaTitle = command.SeoMetaTitle;
         entity.SeoMetaDescription = command.SeoMetaDescription;
@@ -42,6 +44,8 @@ public class UpdateBlogSettingsOperation(IRepositoryManager repository) :
 public record UpdateBlogSettingsCommand() : IOperationCommand
 {
     public required string BlogTitle { get; set; }
+    public required string BlogSubtitle { get; set; }
+    public required string BlogPageTitle { get; set; }
     public required string BlogDescription { get; set; } = string.Empty;
     public string SeoMetaTitle { get; set; } = string.Empty;
     public string SeoMetaDescription { get; set; } = string.Empty;
@@ -60,6 +64,20 @@ public class UpdateBlogSettingsValidator : AbstractValidator<UpdateBlogSettingsC
             .NotEmpty()
             .WithState(_ => Errors.InvalidBlogTitle)
             .MaximumLength(100)
+            .WithState(_ => Errors.InvalidBlogTitle);
+
+        // BlogSubtitle
+        RuleFor(x => x.BlogSubtitle)
+            .NotEmpty()
+            .WithState(_ => Errors.InvalidBlogTitle)
+            .MaximumLength(200)
+            .WithState(_ => Errors.InvalidBlogTitle);
+
+        // BlogPageTitle
+        RuleFor(x => x.BlogPageTitle)
+            .NotEmpty()
+            .WithState(_ => Errors.InvalidBlogTitle)
+            .MaximumLength(150)
             .WithState(_ => Errors.InvalidBlogTitle);
 
         // BlogDescription

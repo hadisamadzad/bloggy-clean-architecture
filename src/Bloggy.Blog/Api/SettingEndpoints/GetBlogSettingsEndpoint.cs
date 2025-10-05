@@ -24,6 +24,8 @@ public class GetBlogSettingsEndpoint : IEndpoint
                     OperationStatus.Completed => Results.Ok(new GetBlogSettingsResponse
                     {
                         BlogTitle = operationResult.Value!.BlogTitle,
+                        BlogSubtitle = operationResult.Value!.BlogSubtitle,
+                        BlogPageTitle = operationResult.Value!.BlogPageTitle,
                         BlogDescription = operationResult.Value!.BlogDescription,
                         SeoMetaTitle = operationResult.Value!.SeoMetaTitle,
                         SeoMetaDescription = operationResult.Value!.SeoMetaDescription,
@@ -54,6 +56,8 @@ public class GetBlogSettingsEndpoint : IEndpoint
 public record GetBlogSettingsResponse
 {
     public required string BlogTitle { get; set; }
+    public required string BlogSubtitle { get; set; }
+    public required string BlogPageTitle { get; set; }
     public required string BlogDescription { get; set; } = string.Empty;
     public string SeoMetaTitle { get; set; } = string.Empty;
     public string SeoMetaDescription { get; set; } = string.Empty;

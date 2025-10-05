@@ -26,7 +26,13 @@ public class GetBlogSettingsOperationTests
     public async Task ExecuteAsync_WhenSettingsFound_ShouldReturnSuccess()
     {
         // Arrange
-        var settings = new SettingEntity { Id = "settings-1", BlogTitle = string.Empty };
+        var settings = new SettingEntity
+        {
+            Id = "settings-1",
+            BlogTitle = "Test Title",
+            BlogSubtitle = "Test Subtitle",
+            BlogPageTitle = "Test Page Title"
+        };
         _repository.Settings.GetBlogSettingAsync().Returns(settings);
 
         // Act

@@ -22,6 +22,8 @@ public class UpdateBlogSettingsEndpoint : IEndpoint
                     new UpdateBlogSettingsCommand
                     {
                         BlogTitle = request.BlogTitle,
+                        BlogSubtitle = request.BlogSubtitle,
+                        BlogPageTitle = request.BlogPageTitle,
                         BlogDescription = request.BlogDescription,
                         SeoMetaTitle = request.SeoMetaTitle,
                         SeoMetaDescription = request.SeoMetaDescription,
@@ -51,6 +53,8 @@ public class UpdateBlogSettingsEndpoint : IEndpoint
 public record UpdateBlogSettingsRequest
 {
     public required string BlogTitle { get; set; }
+    public required string BlogSubtitle { get; set; }
+    public required string BlogPageTitle { get; set; }
     public required string BlogDescription { get; set; } = string.Empty;
     public string SeoMetaTitle { get; set; } = string.Empty;
     public string SeoMetaDescription { get; set; } = string.Empty;
