@@ -1,19 +1,47 @@
 #!/bin/bash
 
-# Remove none images from docker images BEFORE deploy
+# Set environment variable
+ENV=${1:-Production}
+
+echo "Starting deployment with environment: $ENV"
+
+# Remove dangling images from docker images BEFORE deploy
 echo "Cleaning up dangling images..."
-docker images -f dangling=true -q
+docker images -f dangling=true -q | xargs -r docker rmi
 
-# Build docker image using docker-compose
+# Stop and remove existing containers first
+echo "Stopping existing containers..."
+ENV="$ENV" docker-compose down --remove-orphans
+
+# Build docker images using docker-compose (force rebuild)
 echo "Building images..."
-sudo ENV="{Env}" docker-compose build
+ENV="$ENV" docker-compose build --no-cache
 
-# Up docker image using docker-compose
+# Check if build was successful
+if [ $? -ne 0 ]; then
+    echo "Build failed! Stopping deployment."
+    exit 1
+fi
+
+# Start containers using docker-compose
 echo "Starting containers..."
-sudo ENV="{Env}" docker-compose -f docker-compose.yml up -d
+ENV="$ENV" docker-compose up -d
 
-# Remove unused images and containers from docker images AFTER deploy
-echo "Final cleanup..."
-docker system prune -a -f
+# Wait a moment for containers to start
+sleep 5
+
+# Show running containers
+echo "Running containers:"
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+# Check if any containers are running
+RUNNING_CONTAINERS=$(docker ps -q | wc -l)
+if [ $RUNNING_CONTAINERS -eq 0 ]; then
+    echo "Warning: No containers are running!"
+    echo "Checking container logs..."
+    docker-compose logs
+else
+    echo "Successfully deployed $RUNNING_CONTAINERS container(s)"
+fi
 
 echo "Deployment completed!"
