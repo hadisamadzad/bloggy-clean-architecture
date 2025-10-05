@@ -1,5 +1,4 @@
-﻿using Bloggy.Blog.Application.Constants;
-using Bloggy.Blog.Application.Interfaces;
+﻿using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
 using FluentValidation;
@@ -41,8 +40,8 @@ public class DeleteSubscriberValidator : AbstractValidator<DeleteSubscriberComma
     {
         // Email
         RuleFor(x => x.Email)
+            .NotEmpty()
             .EmailAddress()
-            .MaximumLength(100)
-            .WithState(_ => Errors.InvalidEmail);
+            .MaximumLength(100);
     }
 }

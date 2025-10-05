@@ -1,5 +1,4 @@
-﻿using Bloggy.Blog.Application.Constants;
-using Bloggy.Blog.Application.Helpers;
+﻿using Bloggy.Blog.Application.Helpers;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Helpers;
@@ -52,13 +51,11 @@ public class CreateTagValidator : AbstractValidator<CreateTagCommand>
         // Name
         RuleFor(x => x.Name)
             .NotEmpty()
-            .MaximumLength(30)
-            .WithState(_ => Errors.InvalidTagName);
+            .MaximumLength(30);
 
         // Slug
         RuleFor(x => x.Slug)
             .MaximumLength(30)
-            .When(x => !string.IsNullOrEmpty(x.Slug))
-            .WithState(_ => Errors.InvalidSlug);
+            .When(x => !string.IsNullOrEmpty(x.Slug));
     }
 }

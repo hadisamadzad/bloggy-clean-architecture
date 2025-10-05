@@ -1,5 +1,4 @@
-﻿using Bloggy.Blog.Application.Constants;
-using Bloggy.Blog.Application.Helpers;
+﻿using Bloggy.Blog.Application.Helpers;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
@@ -64,49 +63,41 @@ public class UpdateArticleValidator : AbstractValidator<UpdateArticleCommand>
     {
         // ArticleId
         RuleFor(x => x.ArticleId)
-            .NotEmpty()
-            .WithState(_ => Errors.InvalidId);
+            .NotEmpty();
 
         // Title
         RuleFor(x => x.Title)
             .NotEmpty()
-            .MaximumLength(200)
-            .WithState(_ => Errors.InvalidArticleTitle);
+            .MaximumLength(200);
 
         // Subtitle
         RuleFor(x => x.Subtitle)
             .MaximumLength(300)
-            .When(x => !string.IsNullOrEmpty(x.Subtitle))
-            .WithState(_ => Errors.InvalidArticleTitle);
+            .When(x => !string.IsNullOrEmpty(x.Subtitle));
 
         // Summary
         RuleFor(x => x.Summary)
             .MaximumLength(500)
-            .When(x => !string.IsNullOrEmpty(x.Summary))
-            .WithState(_ => Errors.InvalidArticleSummary);
+            .When(x => !string.IsNullOrEmpty(x.Summary));
 
         // Slug
         RuleFor(x => x.Slug)
             .NotEmpty()
             .MaximumLength(100)
-            .Must(x => SlugHelper.IsValidSlug(x))
-            .WithState(_ => Errors.InvalidSlug);
+            .Must(x => SlugHelper.IsValidSlug(x));
 
         // ThumbnailUrl
         RuleFor(x => x.ThumbnailUrl)
             .MaximumLength(300)
-            .When(x => !string.IsNullOrEmpty(x.ThumbnailUrl))
-            .WithState(_ => Errors.InvalidArticleThumbnailUrl);
+            .When(x => !string.IsNullOrEmpty(x.ThumbnailUrl));
 
         // CoverImageUrl
         RuleFor(x => x.CoverImageUrl)
             .MaximumLength(300)
-            .When(x => !string.IsNullOrEmpty(x.CoverImageUrl))
-            .WithState(_ => Errors.InvalidArticleCoverImageUrl);
+            .When(x => !string.IsNullOrEmpty(x.CoverImageUrl));
 
         // TagIds
         RuleForEach(x => x.TagIds)
-            .NotEmpty()
-            .WithState(_ => Errors.InvalidId);
+            .NotEmpty();
     }
 }

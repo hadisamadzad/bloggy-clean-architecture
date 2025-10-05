@@ -1,4 +1,3 @@
-using Bloggy.Blog.Application.Constants;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Helpers;
@@ -62,51 +61,39 @@ public class UpdateBlogSettingsValidator : AbstractValidator<UpdateBlogSettingsC
         // BlogTitle
         RuleFor(x => x.BlogTitle)
             .NotEmpty()
-            .WithState(_ => Errors.InvalidBlogTitle)
-            .MaximumLength(100)
-            .WithState(_ => Errors.InvalidBlogTitle);
+            .MaximumLength(100);
 
         // BlogSubtitle
         RuleFor(x => x.BlogSubtitle)
             .NotEmpty()
-            .WithState(_ => Errors.InvalidBlogTitle)
-            .MaximumLength(200)
-            .WithState(_ => Errors.InvalidBlogTitle);
+            .MaximumLength(200);
 
         // BlogPageTitle
         RuleFor(x => x.BlogPageTitle)
             .NotEmpty()
-            .WithState(_ => Errors.InvalidBlogTitle)
-            .MaximumLength(150)
-            .WithState(_ => Errors.InvalidBlogTitle);
+            .MaximumLength(150);
 
         // BlogDescription
         RuleFor(x => x.BlogDescription)
             .NotEmpty()
-            .WithState(_ => Errors.InvalidBlogDescription)
-            .MaximumLength(500)
-            .WithState(_ => Errors.InvalidBlogDescription);
+            .MaximumLength(500);
 
         // SeoMetaTitle
         RuleFor(x => x.SeoMetaTitle)
             .MaximumLength(60)
-            .When(x => !string.IsNullOrEmpty(x.SeoMetaTitle))
-            .WithState(_ => Errors.InvalidSeoTitle);
+            .When(x => !string.IsNullOrEmpty(x.SeoMetaTitle));
 
         // SeoMetaDescription
         RuleFor(x => x.SeoMetaDescription)
             .MaximumLength(160)
-            .When(x => !string.IsNullOrEmpty(x.SeoMetaDescription))
-            .WithState(_ => Errors.InvalidSeoDescription);
+            .When(x => !string.IsNullOrEmpty(x.SeoMetaDescription));
 
         // BlogUrl
         RuleFor(x => x.BlogUrl)
-            .NotEmpty()
-            .WithState(_ => Errors.InvalidBlogUrl);
+            .NotEmpty();
 
         // Socials
         RuleForEach(x => x.Socials)
-            .Must(x => Enum.IsDefined(x.Name))
-            .WithState(_ => Errors.InvalidSocialNetworkName);
+            .Must(x => Enum.IsDefined(x.Name));
     }
 }
