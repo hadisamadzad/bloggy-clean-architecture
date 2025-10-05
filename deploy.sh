@@ -5,17 +5,17 @@ ENV=${1:-Production}
 
 echo "Starting deployment with environment: $ENV"
 
-# Remove dangling images from docker images BEFORE deploy
-echo "Cleaning up dangling images..."
-docker images -f dangling=true -q | xargs -r docker rmi
-
 # Stop and remove existing containers first
 echo "Stopping existing containers..."
 ENV="$ENV" docker-compose down --remove-orphans
 
+# Remove dangling images from docker images AFTER stopping containers
+echo "Cleaning up dangling images..."
+docker images -f dangling=true -q | xargs -r docker rmi
+
 # Build docker images using docker-compose (force rebuild)
 echo "Building images..."
-ENV="$ENV" docker-compose build --no-cache
+ENV="$ENV" docker-compose build
 
 # Check if build was successful
 if [ $? -ne 0 ]; then
@@ -46,8 +46,8 @@ fi
 
 # Final cleanup of unused Docker resources
 echo "Cleaning up unused Docker resources..."
-docker system prune -f
-docker image prune -f
+docker system prune -f --volumes
+docker image prune -f -a
 docker container prune -f
 
 echo "Deployment completed!"
