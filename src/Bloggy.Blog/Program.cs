@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 using Blog.Core.Bootstrap;
-using Blog.Infrastructure.Database;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Operations;
+using Bloggy.Blog.Infrastructure.Database;
 using Bloggy.Core.Extensions;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Persistence.MongoDB;
