@@ -8,6 +8,4 @@ public interface IRepositoryManager
     ITagRepository Tags { get; }
     ISubscriberRepository Subscribers { get; }
     ISettingRepository Settings { get; }
-
-    Task<bool> CommitAsync();
 }

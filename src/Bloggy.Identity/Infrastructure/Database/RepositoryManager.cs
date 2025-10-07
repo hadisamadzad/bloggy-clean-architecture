@@ -9,10 +9,4 @@ public class RepositoryManager(IMongoDatabase mongoDatabase) : IRepositoryManage
 {
     public IUserRepository Users { get; } =
         new UserRepository(mongoDatabase, "identity.users");
-
-    public async Task<bool> CommitAsync()
-    {
-        var task = new Task<bool>(() => { return true; });
-        return await task;
-    }
 }

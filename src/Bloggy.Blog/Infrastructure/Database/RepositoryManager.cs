@@ -3,7 +3,7 @@ using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Interfaces.Repositories;
 using MongoDB.Driver;
 
-namespace Blog.Infrastructure.Database;
+namespace Bloggy.Blog.Infrastructure.Database;
 
 public class RepositoryManager(IMongoDatabase mongoDatabase) : IRepositoryManager
 {
@@ -18,10 +18,4 @@ public class RepositoryManager(IMongoDatabase mongoDatabase) : IRepositoryManage
 
     public ISettingRepository Settings { get; } =
         new SettingRepository(mongoDatabase, "blog.settings");
-
-    public async Task<bool> CommitAsync()
-    {
-        var task = new Task<bool>(() => { return true; });
-        return await task;
-    }
 }

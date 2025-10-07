@@ -36,7 +36,6 @@ public class LoginOperation(IRepositoryManager repository) :
         {
             user.TryToLockout();
             _ = await repository.Users.UpdateAsync(user);
-            await repository.CommitAsync();
             return OperationResult<LoginResult>.AuthorizationFailure("Invalid credentials");
         }
 
