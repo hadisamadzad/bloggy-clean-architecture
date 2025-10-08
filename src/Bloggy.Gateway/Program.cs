@@ -56,7 +56,7 @@ if (builder.Environment.IsProduction())
     app.UseHsts();
 
 app.UseCors(Constants.CorsPolicyName);
-app.UseHealthChecks("/health");
+app.UseHealthChecks("/api/health");
 
 app.UseConfiguredOcelot();
 

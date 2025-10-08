@@ -11,7 +11,7 @@
     {
       "UpstreamPathTemplate": "/api/identity/health",
       "UpstreamHttpMethod": ["Get"],
-      "DownstreamPathTemplate": "/health",
+      "DownstreamPathTemplate": "/api/health",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 5000 }]
     },

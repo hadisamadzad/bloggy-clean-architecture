@@ -62,7 +62,7 @@ catch (Exception ex)
 if (app is null) return;
 
 // Add middleware
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/api/health");
 
 // Add endpoints
 app.MapEndpoints();
