@@ -15,7 +15,7 @@ public class OperationService(
     IOperation<GetOwnershipStatusCommand, bool> getOwnershipStatus,
     IOperation<LoginCommand, LoginResult> login,
     IOperation<RegisterCommand, RegisterResult> register,
-    IOperation<GetNewAccessTokenCommand, TokenResult> getNewAccessToken,
+    IOperation<RefreshAccessTokenCommand, string> getNewAccessToken,
     IOperation<CreateUserCommand, string> createUser,
     IOperation<GetUserByIdCommand, UserModel> getUserById,
     IOperation<UpdateUserCommand, NoResult> updateUser,
@@ -38,8 +38,8 @@ public class OperationService(
         login as LoginOperation;
     public RegisterOperation Register { get; } =
         register as RegisterOperation;
-    public GetNewAccessTokenOperation GetNewAccessToken { get; } =
-        getNewAccessToken as GetNewAccessTokenOperation;
+    public RefreshAccessTokenOperation GetNewAccessToken { get; } =
+        getNewAccessToken as RefreshAccessTokenOperation;
 
     // Users
     public CreateUserOperation CreateUser { get; } =

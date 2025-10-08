@@ -2,31 +2,37 @@ using Bloggy.Core.Interfaces;
 using Bloggy.Core.Utilities.OperationResult;
 using Bloggy.Identity.Application.Interfaces;
 using Bloggy.Identity.Application.Operations.Auth;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Bloggy.Identity.Api.AuthEndpoints;
 
-public class RefreshTokenEndpoint : IEndpoint
+public class RefreshAccessTokenEndpoint : IEndpoint
 {
     public void MapEndpoints(WebApplication app)
     {
         // Endpoint for getting access token by refresh token
         app.MapGroup(Routes.AuthBaseRoute)
             .WithSummary("Gets a new access token using a refresh token")
-            .MapGet("refresh", async (IOperationService operations,
-                [FromHeader] string refreshToken) =>
+            .MapPost("refresh", async (IOperationService operations,
+                HttpContext context) =>
             {
+                // Get refresh token from cookie
+                var refreshToken = context.Request.Cookies["refreshToken"];
+
+                if (string.IsNullOrEmpty(refreshToken))
+                    return Results.BadRequest(new { message = "Refresh token not found" });
+
                 // Operation
                 var operationResult = await operations.GetNewAccessToken
-                    .ExecuteAsync(new GetNewAccessTokenCommand(RefreshToken: refreshToken));
+                    .ExecuteAsync(new RefreshAccessTokenCommand(RefreshToken: refreshToken));
 
                 // Result
                 return operationResult.Status switch
                 {
                     OperationStatus.Completed => Results.Ok(
-                        new RefreshTokenResponse(
-                            NewAccessToken: operationResult.Value!.AccessToken
+                        new RefreshAccessTokenResponse(
+                            AccessToken: operationResult.Value!
                         )),
+
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     OperationStatus.NotFound => Results.UnprocessableEntity(operationResult.Error),
                     OperationStatus.Unauthorized => Results.Unauthorized(),
@@ -34,8 +40,8 @@ public class RefreshTokenEndpoint : IEndpoint
                 };
             })
             .WithTags(Routes.AuthEndpointGroupTag)
-            .WithDescription("Returns a new access token if the refresh token is valid.")
-            .Produces(StatusCodes.Status200OK)
+            .WithDescription("Returns a new access token if the current refresh token is valid.")
+            .Produces<RefreshAccessTokenResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status422UnprocessableEntity)
@@ -43,4 +49,4 @@ public class RefreshTokenEndpoint : IEndpoint
     }
 }
 
-public record RefreshTokenResponse(string NewAccessToken);
+public record RefreshAccessTokenResponse(string AccessToken);

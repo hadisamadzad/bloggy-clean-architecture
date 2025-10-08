@@ -12,7 +12,7 @@ public interface IOperationService
     GetOwnershipStatusOperation GetOwnershipStatus { get; }
     LoginOperation Login { get; }
     RegisterOperation Register { get; }
-    GetNewAccessTokenOperation GetNewAccessToken { get; }
+    RefreshAccessTokenOperation GetNewAccessToken { get; }
 
     // Users
     CreateUserOperation CreateUser { get; }
