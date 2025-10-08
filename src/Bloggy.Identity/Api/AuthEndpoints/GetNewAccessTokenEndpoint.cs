@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bloggy.Identity.Api.AuthEndpoints;
 
-public class GetNewAccessTokenEndpoint : IEndpoint
+public class RefreshTokenEndpoint : IEndpoint
 {
     public void MapEndpoints(WebApplication app)
     {
         // Endpoint for getting access token by refresh token
         app.MapGroup(Routes.AuthBaseRoute)
             .WithSummary("Gets a new access token using a refresh token")
-            .MapGet("access-token", async (IOperationService operations,
+            .MapGet("refresh", async (IOperationService operations,
                 [FromHeader] string refreshToken) =>
             {
                 // Operation

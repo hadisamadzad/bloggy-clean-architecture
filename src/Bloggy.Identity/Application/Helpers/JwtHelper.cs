@@ -21,6 +21,8 @@ public static class JwtHelper
     public static string CreateJwtRefreshToken(string userId, string email) =>
         CreateJwt(Config.RefreshTokenSecretKey, Config.RefreshTokenLifetime, userId, email);
 
+    public static TimeSpan RefreshTokenMaxAge => Config.RefreshTokenLifetime;
+
     public static bool IsValidJwtAccessToken(string token) =>
         ValidateJwt(token, Config.AccessTokenSecretKey);
 
