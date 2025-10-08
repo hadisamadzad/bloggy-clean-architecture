@@ -24,7 +24,7 @@ public class RefreshTokenEndpoint : IEndpoint
                 return operationResult.Status switch
                 {
                     OperationStatus.Completed => Results.Ok(
-                        new GetNewAccessTokenResponse(
+                        new RefreshTokenResponse(
                             NewAccessToken: operationResult.Value!.AccessToken
                         )),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
@@ -43,4 +43,4 @@ public class RefreshTokenEndpoint : IEndpoint
     }
 }
 
-public record GetNewAccessTokenResponse(string NewAccessToken);
+public record RefreshTokenResponse(string NewAccessToken);
