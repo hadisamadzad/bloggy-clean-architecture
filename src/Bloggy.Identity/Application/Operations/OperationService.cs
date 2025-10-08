@@ -15,7 +15,7 @@ public class OperationService(
     IOperation<GetOwnershipStatusCommand, bool> getOwnershipStatus,
     IOperation<LoginCommand, LoginResult> login,
     IOperation<RegisterCommand, RegisterResult> register,
-    IOperation<RefreshAccessTokenCommand, TokenResult> getNewAccessToken,
+    IOperation<RefreshAccessTokenCommand, string> getNewAccessToken,
     IOperation<CreateUserCommand, string> createUser,
     IOperation<GetUserByIdCommand, UserModel> getUserById,
     IOperation<UpdateUserCommand, NoResult> updateUser,
