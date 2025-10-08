@@ -11,7 +11,8 @@ public static class CorsInjection
             .AddPolicy(Constants.CorsPolicyName, policy => policy
             .WithOrigins(origins)
             .AllowAnyMethod()
-            .AllowAnyHeader())
+            .AllowAnyHeader()
+            .AllowCredentials())
         );
 
         return services;

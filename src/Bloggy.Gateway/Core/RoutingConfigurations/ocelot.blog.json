@@ -2,21 +2,21 @@
   "GlobalConfiguration": {},
   "Routes": [
     {
-      "UpstreamPathTemplate": "/blog/health",
+      "UpstreamPathTemplate": "/api/blog/health",
       "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/health",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }]
     },
     {
-      "UpstreamPathTemplate": "/blog/{all}",
+      "UpstreamPathTemplate": "/api/blog/{all}",
       "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/api/{all}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }]
     },
     {
-      "UpstreamPathTemplate": "/blog/{all}",
+      "UpstreamPathTemplate": "/api/blog/{all}",
       "UpstreamHttpMethod": ["Post", "Put", "Patch", "Delete"],
       "DownstreamPathTemplate": "/api/{all}",
       "DownstreamScheme": "http",

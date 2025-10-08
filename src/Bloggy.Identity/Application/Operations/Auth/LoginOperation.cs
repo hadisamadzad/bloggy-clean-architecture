@@ -45,12 +45,13 @@ public class LoginOperation(IRepositoryManager repository) :
         _ = await repository.Users.UpdateAsync(user);
 
         var result = new LoginResult
-        {
-            Email = user.Email,
-            FullName = user.GetFullName(),
-            AccessToken = user.CreateJwtAccessToken(),
-            RefreshToken = user.CreateJwtRefreshToken()
-        };
+        (
+            Email: user.Email,
+            FullName: user.GetFullName(),
+            AccessToken: user.CreateJwtAccessToken(),
+            RefreshToken: user.CreateJwtRefreshToken(),
+            RefreshTokenMaxAge: JwtHelper.RefreshTokenMaxAge
+        );
 
         return OperationResult<LoginResult>.Success(result);
     }

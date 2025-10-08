@@ -2,21 +2,21 @@
   "GlobalConfiguration": {},
   "Routes": [
     {
-      "UpstreamPathTemplate": "/identity/auth/{all}",
+      "UpstreamPathTemplate": "/api/identity/auth/{all}",
       "UpstreamHttpMethod": ["Get", "Post", "Patch"],
       "DownstreamPathTemplate": "/api/auth/{all}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 5000 }]
     },
     {
-      "UpstreamPathTemplate": "/identity/health",
+      "UpstreamPathTemplate": "/api/identity/health",
       "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/health",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 5000 }]
     },
     {
-      "UpstreamPathTemplate": "/identity/{all}",
+      "UpstreamPathTemplate": "/api/identity/{all}",
       "UpstreamHttpMethod": ["Get", "Post", "Put", "Patch", "Delete"],
       "DownstreamPathTemplate": "/api/{all}",
       "DownstreamScheme": "http",

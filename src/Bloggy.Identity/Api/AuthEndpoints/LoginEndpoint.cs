@@ -1,7 +1,9 @@
 using Bloggy.Core.Interfaces;
 using Bloggy.Core.Utilities.OperationResult;
+using Bloggy.Identity.Api.Extensions;
 using Bloggy.Identity.Application.Interfaces;
 using Bloggy.Identity.Application.Operations.Auth;
+using Bloggy.Identity.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bloggy.Identity.Api.AuthEndpoints;
@@ -30,9 +32,13 @@ public class LoginEndpoint : IEndpoint
                         new LoginResponse(
                             Email: operationResult.Value!.Email,
                             FullName: operationResult.Value.FullName,
-                            AccessToken: operationResult.Value.AccessToken,
-                            RefreshToken: operationResult.Value.RefreshToken
-                        )),
+                            AccessToken: operationResult.Value.AccessToken
+                        ))
+                        .WithCookie("refreshToken", operationResult.Value!.RefreshToken,
+                            CookieConfiguration.GetRefreshTokenOptions(
+                                operationResult.Value!.RefreshTokenMaxAge,
+                                isProduction: true)), // Set to false for local development
+
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     OperationStatus.NotFound => Results.UnprocessableEntity(operationResult.Error),
                     OperationStatus.Unauthorized => Results.Unauthorized(),
@@ -42,7 +48,7 @@ public class LoginEndpoint : IEndpoint
             })
             .WithTags(Routes.AuthEndpointGroupTag)
             .WithDescription("Authenticates a user and returns access and refresh tokens.")
-            .Produces(StatusCodes.Status200OK)
+            .Produces<LoginResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status422UnprocessableEntity)
@@ -54,6 +60,5 @@ public record LoginRequest(string Email, string Password);
 public record LoginResponse(
     string Email,
     string FullName,
-    string AccessToken,
-    string RefreshToken
+    string AccessToken
 );
