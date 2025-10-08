@@ -44,6 +44,7 @@ public class RefreshAccessTokenEndpoint : IEndpoint
             .Produces<RefreshAccessTokenResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status500InternalServerError);
     }
 }
