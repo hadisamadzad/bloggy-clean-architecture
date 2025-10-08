@@ -4,7 +4,7 @@
     {
       "UpstreamPathTemplate": "/api/blog/health",
       "UpstreamHttpMethod": ["Get"],
-      "DownstreamPathTemplate": "/health",
+      "DownstreamPathTemplate": "/api/health",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }]
     },
