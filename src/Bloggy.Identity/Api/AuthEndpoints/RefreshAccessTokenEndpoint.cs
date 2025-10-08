@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bloggy.Identity.Api.AuthEndpoints;
 
-public class RefreshTokenEndpoint : IEndpoint
+public class RefreshAccessTokenEndpoint : IEndpoint
 {
     public void MapEndpoints(WebApplication app)
     {
@@ -18,13 +18,13 @@ public class RefreshTokenEndpoint : IEndpoint
             {
                 // Operation
                 var operationResult = await operations.GetNewAccessToken
-                    .ExecuteAsync(new GetNewAccessTokenCommand(RefreshToken: refreshToken));
+                    .ExecuteAsync(new RefreshAccessTokenCommand(RefreshToken: refreshToken));
 
                 // Result
                 return operationResult.Status switch
                 {
                     OperationStatus.Completed => Results.Ok(
-                        new RefreshTokenResponse(
+                        new RefreshAccessTokenResponse(
                             NewAccessToken: operationResult.Value!.AccessToken
                         )),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
@@ -43,4 +43,4 @@ public class RefreshTokenEndpoint : IEndpoint
     }
 }
 
-public record RefreshTokenResponse(string NewAccessToken);
+public record RefreshAccessTokenResponse(string NewAccessToken);

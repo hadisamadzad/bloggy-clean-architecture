@@ -5,12 +5,12 @@ using Bloggy.Identity.Application.Types.Models.Auth;
 
 namespace Bloggy.Identity.Application.Operations.Auth;
 
-public class GetNewAccessTokenOperation(
+public class RefreshAccessTokenOperation(
     IRepositoryManager repository) :
-    IOperation<GetNewAccessTokenCommand, TokenResult>
+    IOperation<RefreshAccessTokenCommand, TokenResult>
 {
     public async Task<OperationResult<TokenResult>> ExecuteAsync(
-        GetNewAccessTokenCommand command, CancellationToken? cancellation = null)
+        RefreshAccessTokenCommand command, CancellationToken? cancellation = null)
     {
         if (!JwtHelper.IsValidJwtRefreshToken(command.RefreshToken))
             return OperationResult<TokenResult>.ValidationFailure(["Invalid refresh token"]);
@@ -34,4 +34,4 @@ public class GetNewAccessTokenOperation(
     }
 }
 
-public record GetNewAccessTokenCommand(string RefreshToken) : IOperationCommand;
+public record RefreshAccessTokenCommand(string RefreshToken) : IOperationCommand;
