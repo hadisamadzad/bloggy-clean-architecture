@@ -20,6 +20,7 @@ public static class UserModelMapper
             FullName = entity.GetFullName(),
             NotificationCount = 0,
             IsLockedOut = entity.IsLockedOut(),
+            LastLoginDate = entity.LastLoginDate,
             LastPasswordChangeDate = entity.LastPasswordChangeTime,
 
             CreatedAt = entity.CreatedAt,

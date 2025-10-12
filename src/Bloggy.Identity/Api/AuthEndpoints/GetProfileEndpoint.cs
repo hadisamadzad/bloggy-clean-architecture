@@ -28,10 +28,13 @@ public class GetProfileEndpoint : IEndpoint
                         new GetUserProfileResponse(
                             UserId: operationResult.Value!.UserId,
                             Email: operationResult.Value.Email,
+                            IsEmailConfirmed: operationResult.Value.IsEmailConfirmed,
                             FirstName: operationResult.Value.FirstName,
                             LastName: operationResult.Value.LastName,
                             FullName: operationResult.Value.FullName,
                             Role: operationResult.Value.Role,
+                            Status: operationResult.Value.State,
+                            LastLoginDate: operationResult.Value.LastLoginDate,
                             CreatedAt: operationResult.Value.CreatedAt,
                             UpdatedAt: operationResult.Value.UpdatedAt
                         )),
@@ -52,10 +55,13 @@ public class GetProfileEndpoint : IEndpoint
 public record GetUserProfileResponse(
     string UserId,
     string Email,
+    bool IsEmailConfirmed,
     string? FirstName,
     string? LastName,
     string FullName,
     Role Role,
+    UserState Status,
+    DateTime? LastLoginDate,
     DateTime CreatedAt,
     DateTime UpdatedAt
 );

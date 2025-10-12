@@ -10,6 +10,7 @@ public record UserModel
     public bool IsEmailConfirmed { get; set; }
     public string? Mobile { get; set; }
 
+    public DateTime? LastLoginDate { get; set; }
     public DateTime? LastPasswordChangeDate { get; set; }
     public bool IsLockedOut { get; set; }
 
