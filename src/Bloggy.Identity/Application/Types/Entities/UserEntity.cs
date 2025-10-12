@@ -31,7 +31,7 @@ public class UserEntity : IEntity
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public Role Role { get; set; }
-    public UserState State { get; set; }
+    public UserState Status { get; set; }
 
     #endregion
 

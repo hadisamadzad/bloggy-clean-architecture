@@ -23,7 +23,7 @@ public class UpdateUserStatusOperation(IRepositoryManager repository) :
             return OperationResult.NotFoundFailure("User not found");
 
         // Update
-        user.State = command.State;
+        user.Status = command.State;
         user.UpdatedAt = DateTime.UtcNow;
 
         _ = await repository.Users.UpdateAsync(user);

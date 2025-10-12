@@ -32,7 +32,7 @@ public class RegisterOperation(IRepositoryManager repository)
             Id = UidHelper.GenerateNewId("user"),
             Email = command.Email.ToLower(),
             PasswordHash = PasswordHelper.Hash(command.Password),
-            State = UserState.Active,
+            Status = UserState.Active,
             Role = Role.Owner, // The first user will be the owner
             SecurityStamp = UserHelper.CreateUserStamp(),
             ConcurrencyStamp = UserHelper.CreateUserStamp(),

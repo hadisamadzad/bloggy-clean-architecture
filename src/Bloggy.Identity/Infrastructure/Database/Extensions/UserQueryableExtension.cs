@@ -21,7 +21,7 @@ public static class UserQueryableExtension
 
         // Filter by statuses
         if (filter.States?.Any() == true)
-            query = query.Where(x => filter.States.Contains(x.State));
+            query = query.Where(x => filter.States.Contains(x.Status));
 
         return query;
     }
