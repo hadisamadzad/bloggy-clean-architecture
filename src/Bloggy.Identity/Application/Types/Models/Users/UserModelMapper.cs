@@ -14,7 +14,7 @@ public static class UserModelMapper
             IsEmailConfirmed = entity.IsEmailConfirmed,
             Mobile = entity.Mobile,
             Role = entity.Role,
-            State = entity.State,
+            Status = entity.Status,
             FirstName = entity.FirstName,
             LastName = entity.LastName,
             FullName = entity.GetFullName(),

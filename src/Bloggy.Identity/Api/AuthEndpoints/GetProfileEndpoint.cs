@@ -33,7 +33,7 @@ public class GetProfileEndpoint : IEndpoint
                             LastName: operationResult.Value.LastName,
                             FullName: operationResult.Value.FullName,
                             Role: operationResult.Value.Role,
-                            Status: operationResult.Value.State,
+                            Status: operationResult.Value.Status,
                             LastLoginDate: operationResult.Value.LastLoginDate,
                             CreatedAt: operationResult.Value.CreatedAt,
                             UpdatedAt: operationResult.Value.UpdatedAt

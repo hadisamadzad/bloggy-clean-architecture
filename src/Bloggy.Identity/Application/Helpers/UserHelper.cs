@@ -14,11 +14,11 @@ public static class UserHelper
 
     public static void Activate(this UserEntity user)
     {
-        user.State = UserState.Active;
+        user.Status = UserState.Active;
     }
 
     public static bool IsLockedOutOrNotActive(this UserEntity user) =>
-        user.State != UserState.Active || user.IsLockedOut();
+        user.Status != UserState.Active || user.IsLockedOut();
 
     public static bool IsLockedOut(this UserEntity user) => user.LockoutEndTime > DateTime.UtcNow;
 

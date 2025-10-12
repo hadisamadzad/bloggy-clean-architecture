@@ -18,7 +18,7 @@ public record UserModel
     public string? LastName { get; set; }
     public string FullName { get; set; } = string.Empty;
     public Role Role { get; set; }
-    public UserState State { get; set; }
+    public UserState Status { get; set; }
     public long NotificationCount { get; set; }
 
     public DateTime CreatedAt { get; set; }

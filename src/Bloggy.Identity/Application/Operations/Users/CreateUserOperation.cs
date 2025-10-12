@@ -44,7 +44,7 @@ public class CreateUserOperation(IRepositoryManager repository) :
             LastName = command.LastName,
             Email = command.Email,
             IsEmailConfirmed = true,
-            State = UserState.Active,
+            Status = UserState.Active,
             Role = Role.User,
             SecurityStamp = UserHelper.CreateUserStamp(),
             ConcurrencyStamp = UserHelper.CreateUserStamp(),
