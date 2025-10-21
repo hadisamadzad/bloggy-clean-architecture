@@ -2,6 +2,16 @@
   "GlobalConfiguration": {},
   "Routes": [
     {
+      "UpstreamPathTemplate": "/api/identity/auth/profile",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/api/auth/profile",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-identity", "Port": 5000 }],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "general-auth-key"
+      }
+    },
+    {
       "UpstreamPathTemplate": "/api/identity/auth/{all}",
       "UpstreamHttpMethod": ["Get", "Post", "Patch"],
       "DownstreamPathTemplate": "/api/auth/{all}",

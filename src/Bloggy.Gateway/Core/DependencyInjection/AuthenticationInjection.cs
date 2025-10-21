@@ -19,7 +19,10 @@ public static class AuthenticationInjection
                 {
                     ValidIssuer = config.Issuer,
                     ValidAudience = config.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.SecretKey))
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.SecretKey)),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
         //.AddGoogle(googleOptions =>
