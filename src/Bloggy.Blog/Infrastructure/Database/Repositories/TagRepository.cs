@@ -22,4 +22,9 @@ public class TagRepository(IMongoDatabase database, string collectionName) :
     {
         return await _collection.Find(x => x.Slug == slug).SingleOrDefaultAsync();
     }
+
+    public async Task<List<TagEntity>> GetAllAsync()
+    {
+        return await _collection.Find(_ => true).ToListAsync();
+    }
 }
