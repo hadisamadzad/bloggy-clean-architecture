@@ -4,6 +4,7 @@ using Bloggy.Blog.Application.Operations.Subscribers;
 using Bloggy.Blog.Application.Operations.Tags;
 using Bloggy.Blog.Application.Types.Models.Articles;
 using Bloggy.Blog.Application.Types.Models.Settings;
+using Bloggy.Blog.Application.Types.Models.Tags;
 using Bloggy.Core.Utilities.OperationResult;
 using Bloggy.Core.Utilities.Pagination;
 
@@ -22,6 +23,7 @@ public interface IOperationService
 
     // Tags
     IOperation<CreateTagCommand, string> CreateTag { get; }
+    IOperation<GetAllTagsCommand, List<TagModel>> GetAllTags { get; }
 
     // Settings
     IOperation<GetBlogSettingsCommand, SettingModel> GetBlogSettings { get; }
