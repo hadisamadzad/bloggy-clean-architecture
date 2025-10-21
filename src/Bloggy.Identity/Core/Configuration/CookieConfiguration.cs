@@ -8,8 +8,8 @@ public static class CookieConfiguration
         {
             HttpOnly = true,
             Secure = isProduction,
-            SameSite = SameSiteMode.Unspecified, // Can use Unspecified since same domain
-            Domain = isProduction ? "bloggy.hadisamadzad.com" : null, // Exact domain, no subdomain sharing needed
+            SameSite = SameSiteMode.None, // Can use None since same domain
+            Domain = null, // // Let browser handle it
             Expires = DateTimeOffset.UtcNow.Add(expiry),
             Path = "/",
             IsEssential = true
