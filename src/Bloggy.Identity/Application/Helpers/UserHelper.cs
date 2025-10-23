@@ -5,7 +5,7 @@ namespace Bloggy.Identity.Application.Helpers;
 
 public static class UserHelper
 {
-    public static LockoutConfig LockoutConfig;
+    public static LockoutConfig LockoutConfig { get; set; } = new LockoutConfig();
 
     public static string CreateUserStamp() => Guid.NewGuid().ToString("N");
 
@@ -46,6 +46,4 @@ public static class UserHelper
         Role[] adminRoles = [Role.Owner, Role.Admin];
         return adminRoles.Contains(user.Role);
     }
-
-
 }

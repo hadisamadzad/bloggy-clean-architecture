@@ -6,7 +6,7 @@ using Bloggy.Core.Persistence.MongoDB;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
-namespace Blog.Infrastructure.Database.Repositories;
+namespace Bloggy.Blog.Infrastructure.Database.Repositories;
 
 public class ArticleRepository(IMongoDatabase database, string collectionName) :
     MongoDbRepositoryBase<ArticleEntity>(database, collectionName), IArticleRepository
@@ -15,10 +15,18 @@ public class ArticleRepository(IMongoDatabase database, string collectionName) :
     {
         return await _collection.Find(x => x.Id == id).SingleOrDefaultAsync();
     }
+
     public async Task<ArticleEntity> GetBySlugAsync(string slug)
     {
         return await _collection.Find(x => x.Slug == slug).SingleOrDefaultAsync();
     }
+
+    public async Task<ArticleEntity> GetPublishedBySlugAsync(string slug)
+    {
+        return await _collection.Find(x => x.Slug == slug && x.Status == ArticleStatus.Published)
+            .SingleOrDefaultAsync();
+    }
+
     public async Task<List<ArticleEntity>> GetByIdsAsync(IEnumerable<string> ids)
     {
         return await _collection.Find(x => ids.Contains(x.Id)).ToListAsync();

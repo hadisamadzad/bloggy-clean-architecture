@@ -17,7 +17,7 @@ public class OperationService(
     IOperation<CreateArticleCommand, string> createArticle,
     IOperation<DeleteArticleCommand, NoResult> deleteArticle,
     IOperation<GetArticleByIdCommand, ArticleModel> getArticleById,
-    IOperation<GetArticleBySlugCommand, ArticleModel> getArticleBySlug,
+    IOperation<GetPublishedArticleBySlugCommand, ArticleModel> getArticleBySlug,
     IOperation<GetArticlesByFilterCommand, PaginatedList<ArticleModel>> getArticlesByFilter,
     IOperation<UpdateArticleCommand, NoResult> updateArticle,
     IOperation<UpdateArticleStatusCommand, NoResult> updateArticleStatus,
@@ -40,7 +40,7 @@ public class OperationService(
     public IOperation<CreateArticleCommand, string> CreateArticle { get; } = createArticle;
     public IOperation<DeleteArticleCommand, NoResult> DeleteArticle { get; } = deleteArticle;
     public IOperation<GetArticleByIdCommand, ArticleModel> GetArticleById { get; } = getArticleById;
-    public IOperation<GetArticleBySlugCommand, ArticleModel> GetArticleBySlug { get; } = getArticleBySlug;
+    public IOperation<GetPublishedArticleBySlugCommand, ArticleModel> GetArticleBySlug { get; } = getArticleBySlug;
     public IOperation<GetArticlesByFilterCommand, PaginatedList<ArticleModel>> GetArticlesByFilter { get; } = getArticlesByFilter;
     public IOperation<UpdateArticleCommand, NoResult> UpdateArticle { get; } = updateArticle;
     public IOperation<UpdateArticleStatusCommand, NoResult> UpdateArticleStatus { get; } = updateArticleStatus;

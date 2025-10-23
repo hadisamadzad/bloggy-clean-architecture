@@ -9,6 +9,33 @@
       "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }]
     },
     {
+      "UpstreamPathTemplate": "/api/blog/articles/published/{all}",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/api/articles/published/{all}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }]
+    },
+    {
+      "UpstreamPathTemplate": "/api/blog/articles",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/api/articles",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "general-auth-key"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/blog/articles/{id}",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/api/articles/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "general-auth-key"
+      }
+    },
+    {
       "UpstreamPathTemplate": "/api/blog/{all}",
       "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/api/{all}",

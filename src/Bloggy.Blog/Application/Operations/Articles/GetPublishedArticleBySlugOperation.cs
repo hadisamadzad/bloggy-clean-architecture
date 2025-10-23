@@ -4,11 +4,11 @@ using Bloggy.Core.Utilities.OperationResult;
 
 namespace Bloggy.Blog.Application.Operations.Articles;
 
-public class GetArticleBySlugOperation(IRepositoryManager repository) :
-    IOperation<GetArticleBySlugCommand, ArticleModel>
+public class GetPublishedArticleBySlugOperation(IRepositoryManager repository) :
+    IOperation<GetPublishedArticleBySlugCommand, ArticleModel>
 {
     public async Task<OperationResult<ArticleModel>> ExecuteAsync(
-        GetArticleBySlugCommand command, CancellationToken? cancellation = null)
+        GetPublishedArticleBySlugCommand command, CancellationToken? cancellation = null)
     {
         // Validate
         if (string.IsNullOrWhiteSpace(command.Slug))
@@ -17,7 +17,7 @@ public class GetArticleBySlugOperation(IRepositoryManager repository) :
         command = command with { Slug = command.Slug.ToLower() };
 
         // Retrieve the article
-        var entity = await repository.Articles.GetBySlugAsync(command.Slug);
+        var entity = await repository.Articles.GetPublishedBySlugAsync(command.Slug);
         if (entity is null)
             return OperationResult<ArticleModel>.NotFoundFailure("Article not found.");
 
@@ -28,4 +28,4 @@ public class GetArticleBySlugOperation(IRepositoryManager repository) :
     }
 }
 
-public record GetArticleBySlugCommand(string Slug) : IOperationCommand;
+public record GetPublishedArticleBySlugCommand(string Slug) : IOperationCommand;
