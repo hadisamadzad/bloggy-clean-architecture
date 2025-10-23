@@ -49,7 +49,7 @@ public class CreateArticleOperation(IRepositoryManager repository) :
 
         await repository.Articles.InsertAsync(entity);
 
-        return OperationResult<string>.Success(entity.Id);
+        return OperationResult<string>.Success(entity.Slug);
     }
 }
 
