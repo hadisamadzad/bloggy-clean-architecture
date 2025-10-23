@@ -37,7 +37,7 @@ public class CreateArticleEndpoint : IEndpoint
                 {
                     OperationStatus.Completed => Results.Ok(
                         new CreateArticleResponse(
-                            ArticleId: operationResult.Value!
+                            Slug: operationResult.Value!
                         )),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     OperationStatus.Failed => Results.UnprocessableEntity(operationResult.Error),
@@ -63,4 +63,4 @@ public record CreateArticleRequest(
     string? CoverImageUrl,
     ICollection<string> TagIds);
 
-public record CreateArticleResponse(string ArticleId);
+public record CreateArticleResponse(string Slug);
