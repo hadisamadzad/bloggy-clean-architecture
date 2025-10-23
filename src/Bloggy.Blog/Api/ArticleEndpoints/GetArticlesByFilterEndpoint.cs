@@ -51,7 +51,7 @@ public class GetArticlesByFilterEndpoint : IEndpoint
                             Title: x.Title,
                             Subtitle: x.Subtitle,
                             Summary: x.Summary,
-                            Content: x.Content,
+                            Content: string.Empty, // Omit content in list response
                             Slug: x.Slug,
                             ThumbnailUrl: x.ThumbnailUrl,
                             CoverImageUrl: x.CoverImageUrl,
