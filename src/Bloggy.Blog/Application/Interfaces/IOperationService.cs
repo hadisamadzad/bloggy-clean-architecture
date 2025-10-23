@@ -16,7 +16,7 @@ public interface IOperationService
     IOperation<CreateArticleCommand, string> CreateArticle { get; }
     IOperation<DeleteArticleCommand, NoResult> DeleteArticle { get; }
     IOperation<GetArticleByIdCommand, ArticleModel> GetArticleById { get; }
-    IOperation<GetArticleBySlugCommand, ArticleModel> GetArticleBySlug { get; }
+    IOperation<GetPublishedArticleBySlugCommand, ArticleModel> GetArticleBySlug { get; }
     IOperation<GetArticlesByFilterCommand, PaginatedList<ArticleModel>> GetArticlesByFilter { get; }
     IOperation<UpdateArticleCommand, NoResult> UpdateArticle { get; }
     IOperation<UpdateArticleStatusCommand, NoResult> UpdateArticleStatus { get; }

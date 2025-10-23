@@ -1,24 +1,24 @@
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Operations.Articles;
-using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Interfaces;
 using Bloggy.Core.Utilities.OperationResult;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bloggy.Blog.Api.ArticleEndpoints;
 
-public class GetArticleBySlugEndpoint : IEndpoint
+public class GetArticleByIdEndpoint : IEndpoint
 {
     public void MapEndpoints(WebApplication app)
     {
-        // Endpoint for getting an article by slug
+        // Endpoint for getting an article by id
         app.MapGroup(Routes.ArticleBaseRoute)
-            .WithSummary("Get Article by Slug")
-            .MapGet("{slug}/", async (IOperationService operations,
-                [FromRoute] string slug) =>
+            .WithSummary("Get a Protected Article by Id")
+            .MapGet("{articleId}/", async (IOperationService operations,
+                [FromRoute] string articleId) =>
             {
                 // Operation
-                var operationResult = await operations.GetArticleBySlug.ExecuteAsync(new GetArticleBySlugCommand(slug));
+                var operationResult = await operations.GetArticleById
+                    .ExecuteAsync(new GetArticleByIdCommand(articleId));
 
                 // Result
                 return operationResult.Status switch
@@ -45,35 +45,15 @@ public class GetArticleBySlugEndpoint : IEndpoint
                             ArchivedAt: operationResult.Value!.ArchivedAt
                         )),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
-                    OperationStatus.Failed => Results.UnprocessableEntity(operationResult.Error),
+                    OperationStatus.NotFound => Results.UnprocessableEntity(operationResult.Error),
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
             .WithTags(Routes.ArticleEndpointGroupTag)
-            .WithDescription("Gets an article by its slug.")
+            .WithDescription("Gets a protected article by id.")
             .Produces<GetArticleResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status500InternalServerError);
     }
 }
-
-public record GetArticleResponse(
-    string ArticleId,
-    string AuthorId,
-    string Title,
-    string Subtitle,
-    string Summary,
-    string Content,
-    string Slug,
-    string ThumbnailUrl,
-    string CoverImageUrl,
-    int TimeToReadInMinute,
-    int Likes,
-    ICollection<string> TagIds,
-    ICollection<string> TagSlugs,
-    ArticleStatus Status,
-    DateTime CreatedAt,
-    DateTime UpdatedAt,
-    DateTime? PublishedAt,
-    DateTime? ArchivedAt);
