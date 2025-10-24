@@ -6,7 +6,7 @@ public static class TagModelMapper
 {
     public static TagModel MapToModel(this TagEntity entity) => new()
     {
-        Id = entity.Id,
+        TagId = entity.Id,
         Name = entity.Name,
         Slug = entity.Slug,
         CreatedAt = entity.CreatedAt,

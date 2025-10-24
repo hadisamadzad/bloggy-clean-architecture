@@ -1,3 +1,4 @@
+using Bloggy.Blog.Api.TagEndpoints;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Operations.Articles;
 using Bloggy.Blog.Application.Types.Entities;
@@ -57,8 +58,7 @@ public class ListArticlesByFilterEndpoint : IEndpoint
                         CoverImageUrl: x.CoverImageUrl,
                         TimeToReadInMinute: x.TimeToReadInMinute,
                         Likes: x.Likes,
-                        TagIds: x.TagIds,
-                        TagSlugs: x.TagSlugs,
+                        Tags: [.. x.Tags.Select(tag => new TagResponse(tag.TagId, tag.Name, tag.Slug))],
                         Status: x.Status,
                         CreatedAt: x.CreatedAt,
                         UpdatedAt: x.UpdatedAt,

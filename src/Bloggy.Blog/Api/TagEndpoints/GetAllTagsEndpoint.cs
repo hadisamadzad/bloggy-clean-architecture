@@ -23,7 +23,7 @@ public class GetAllTagsEndpoint : IEndpoint
                     OperationStatus.Completed => Results.Ok(
                         new GetAllTagsResponse(
                             Tags: [.. operationResult.Value!.Select(t => new TagResponse(
-                                TagId: t.Id,
+                                TagId: t.TagId,
                                 Name: t.Name,
                                 Slug: t.Slug
                             ))]

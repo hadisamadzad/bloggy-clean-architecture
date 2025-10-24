@@ -1,3 +1,4 @@
+using Bloggy.Blog.Api.TagEndpoints;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Operations.Articles;
 using Bloggy.Blog.Application.Types.Entities;
@@ -37,8 +38,7 @@ public class GetPublishedArticleBySlugEndpoint : IEndpoint
                             CoverImageUrl: operationResult.Value!.CoverImageUrl,
                             TimeToReadInMinute: operationResult.Value!.TimeToReadInMinute,
                             Likes: operationResult.Value!.Likes,
-                            TagIds: operationResult.Value!.TagIds,
-                            TagSlugs: operationResult.Value!.TagSlugs,
+                            Tags: [.. operationResult.Value!.Tags.Select(tag => new TagResponse(tag.TagId, tag.Name, tag.Slug))],
                             Status: operationResult.Value!.Status,
                             CreatedAt: operationResult.Value!.CreatedAt,
                             UpdatedAt: operationResult.Value!.UpdatedAt,
@@ -71,8 +71,7 @@ public record GetArticleResponse(
     string CoverImageUrl,
     int TimeToReadInMinute,
     int Likes,
-    ICollection<string> TagIds,
-    ICollection<string> TagSlugs,
+    ICollection<TagResponse> Tags,
     ArticleStatus Status,
     DateTime CreatedAt,
     DateTime UpdatedAt,
