@@ -1,4 +1,5 @@
 ﻿using Bloggy.Blog.Application.Types.Entities;
+using Bloggy.Blog.Application.Types.Models.Tags;
 
 namespace Bloggy.Blog.Application.Types.Models.Articles;
 
@@ -17,8 +18,8 @@ public record ArticleModel
 
     public int TimeToReadInMinute { get; init; }
     public int Likes { get; init; }
-    public ICollection<string> TagIds { get; init; } = [];
-    public ICollection<string> TagSlugs { get; init; } = [];
+
+    public ICollection<TagModel> Tags { get; init; } = [];
 
     public ArticleStatus Status { get; init; }
     public DateTime CreatedAt { get; init; }

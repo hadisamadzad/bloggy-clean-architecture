@@ -1,4 +1,5 @@
 using Bloggy.Blog.Application.Types.Entities;
+using Bloggy.Blog.Application.Types.Models.Tags;
 
 namespace Bloggy.Blog.Application.Types.Models.Articles;
 
@@ -21,9 +22,7 @@ public static class ArticleModelMapper
 
             TimeToReadInMinute = entity.TimeToReadInMinute,
             Likes = entity.Likes,
-            TagIds = entity.TagIds,
-            TagSlugs = [],
-
+            Tags = [.. entity.TagIds.Select(x => new TagModel { TagId = x })],
             Status = entity.Status,
             CreatedAt = entity.CreatedAt,
             UpdatedAt = entity.UpdatedAt,
@@ -42,13 +41,13 @@ public static class ArticleModelMapper
     {
         var model = entity.MapToModel();
 
-        var tagSlugMap = tagEntities.ToDictionary(x => x.Id, x => x.Slug);
+        var tagModelMap = tagEntities.ToDictionary(x => x.Id, x => x.MapToModel());
 
-        var slugs = entity.TagIds
-            .Where(tagSlugMap.ContainsKey)
-            .Select(tagId => tagSlugMap[tagId])
+        var tagModels = entity.TagIds
+            .Where(tagModelMap.ContainsKey)
+            .Select(tagId => tagModelMap[tagId])
             .ToList();
 
-        return model with { TagSlugs = slugs };
+        return model with { Tags = tagModels };
     }
 }
