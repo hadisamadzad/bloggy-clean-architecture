@@ -28,14 +28,14 @@ public class UpdateArticleStatusEndpoint : IEndpoint
                 // Result
                 return operationResult.Status switch
                 {
-                    OperationStatus.Completed => Results.Ok(),
+                    OperationStatus.Completed => Results.NoContent(),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
             .WithTags(Routes.ArticleEndpointGroupTag)
             .WithDescription("Updates the status of an existing article.")
-            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
     }
