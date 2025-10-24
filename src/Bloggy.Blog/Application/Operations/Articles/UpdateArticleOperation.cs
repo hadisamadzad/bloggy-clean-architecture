@@ -18,8 +18,8 @@ public class UpdateArticleOperation(IRepositoryManager repository) :
             return OperationResult.ValidationFailure([.. validation.GetErrorMessages()]);
 
         // Check duplicate
-        var existingSlug = await repository.Articles.GetBySlugAsync(command.Slug);
-        if (existingSlug is not null)
+        var existingEntityBySlug = await repository.Articles.GetBySlugAsync(command.Slug);
+        if (existingEntityBySlug is not null && existingEntityBySlug.Id != command.ArticleId)
             return OperationResult.Failure("Slug is already in use.");
 
         var entity = await repository.Articles.GetByIdAsync(command.ArticleId);
