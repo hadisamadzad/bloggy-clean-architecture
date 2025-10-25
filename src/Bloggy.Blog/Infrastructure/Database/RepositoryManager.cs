@@ -1,5 +1,4 @@
-﻿using Blog.Infrastructure.Database.Repositories;
-using Bloggy.Blog.Application.Interfaces;
+﻿using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Interfaces.Repositories;
 using Bloggy.Blog.Infrastructure.Database.Repositories;
 using MongoDB.Driver;

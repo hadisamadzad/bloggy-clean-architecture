@@ -3,7 +3,7 @@ using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Persistence.MongoDB;
 using MongoDB.Driver;
 
-namespace Blog.Infrastructure.Database.Repositories;
+namespace Bloggy.Blog.Infrastructure.Database.Repositories;
 
 public class TagRepository(IMongoDatabase database, string collectionName) :
     MongoDbRepositoryBase<TagEntity>(database, collectionName), ITagRepository

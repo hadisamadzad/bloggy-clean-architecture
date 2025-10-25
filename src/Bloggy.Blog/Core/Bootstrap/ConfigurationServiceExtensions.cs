@@ -1,4 +1,4 @@
-﻿namespace Blog.Core.Bootstrap;
+﻿namespace Bloggy.Blog.Core.Bootstrap;
 
 public static class ConfigurationServiceExtensions
 {

@@ -2,7 +2,7 @@ using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Blog.Application.Types.Models.Articles;
 using MongoDB.Driver.Linq;
 
-namespace Blog.Infrastructure.Database.Extensions;
+namespace Bloggy.Blog.Infrastructure.Database.Extensions;
 
 public static class ArticleQueryableExtensions
 {

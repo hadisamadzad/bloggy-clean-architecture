@@ -1,6 +1,6 @@
 using Bloggy.Core.Persistence.Redis;
 
-namespace Blog.Core.Bootstrap;
+namespace Bloggy.Blog.Core.Bootstrap;
 
 public static class RedisServiceExtensions
 {
