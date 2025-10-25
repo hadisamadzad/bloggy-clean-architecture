@@ -21,7 +21,8 @@ public class UpdateBlogSettingsOperationTests
     {
         BlogTitle = "Updated Blog Title",
         BlogSubtitle = "Updated Blog Subtitle",
-        BlogPageTitle = "Updated Blog Page Title",
+        PageTitleTemplate = "Updated Page Title Template",
+        CopyrightText = "Copyright 2024 Bloggy",
         BlogDescription = "Updated Description",
         SeoMetaTitle = "Updated SEO Title",
         SeoMetaDescription = "Updated SEO Description",
@@ -68,7 +69,8 @@ public class UpdateBlogSettingsOperationTests
         {
             BlogTitle = "Updated Blog Title",
             BlogSubtitle = "Updated Blog Subtitle",
-            BlogPageTitle = "Updated Blog Page Title",
+            PageTitleTemplate = "Updated Page Title Template",
+            CopyrightText = "Copyright 2024 Bloggy",
             BlogDescription = "Updated Description",
             SeoMetaTitle = "Updated SEO Title",
             SeoMetaDescription = "Updated SEO Description",
@@ -89,7 +91,8 @@ public class UpdateBlogSettingsOperationTests
             Id = "settings-1",
             BlogTitle = "Old Title",
             BlogSubtitle = "Old Subtitle",
-            BlogPageTitle = "Old Page Title"
+            PageTitleTemplate = "Old Page Title",
+            CopyrightText = "Old Copyright"
         };
         _repository.Settings.GetBlogSettingAsync().Returns(existingSettings);
 
@@ -105,6 +108,8 @@ public class UpdateBlogSettingsOperationTests
         Assert.Equal(command.SeoMetaDescription, existingSettings.SeoMetaDescription);
         Assert.Equal(command.BlogUrl, existingSettings.BlogUrl);
         Assert.Equal(command.BlogLogoUrl, existingSettings.BlogLogoUrl);
+        Assert.Equal(command.PageTitleTemplate, existingSettings.PageTitleTemplate);
+        Assert.Equal(command.CopyrightText, existingSettings.CopyrightText);
         Assert.Equal(command.Socials.Count, existingSettings.Socials.Count);
         await _repository.Settings.Received(1).UpdateAsync(existingSettings);
     }

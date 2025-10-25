@@ -21,13 +21,17 @@ public class UpdateBlogSettingsEndpoint : IEndpoint
                 var operationResult = await operations.UpdateBlogSettings.ExecuteAsync(
                     new UpdateBlogSettingsCommand
                     {
+                        AuthorName = request.AuthorName,
+                        AuthorTitle = request.AuthorTitle,
+                        AboutAuthor = request.AboutAuthor,
                         BlogTitle = request.BlogTitle,
                         BlogSubtitle = request.BlogSubtitle,
-                        BlogPageTitle = request.BlogPageTitle,
                         BlogDescription = request.BlogDescription,
+                        BlogUrl = request.BlogUrl,
+                        PageTitleTemplate = request.PageTitleTemplate,
+                        CopyrightText = request.CopyrightText,
                         SeoMetaTitle = request.SeoMetaTitle,
                         SeoMetaDescription = request.SeoMetaDescription,
-                        BlogUrl = request.BlogUrl,
                         BlogLogoUrl = request.BlogLogoUrl,
                         Socials = request.Socials,
                     });
@@ -52,13 +56,19 @@ public class UpdateBlogSettingsEndpoint : IEndpoint
 
 public record UpdateBlogSettingsRequest
 {
+    // Author
+    public string AuthorName { get; set; } = string.Empty;
+    public string AuthorTitle { get; set; } = string.Empty;
+    public string AboutAuthor { get; set; } = string.Empty;
+
     public required string BlogTitle { get; set; }
     public required string BlogSubtitle { get; set; }
-    public required string BlogPageTitle { get; set; }
     public string BlogDescription { get; set; } = string.Empty;
+    public string BlogUrl { get; set; } = string.Empty;
+    public required string PageTitleTemplate { get; set; }
     public string SeoMetaTitle { get; set; } = string.Empty;
     public string SeoMetaDescription { get; set; } = string.Empty;
-    public string BlogUrl { get; set; } = string.Empty;
     public string BlogLogoUrl { get; set; } = string.Empty;
+    public string CopyrightText { get; set; } = string.Empty;
     public ICollection<SocialNetwork> Socials { get; set; } = [];
 };
