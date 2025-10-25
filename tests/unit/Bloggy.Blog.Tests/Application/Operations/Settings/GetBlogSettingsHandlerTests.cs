@@ -31,7 +31,7 @@ public class GetBlogSettingsOperationTests
             Id = "settings-1",
             BlogTitle = "Test Title",
             BlogSubtitle = "Test Subtitle",
-            BlogPageTitle = "Test Page Title"
+            PageTitleTemplate = "Test Page Title"
         };
         _repository.Settings.GetBlogSettingAsync().Returns(settings);
 

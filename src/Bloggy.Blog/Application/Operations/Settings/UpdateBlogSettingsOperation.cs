@@ -22,13 +22,17 @@ public class UpdateBlogSettingsOperation(IRepositoryManager repository) :
         if (entity is null)
             return OperationResult.NotFoundFailure("Blog settings not found.");
 
+        entity.AuthorName = command.AuthorName;
+        entity.AuthorTitle = command.AuthorTitle;
+        entity.AboutAuthor = command.AboutAuthor;
         entity.BlogTitle = command.BlogTitle;
         entity.BlogSubtitle = command.BlogSubtitle;
-        entity.BlogPageTitle = command.BlogPageTitle;
         entity.BlogDescription = command.BlogDescription;
+        entity.BlogUrl = command.BlogUrl;
+        entity.PageTitleTemplate = command.PageTitleTemplate;
+        entity.CopyrightText = command.CopyrightText;
         entity.SeoMetaTitle = command.SeoMetaTitle;
         entity.SeoMetaDescription = command.SeoMetaDescription;
-        entity.BlogUrl = command.BlogUrl;
         entity.BlogLogoUrl = command.BlogLogoUrl;
         entity.Socials = command.Socials;
 
@@ -42,14 +46,20 @@ public class UpdateBlogSettingsOperation(IRepositoryManager repository) :
 
 public record UpdateBlogSettingsCommand() : IOperationCommand
 {
+    // Author
+    public string AuthorName { get; set; } = string.Empty;
+    public string AuthorTitle { get; set; } = string.Empty;
+    public string AboutAuthor { get; set; } = string.Empty;
+
     public required string BlogTitle { get; set; }
     public required string BlogSubtitle { get; set; }
-    public required string BlogPageTitle { get; set; }
+    public required string PageTitleTemplate { get; set; }
     public string BlogDescription { get; set; } = string.Empty;
     public string SeoMetaTitle { get; set; } = string.Empty;
     public string SeoMetaDescription { get; set; } = string.Empty;
     public string BlogUrl { get; set; } = string.Empty;
     public string BlogLogoUrl { get; set; } = string.Empty;
+    public string CopyrightText { get; set; } = string.Empty;
     public ICollection<SocialNetwork> Socials { get; set; } = [];
 }
 
@@ -63,15 +73,33 @@ public class UpdateBlogSettingsValidator : AbstractValidator<UpdateBlogSettingsC
             .NotEmpty()
             .MaximumLength(100);
 
+        // AuthorName (optional)
+        RuleFor(x => x.AuthorName)
+            .MaximumLength(100)
+            .When(x => !string.IsNullOrEmpty(x.AuthorName));
+
+        // AuthorTitle (optional)
+        RuleFor(x => x.AuthorTitle)
+            .MaximumLength(100)
+            .When(x => !string.IsNullOrEmpty(x.AuthorTitle));
+
+        // AboutAuthor (optional)
+        RuleFor(x => x.AboutAuthor)
+            .MaximumLength(2000)
+            .When(x => !string.IsNullOrEmpty(x.AboutAuthor));
+
         // BlogSubtitle
         RuleFor(x => x.BlogSubtitle)
             .NotEmpty()
             .MaximumLength(200);
 
-        // BlogPageTitle
-        RuleFor(x => x.BlogPageTitle)
+        // PageTitleTemplate
+        RuleFor(x => x.PageTitleTemplate)
             .NotEmpty()
             .MaximumLength(150);
+        // CopyrightText
+        RuleFor(x => x.CopyrightText)
+            .MaximumLength(200);
 
         // BlogDescription
         RuleFor(x => x.BlogDescription)

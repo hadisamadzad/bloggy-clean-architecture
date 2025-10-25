@@ -8,14 +8,19 @@ public static class SettingModelMapper
     {
         return new SettingModel
         {
+            AuthorName = entity.AuthorName,
+            AuthorTitle = entity.AuthorTitle,
+            AboutAuthor = entity.AboutAuthor,
             BlogTitle = entity.BlogTitle,
             BlogSubtitle = entity.BlogSubtitle,
-            BlogPageTitle = entity.BlogPageTitle,
             BlogDescription = entity.BlogDescription,
+
+            BlogUrl = entity.BlogUrl,
+            PageTitleTemplate = entity.PageTitleTemplate,
             SeoMetaTitle = entity.SeoMetaTitle,
             SeoMetaDescription = entity.SeoMetaDescription,
-            BlogUrl = entity.BlogUrl,
             BlogLogoUrl = entity.BlogLogoUrl,
+            CopyrightText = entity.CopyrightText,
             Socials = entity.Socials,
             UpdatedAt = entity.UpdatedAt,
         };
