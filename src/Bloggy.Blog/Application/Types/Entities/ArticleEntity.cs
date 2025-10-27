@@ -15,6 +15,8 @@ public class ArticleEntity : IDeletableEntity
     public string ThumbnailUrl { get; set; } = string.Empty;
     public string CoverImageUrl { get; set; } = string.Empty;
 
+    public OriginalArticleInfoValue? OriginalArticleInfo { get; set; }
+
     public int TimeToReadInMinute { get; set; }
     public int Likes { get; set; }
     public ICollection<string> TagIds { get; set; } = [];

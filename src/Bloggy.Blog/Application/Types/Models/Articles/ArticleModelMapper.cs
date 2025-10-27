@@ -23,6 +23,7 @@ public static class ArticleModelMapper
             TimeToReadInMinute = entity.TimeToReadInMinute,
             Likes = entity.Likes,
             Tags = [.. entity.TagIds.Select(x => new TagModel { TagId = x })],
+            OriginalArticleInfo = entity.OriginalArticleInfo,
             Status = entity.Status,
             CreatedAt = entity.CreatedAt,
             UpdatedAt = entity.UpdatedAt,

@@ -38,6 +38,7 @@ public class GetArticleByIdEndpoint : IEndpoint
                             TimeToReadInMinute: operationResult.Value!.TimeToReadInMinute,
                             Likes: operationResult.Value!.Likes,
                             Tags: [.. operationResult.Value!.Tags.Select(tag => new TagResponse(tag.TagId, tag.Name, tag.Slug))],
+                            OriginalArticleInfo: operationResult.Value!.OriginalArticleInfo,
                             Status: operationResult.Value!.Status,
                             CreatedAt: operationResult.Value!.CreatedAt,
                             UpdatedAt: operationResult.Value!.UpdatedAt,

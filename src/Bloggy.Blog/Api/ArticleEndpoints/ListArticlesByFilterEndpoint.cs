@@ -59,6 +59,7 @@ public class ListArticlesByFilterEndpoint : IEndpoint
                         TimeToReadInMinute: x.TimeToReadInMinute,
                         Likes: x.Likes,
                         Tags: [.. x.Tags.Select(tag => new TagResponse(tag.TagId, tag.Name, tag.Slug))],
+                        OriginalArticleInfo: null,
                         Status: x.Status,
                         CreatedAt: x.CreatedAt,
                         UpdatedAt: x.UpdatedAt,
