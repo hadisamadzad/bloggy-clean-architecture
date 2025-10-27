@@ -1,7 +1,7 @@
-﻿using Blog.Infrastructure.Database.Extensions;
-using Bloggy.Blog.Application.Interfaces.Repositories;
+﻿using Bloggy.Blog.Application.Interfaces.Repositories;
 using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Blog.Application.Types.Models.Articles;
+using Bloggy.Blog.Infrastructure.Database.Extensions;
 using Bloggy.Core.Persistence.MongoDB;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;

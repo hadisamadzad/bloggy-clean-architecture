@@ -39,6 +39,7 @@ public class GetPublishedArticleBySlugEndpoint : IEndpoint
                             TimeToReadInMinute: operationResult.Value!.TimeToReadInMinute,
                             Likes: operationResult.Value!.Likes,
                             Tags: [.. operationResult.Value!.Tags.Select(tag => new TagResponse(tag.TagId, tag.Name, tag.Slug))],
+                            OriginalArticleInfo: operationResult.Value!.OriginalArticleInfo,
                             Status: operationResult.Value!.Status,
                             CreatedAt: operationResult.Value!.CreatedAt,
                             UpdatedAt: operationResult.Value!.UpdatedAt,
@@ -46,7 +47,7 @@ public class GetPublishedArticleBySlugEndpoint : IEndpoint
                             ArchivedAt: operationResult.Value!.ArchivedAt
                         )),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
-                    OperationStatus.Failed => Results.UnprocessableEntity(operationResult.Error),
+                    OperationStatus.NotFound => Results.UnprocessableEntity(operationResult.Error),
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
@@ -72,6 +73,7 @@ public record GetArticleResponse(
     int TimeToReadInMinute,
     int Likes,
     ICollection<TagResponse> Tags,
+    OriginalArticleInfoValue? OriginalArticleInfo,
     ArticleStatus Status,
     DateTime CreatedAt,
     DateTime UpdatedAt,

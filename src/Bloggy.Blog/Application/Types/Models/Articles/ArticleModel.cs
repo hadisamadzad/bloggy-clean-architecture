@@ -21,6 +21,8 @@ public record ArticleModel
 
     public ICollection<TagModel> Tags { get; init; } = [];
 
+    public OriginalArticleInfoValue? OriginalArticleInfo { get; init; }
+
     public ArticleStatus Status { get; init; }
     public DateTime CreatedAt { get; init; }
     public DateTime UpdatedAt { get; init; }
