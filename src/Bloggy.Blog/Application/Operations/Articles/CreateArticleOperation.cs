@@ -26,11 +26,12 @@ public class CreateArticleOperation(IRepositoryManager repository) :
         if (existingSlug is not null)
             return OperationResult<string>.Failure("Slug is already in use.");
 
+        var words = command.Content?.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Length ?? 0;
+        var timeToRead = (int)Math.Ceiling(words / 150.0); // 150 words per minute
         var entity = new ArticleEntity
         {
             Id = UidHelper.GenerateNewId("article"),
             AuthorId = command.AuthorId,
-
             Title = command.Title,
             Subtitle = command.Subtitle,
             Summary = command.Summary,
@@ -38,10 +39,9 @@ public class CreateArticleOperation(IRepositoryManager repository) :
             Slug = slug,
             ThumbnailUrl = command.ThumbnailUrl,
             CoverImageUrl = command.CoverImageUrl,
-
-            TimeToReadInMinute = 6, // FIXME: Calculate time to read
+            OriginalArticleInfo = command.OriginalArticleInfo,
+            TimeToReadInMinute = timeToRead,
             TagIds = [.. command.TagIds],
-
             Status = ArticleStatus.Draft,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
@@ -56,14 +56,15 @@ public class CreateArticleOperation(IRepositoryManager repository) :
 public record CreateArticleCommand : IOperationCommand
 {
     public required string AuthorId { get; init; }
-    public string Title { get; init; } = string.Empty;
-    public string Subtitle { get; set; } = string.Empty;
-    public string Summary { get; set; } = string.Empty;
-    public string Content { get; set; } = string.Empty;
-    public string Slug { get; set; } = string.Empty;
-    public string ThumbnailUrl { get; set; } = string.Empty;
-    public string CoverImageUrl { get; set; } = string.Empty;
-    public ICollection<string> TagIds { get; set; } = [];
+    public required string Title { get; init; }
+    public required string Subtitle { get; init; }
+    public required string Summary { get; init; }
+    public required string Content { get; init; }
+    public required string Slug { get; init; }
+    public required string ThumbnailUrl { get; init; }
+    public required string CoverImageUrl { get; init; }
+    public required OriginalArticleInfoValue? OriginalArticleInfo { get; init; }
+    public required ICollection<string> TagIds { get; init; } = [];
 }
 
 // Validator
