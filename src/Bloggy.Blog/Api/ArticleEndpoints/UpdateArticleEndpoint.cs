@@ -1,5 +1,6 @@
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Operations.Articles;
+using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Interfaces;
 using Bloggy.Core.Utilities.OperationResult;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ public class UpdateArticleEndpoint : IEndpoint
                     Slug = request.Slug,
                     ThumbnailUrl = request.ThumbnailUrl,
                     CoverImageUrl = request.CoverImageUrl,
+                    OriginalArticleInfo = request.OriginalArticleInfo,
                     TimeToRead = request.TimeToRead,
                     TagIds = request.TagIds,
                 });
@@ -58,5 +60,6 @@ public record UpdateArticleRequest(
     string Slug,
     string ThumbnailUrl,
     string CoverImageUrl,
+    OriginalArticleInfoValue? OriginalArticleInfo,
     int TimeToRead,
     ICollection<string> TagIds);

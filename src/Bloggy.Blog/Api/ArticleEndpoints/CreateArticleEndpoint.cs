@@ -1,5 +1,6 @@
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Operations.Articles;
+using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Interfaces;
 using Bloggy.Core.Utilities.OperationResult;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,7 @@ public class CreateArticleEndpoint : IEndpoint
                         Slug = request.Slug ?? string.Empty,
                         ThumbnailUrl = request.ThumbnailUrl ?? string.Empty,
                         CoverImageUrl = request.CoverImageUrl ?? string.Empty,
+                        OriginalArticleInfo = request.OriginalArticleInfo,
                         TagIds = request.TagIds
                     });
 
@@ -61,6 +63,8 @@ public record CreateArticleRequest(
     string? Slug,
     string? ThumbnailUrl,
     string? CoverImageUrl,
-    ICollection<string> TagIds);
+    OriginalArticleInfoValue? OriginalArticleInfo,
+    ICollection<string> TagIds
+    );
 
 public record CreateArticleResponse(string Slug);

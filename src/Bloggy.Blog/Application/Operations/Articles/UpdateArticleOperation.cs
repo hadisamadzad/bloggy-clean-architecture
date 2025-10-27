@@ -1,5 +1,6 @@
 ﻿using Bloggy.Blog.Application.Helpers;
 using Bloggy.Blog.Application.Interfaces;
+using Bloggy.Blog.Application.Types.Entities;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Utilities.OperationResult;
 using FluentValidation;
@@ -31,7 +32,7 @@ public class UpdateArticleOperation(IRepositoryManager repository) :
         entity.Slug = command.Slug.ToLower();
         entity.ThumbnailUrl = command.ThumbnailUrl;
         entity.CoverImageUrl = command.CoverImageUrl;
-
+        entity.OriginalArticleInfo = command.OriginalArticleInfo;
         entity.TimeToReadInMinute = command.TimeToRead;
         entity.TagIds = [.. command.TagIds];
         entity.UpdatedAt = DateTime.UtcNow;
@@ -46,14 +47,15 @@ public record UpdateArticleCommand : IOperationCommand
 {
     public string ArticleId { get; init; } = string.Empty;
     public string Title { get; init; } = string.Empty;
-    public string Subtitle { get; set; } = string.Empty;
-    public string Summary { get; set; } = string.Empty;
-    public string Content { get; set; } = string.Empty;
-    public string Slug { get; set; } = string.Empty;
-    public string ThumbnailUrl { get; set; } = string.Empty;
-    public string CoverImageUrl { get; set; } = string.Empty;
-    public int TimeToRead { get; set; }
-    public ICollection<string> TagIds { get; set; } = [];
+    public string Subtitle { get; init; } = string.Empty;
+    public string Summary { get; init; } = string.Empty;
+    public string Content { get; init; } = string.Empty;
+    public string Slug { get; init; } = string.Empty;
+    public string ThumbnailUrl { get; init; } = string.Empty;
+    public string CoverImageUrl { get; init; } = string.Empty;
+    public OriginalArticleInfoValue? OriginalArticleInfo { get; init; }
+    public int TimeToRead { get; init; }
+    public ICollection<string> TagIds { get; init; } = [];
 }
 
 // Validator
