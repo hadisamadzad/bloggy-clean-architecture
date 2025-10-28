@@ -37,6 +37,7 @@ public class GetArticleByIdEndpoint : IEndpoint
                             CoverImageUrl: operationResult.Value!.CoverImageUrl,
                             TimeToReadInMinute: operationResult.Value!.TimeToReadInMinute,
                             Likes: operationResult.Value!.Likes,
+                            Views: operationResult.Value!.Views,
                             Tags: [.. operationResult.Value!.Tags.Select(tag => new TagResponse(tag.TagId, tag.Name, tag.Slug))],
                             OriginalArticleInfo: operationResult.Value!.OriginalArticleInfo,
                             Status: operationResult.Value!.Status,
