@@ -18,6 +18,7 @@ public record ArticleModel
 
     public int TimeToReadInMinute { get; init; }
     public int Likes { get; init; }
+    public int Views { get; init; }
 
     public ICollection<TagModel> Tags { get; init; } = [];
 

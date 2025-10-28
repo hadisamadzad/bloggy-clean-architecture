@@ -19,6 +19,7 @@ public class ArticleEntity : IDeletableEntity
 
     public int TimeToReadInMinute { get; set; }
     public int Likes { get; set; }
+    public int Views { get; set; }
     public ICollection<string> TagIds { get; set; } = [];
 
     public ArticleStatus Status { get; set; }

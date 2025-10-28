@@ -57,6 +57,7 @@ public class ListPublishedArticlesByFilterEndpoint : IEndpoint
                             CoverImageUrl: x.CoverImageUrl,
                             TimeToReadInMinute: x.TimeToReadInMinute,
                             Likes: x.Likes,
+                            Views: x.Views,
                             Tags: [.. x.Tags.Select(tag => new TagResponse(tag.TagId, tag.Name, tag.Slug))],
                             OriginalArticleInfo: null,
                             Status: x.Status,
