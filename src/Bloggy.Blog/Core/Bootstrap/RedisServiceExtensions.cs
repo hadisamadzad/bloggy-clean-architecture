@@ -10,7 +10,7 @@ public static class RedisServiceExtensions
         var config = configuration.GetSection(RedisConfig.Key).Get<RedisConfig>();
 
         // Distributed caching
-        services.AddRedisCache("blog", config);
+        services.AddRedisCache("blog", config!);
 
         return services;
     }

@@ -2,6 +2,9 @@ namespace Bloggy.Blog.Api;
 
 public static class Routes
 {
+    public const string DevBaseRoute = "api/dev/";
+    public const string DevEndpointGroupTag = "Dev";
+
     public const string ArticleBaseRoute = "api/articles/";
     public const string ArticleEndpointGroupTag = "Articles";
 
