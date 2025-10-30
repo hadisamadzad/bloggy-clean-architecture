@@ -52,4 +52,14 @@ public class ArticleRepository(IMongoDatabase database, string collectionName) :
         query = query.ApplyFilter(filter);
         return await query.CountAsync();
     }
+
+    public async Task<bool> IncrementViewsAsync(string articleId, long delta)
+    {
+        var update = Builders<ArticleEntity>.Update
+            .Inc(x => x.Views, delta)
+            .Set(x => x.UpdatedAt, DateTime.UtcNow);
+
+        var result = await _collection.UpdateOneAsync(x => x.Id == articleId, update);
+        return result.ModifiedCount > 0;
+    }
 }

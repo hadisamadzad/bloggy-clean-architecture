@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Bloggy.Blog.Application.Constants;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Operations.Settings;
 using Bloggy.Blog.Application.Types.Entities;

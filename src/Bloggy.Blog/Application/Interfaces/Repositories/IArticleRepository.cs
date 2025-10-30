@@ -12,4 +12,5 @@ public interface IArticleRepository : IRepository<ArticleEntity>
     Task<List<ArticleEntity>> GetByIdsAsync(IEnumerable<string> ids);
     Task<List<ArticleEntity>> GetByFilterAsync(ArticleFilter filter);
     Task<int> CountByFilterAsync(ArticleFilter filter);
+    Task<bool> IncrementViewsAsync(string articleId, long delta);
 }

@@ -3,6 +3,7 @@ using Bloggy.Blog.Application.Operations.Articles;
 using Bloggy.Blog.Application.Operations.Settings;
 using Bloggy.Blog.Application.Operations.Subscribers;
 using Bloggy.Blog.Application.Operations.Tags;
+using Bloggy.Blog.Application.Operations.Views;
 using Bloggy.Blog.Application.Types.Models.Articles;
 using Bloggy.Blog.Application.Types.Models.Settings;
 using Bloggy.Blog.Application.Types.Models.Tags;
@@ -21,6 +22,7 @@ public class OperationService(
     IOperation<GetArticlesByFilterCommand, PaginatedList<ArticleModel>> getArticlesByFilter,
     IOperation<UpdateArticleCommand, NoResult> updateArticle,
     IOperation<UpdateArticleStatusCommand, NoResult> updateArticleStatus,
+    IOperation<CountArticleViewCommand, NoResult> countArticleView,
 
     // Tags
     IOperation<CreateTagCommand, string> createTag,
@@ -46,6 +48,7 @@ public class OperationService(
     public IOperation<GetArticlesByFilterCommand, PaginatedList<ArticleModel>> GetArticlesByFilter { get; } = getArticlesByFilter;
     public IOperation<UpdateArticleCommand, NoResult> UpdateArticle { get; } = updateArticle;
     public IOperation<UpdateArticleStatusCommand, NoResult> UpdateArticleStatus { get; } = updateArticleStatus;
+    public IOperation<CountArticleViewCommand, NoResult> CountArticleView { get; } = countArticleView;
 
     // Tags
     public IOperation<CreateTagCommand, string> CreateTag { get; } = createTag;

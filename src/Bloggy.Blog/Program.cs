@@ -2,7 +2,9 @@ using System.Text.Json.Serialization;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Operations;
 using Bloggy.Blog.Core.Bootstrap;
+using Bloggy.Blog.Infrastructure.Background;
 using Bloggy.Blog.Infrastructure.Database;
+using Bloggy.Blog.Infrastructure.Redis;
 using Bloggy.Core.Extensions;
 using Bloggy.Core.Helpers;
 using Bloggy.Core.Persistence.MongoDB;
@@ -39,10 +41,15 @@ builder.Services.AddCustomConfigurations(configs);
 builder.Services.AddOperations();
 builder.Services.AddTransient<IOperationService, OperationService>();
 
+// Database
 builder.Services.AddConfiguredMongoDB(configs);
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
 builder.Services.AddConfiguredRedisCache(configs);
+builder.Services.AddSingleton<IViewMemoryRepository, ViewRedisRepository>();
+
+// Hosted services
+builder.Services.AddHostedService<ViewsFlushHostedService>();
 
 builder.Services.AddHealthChecks();
 builder.Services.AddConfiguredOpenApi();

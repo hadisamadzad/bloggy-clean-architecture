@@ -9,6 +9,13 @@
       "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }]
     },
     {
+      "UpstreamPathTemplate": "/api/blog/views/article/{articleId}/",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/api/views/article/{articleId}/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "bloggy-blog", "Port": 5000 }]
+    },
+    {
       "UpstreamPathTemplate": "/api/blog/subscribers",
       "UpstreamHttpMethod": ["Post"],
       "DownstreamPathTemplate": "/api/subscribers",
