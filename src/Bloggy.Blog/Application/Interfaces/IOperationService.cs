@@ -2,6 +2,7 @@ using Bloggy.Blog.Application.Operations.Articles;
 using Bloggy.Blog.Application.Operations.Settings;
 using Bloggy.Blog.Application.Operations.Subscribers;
 using Bloggy.Blog.Application.Operations.Tags;
+using Bloggy.Blog.Application.Operations.Views;
 using Bloggy.Blog.Application.Types.Models.Articles;
 using Bloggy.Blog.Application.Types.Models.Settings;
 using Bloggy.Blog.Application.Types.Models.Tags;
@@ -20,6 +21,7 @@ public interface IOperationService
     IOperation<GetArticlesByFilterCommand, PaginatedList<ArticleModel>> GetArticlesByFilter { get; }
     IOperation<UpdateArticleCommand, NoResult> UpdateArticle { get; }
     IOperation<UpdateArticleStatusCommand, NoResult> UpdateArticleStatus { get; }
+    IOperation<CountArticleViewCommand, NoResult> CountArticleView { get; }
 
     // Tags
     IOperation<CreateTagCommand, string> CreateTag { get; }

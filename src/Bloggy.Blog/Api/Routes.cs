@@ -16,4 +16,7 @@ public static class Routes
 
     public const string TagBaseRoute = "api/tags/";
     public const string TagEndpointGroupTag = "Tags";
+
+    public const string ViewBaseRoute = "api/views/";
+    public const string ViewEndpointGroupTag = "Views";
 }

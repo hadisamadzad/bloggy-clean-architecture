@@ -1,11 +1,8 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Bloggy.Blog.Application.Constants;
 using Bloggy.Blog.Application.Interfaces;
 using Bloggy.Blog.Application.Operations.Settings;
 using Bloggy.Blog.Application.Types.Entities;
-using Bloggy.Core.Utilities;
 using Bloggy.Core.Utilities.OperationResult;
 using NSubstitute;
 using Xunit;
