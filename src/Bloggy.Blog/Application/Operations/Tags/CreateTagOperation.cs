@@ -19,7 +19,7 @@ public class CreateTagOperation(IRepositoryManager repository) :
             return OperationResult<string>.ValidationFailure([.. validation.GetErrorMessages()]);
 
         var slug = string.IsNullOrWhiteSpace(command.Slug) ?
-            SlugHelper.GenerateSlug(command.Name) : command.Slug;
+            SlugHelper.GenerateSlug(command.Name) : command.Slug.ToLower();
 
         // Check duplicate
         var existingSlug = await repository.Tags.GetBySlugAsync(slug);
