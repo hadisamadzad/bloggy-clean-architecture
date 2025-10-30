@@ -24,6 +24,8 @@ public class OperationService(
 
     // Tags
     IOperation<CreateTagCommand, string> createTag,
+    IOperation<UpdateTagCommand, NoResult> updateTag,
+    IOperation<DeleteTagCommand, NoResult> deleteTag,
     IOperation<GetAllTagsCommand, List<TagModel>> getAllTags,
 
     // Settings
@@ -47,6 +49,8 @@ public class OperationService(
 
     // Tags
     public IOperation<CreateTagCommand, string> CreateTag { get; } = createTag;
+    public IOperation<UpdateTagCommand, NoResult> UpdateTag { get; } = updateTag;
+    public IOperation<DeleteTagCommand, NoResult> DeleteTag { get; } = deleteTag;
     public IOperation<GetAllTagsCommand, List<TagModel>> GetAllTags { get; } = getAllTags;
 
     // Settings

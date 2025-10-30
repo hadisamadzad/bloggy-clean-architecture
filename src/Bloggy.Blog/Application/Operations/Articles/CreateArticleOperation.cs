@@ -19,7 +19,7 @@ public class CreateArticleOperation(IRepositoryManager repository) :
             return OperationResult<string>.ValidationFailure([.. validation.GetErrorMessages()]);
 
         var slug = string.IsNullOrWhiteSpace(command.Slug) ?
-            SlugHelper.GenerateSlug(command.Title) : command.Slug;
+            SlugHelper.GenerateSlug(command.Title) : command.Slug.ToLower();
 
         // Check duplicate
         var existingSlug = await repository.Articles.GetBySlugAsync(command.Slug);
@@ -35,7 +35,7 @@ public class CreateArticleOperation(IRepositoryManager repository) :
             Title = command.Title,
             Subtitle = command.Subtitle,
             Summary = command.Summary,
-            Content = command.Content,
+            Content = command.Content ?? string.Empty,
             Slug = slug,
             ThumbnailUrl = command.ThumbnailUrl,
             CoverImageUrl = command.CoverImageUrl,
