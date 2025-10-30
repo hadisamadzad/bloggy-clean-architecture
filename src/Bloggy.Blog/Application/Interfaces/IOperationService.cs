@@ -23,6 +23,8 @@ public interface IOperationService
 
     // Tags
     IOperation<CreateTagCommand, string> CreateTag { get; }
+    IOperation<UpdateTagCommand, NoResult> UpdateTag { get; }
+    IOperation<DeleteTagCommand, NoResult> DeleteTag { get; }
     IOperation<GetAllTagsCommand, List<TagModel>> GetAllTags { get; }
 
     // Settings

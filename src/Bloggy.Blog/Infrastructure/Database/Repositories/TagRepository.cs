@@ -15,16 +15,16 @@ public class TagRepository(IMongoDatabase database, string collectionName) :
 
     public async Task<List<TagEntity>> GetByIdsAsync(IEnumerable<string> ids)
     {
-        return await _collection.Find(x => ids.Contains(x.Id)).ToListAsync();
+        return await _collection.Find(x => x.IsActive && ids.Contains(x.Id)).ToListAsync();
     }
 
     public async Task<TagEntity> GetBySlugAsync(string slug)
     {
-        return await _collection.Find(x => x.Slug == slug).SingleOrDefaultAsync();
+        return await _collection.Find(x => x.IsActive && x.Slug == slug).SingleOrDefaultAsync();
     }
 
     public async Task<List<TagEntity>> GetAllAsync()
     {
-        return await _collection.Find(_ => true).ToListAsync();
+        return await _collection.Find(x => x.IsActive).ToListAsync();
     }
 }
