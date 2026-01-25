@@ -44,7 +44,7 @@ This project follows the Clean Architecture pattern and the application is divid
 ### 🔙 Backend
 
 - ASP.NET Core Web API with **Minimal APIs**
-- **.NET 9**
+- **.NET 10**
 - API Gateway: **Ocelot**
 - Database: **MongoDB** with MongoDB.Driver
 - **Repository Manager**
@@ -135,7 +135,7 @@ This project follows the Clean Architecture pattern and the application is divid
 ## 🧪 Testing
 
 ```bash
-dotnet test Bloggy.sln
+dotnet test Bloggy.slnx
 ```
 
 ## 🤝 Contributing

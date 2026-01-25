@@ -1,0 +1,19 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/Bloggy.Blog/Bloggy.Blog.csproj" />
+    <Project Path="src/Bloggy.Core/Bloggy.Core.csproj" />
+    <Project Path="src/Bloggy.Gateway/Bloggy.Gateway.csproj" />
+    <Project Path="src/Bloggy.Identity/Bloggy.Identity.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/unit/">
+    <Project Path="tests/unit/Bloggy.Blog.Tests/Bloggy.Blog.Tests.csproj" />
+    <Project Path="tests/unit/Bloggy.Core.Tests/Bloggy.Core.Tests.csproj" />
+    <Project Path="tests/unit/Bloggy.Identity.Tests/Bloggy.Identity.Tests.csproj" />
+  </Folder>
+</Solution>
