@@ -18,7 +18,7 @@ public class RedisCacheService : ICacheService
         _connectionMultiplexer = multiplexer;
     }
 
-    public async Task<T> GetAsync<T>(string key, bool hasAbsoluteKey = false)
+    public async Task<T?> GetAsync<T>(string key, bool hasAbsoluteKey = false)
     {
         var finalKey = hasAbsoluteKey ? key : $"{Prefix}-{key}";
         var value = await _connectionMultiplexer.GetDatabase().StringGetAsync(finalKey);
@@ -26,7 +26,7 @@ public class RedisCacheService : ICacheService
         if (value.IsNull)
             return default;
 
-        return JsonSerializer.Deserialize<T>(value);
+        return JsonSerializer.Deserialize<T>(value.ToString());
     }
 
     public async Task<bool> SetAsync<T>(string key, T value)

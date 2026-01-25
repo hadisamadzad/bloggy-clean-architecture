@@ -21,11 +21,14 @@ public class CountArticleViewEndpoint : IEndpoint
 
                 return operationResult.Status switch
                 {
-                    OperationStatus.Completed => Results.Ok(),
+                    OperationStatus.Completed => Results.NoContent(),
                     OperationStatus.Invalid => Results.BadRequest(operationResult.Error),
                     _ => Results.InternalServerError(operationResult.Error),
                 };
             })
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError)
             .WithTags(Routes.ViewEndpointGroupTag)
             .WithDescription("Counts a unique view for an article by visitor id.");
     }
