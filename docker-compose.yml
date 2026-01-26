@@ -56,11 +56,11 @@ services:
     networks:
       - bloggy-backend
     volumes:
-      - redis-data:/data
+      - bloggy-redis-data:/data
     command: redis-server --appendonly yes
 
 volumes:
-  redis-data:
+  bloggy-redis-data:
     driver: local
 
 networks:
